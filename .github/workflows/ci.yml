@@ -313,7 +313,22 @@ jobs:
             --version 0.5.0 \
             -f deploy/k8s/helm/values.yaml \
             -f deploy/k8s/helm/values-ci.yaml \
-            --set coordinator.version="${COORD_VERSION}" \
+            --set images.aggregate.tag="${COORD_VERSION}" \
+            --set images.saga.tag="${COORD_VERSION}" \
+            --set images.projector.tag="${COORD_VERSION}" \
+            --set images.processManager.tag="${COORD_VERSION}" \
+            --set images.stream.tag="${COORD_VERSION}" \
+            --set images.gateway.tag="${COORD_VERSION}" \
+            --set images.log.tag="${COORD_VERSION}" \
+            --set "applications.business[0].image.tag=${TAG}" \
+            --set "applications.business[1].image.tag=${TAG}" \
+            --set "applications.business[2].image.tag=${TAG}" \
+            --set "applications.sagas[0].image.tag=${TAG}" \
+            --set "applications.sagas[1].image.tag=${TAG}" \
+            --set "applications.sagas[2].image.tag=${TAG}" \
+            --set "applications.sagas[3].image.tag=${TAG}" \
+            --set "applications.processManagers[0].image.tag=${TAG}" \
+            --set "applications.projectors[0].image.tag=${TAG}" \
             --namespace angzarr-test \
             --wait --timeout 5m
 
