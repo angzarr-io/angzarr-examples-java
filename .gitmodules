@@ -1,3 +1,6 @@
 [submodule "angzarr-client-java"]
 	path = angzarr-client-java
 	url = https://github.com/angzarr-io/angzarr-client-java.git
+[submodule "angzarr-project"]
+	path = angzarr-project
+	url = https://github.com/angzarr-io/angzarr-project.git
