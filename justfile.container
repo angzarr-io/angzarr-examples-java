@@ -9,12 +9,15 @@ ROOT := `git rev-parse --show-toplevel`
 default:
     @just --list
 
-# Export protos from buf.build into the client library's proto source tree so
-# protobuf-gradle-plugin compiles them alongside the core angzarr protos.
-# Excludes ai_sidecar.proto (enum conflicts with poker_types.proto).
+# Export core angzarr protos from BSR; copy example protos from submodule.
+# Excludes ai_player.proto and ai_sidecar.proto (enum conflicts with poker_types.proto).
 proto-gen:
     buf export buf.build/angzarr/angzarr -o "{{ROOT}}/angzarr-client-java/angzarr/proto"
-    buf export buf.build/angzarr/examples -o "{{ROOT}}/angzarr-client-java/angzarr/proto" --exclude-path examples/ai_sidecar.proto
+    mkdir -p "{{ROOT}}/angzarr-client-java/angzarr/proto/examples"
+    find "{{ROOT}}/angzarr-project/proto/examples" -name '*.proto' \
+        ! -name 'ai_player.proto' \
+        ! -name 'ai_sidecar.proto' \
+        -exec cp {} "{{ROOT}}/angzarr-client-java/angzarr/proto/examples/" \;
 
 build: proto-gen
     ./gradlew build -x test
