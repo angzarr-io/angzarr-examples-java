@@ -1,7 +1,7 @@
 rootProject.name = "angzarr-examples-java"
 
-// Use the canonical client library from client/java via composite build
-includeBuild("../../client/java") {
+// Use the canonical client library via git submodule composite build
+includeBuild("angzarr-client-java") {
     dependencySubstitution {
         substitute(module("dev.angzarr:client")).using(project(":client"))
         substitute(module("dev.angzarr:proto")).using(project(":proto"))
