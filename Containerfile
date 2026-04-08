@@ -35,8 +35,12 @@ WORKDIR /app
 # Copy client library submodule (includes proto and client/java)
 COPY angzarr-client-java ./angzarr-client-java
 
+# Copy angzarr-project protos (needed by generateProto via gradle.properties)
+COPY angzarr-project/proto ./angzarr-project/proto
+
 # Copy gradle wrapper and build files
 COPY gradle ./gradle
+COPY gradle.properties ./
 COPY gradlew ./
 COPY build.gradle.kts ./
 COPY settings.gradle.kts ./
