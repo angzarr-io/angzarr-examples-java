@@ -21,7 +21,7 @@ public class Main {
   @GrpcService
   public static class ProjectorGrpcService extends ProjectorServiceGrpc.ProjectorServiceImplBase {
 
-    private final OutputProjector projector = new OutputProjector();
+    private final OutputProjector projector = new OutputProjector(System.out::println, true);
 
     @Override
     public void handle(EventBook request, StreamObserver<Projection> responseObserver) {

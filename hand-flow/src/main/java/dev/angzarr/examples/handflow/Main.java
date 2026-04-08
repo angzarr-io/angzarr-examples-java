@@ -2,8 +2,8 @@ package dev.angzarr.examples.handflow;
 
 import dev.angzarr.*;
 import io.grpc.stub.StreamObserver;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -43,13 +43,8 @@ public class Main {
     public void handle(
         ProcessManagerHandleRequest request,
         StreamObserver<ProcessManagerHandleResponse> responseObserver) {
-      List<EventBook> destinations =
-          request.getDestinationSequencesMap().entrySet().stream()
-              .map(e -> e.getValue())
-              .collect(Collectors.toList());
-
       List<CommandBook> commands =
-          pm.handle(request.getTrigger(), request.getProcessState(), destinations);
+          pm.handle(request.getTrigger(), request.getProcessState(), Collections.emptyList());
 
       responseObserver.onNext(
           ProcessManagerHandleResponse.newBuilder().addAllCommands(commands).build());
