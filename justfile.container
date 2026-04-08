@@ -10,15 +10,16 @@ default:
     @just --list
 
 # Export core and example protos from angzarr-project submodule.
-# Excludes ai_player.proto and ai_sidecar.proto (enum conflicts with poker_types.proto).
+# Excludes ai_sidecar.proto (enum conflicts with poker_types.proto).
 proto-gen:
+    buf export "{{ROOT}}/angzarr-project/proto" -o "{{ROOT}}/_proto_export"
     mkdir -p "{{ROOT}}/angzarr-client-java/angzarr/proto"
-    cp -r "{{ROOT}}/angzarr-project/proto/angzarr/"* "{{ROOT}}/angzarr-client-java/angzarr/proto/"
+    cp -r "{{ROOT}}/_proto_export/angzarr/"* "{{ROOT}}/angzarr-client-java/angzarr/proto/"
     mkdir -p "{{ROOT}}/angzarr-client-java/angzarr/proto/examples"
-    find "{{ROOT}}/angzarr-project/proto/examples" -name '*.proto' \
-        ! -name 'ai_player.proto' \
+    find "{{ROOT}}/_proto_export/examples" -name '*.proto' \
         ! -name 'ai_sidecar.proto' \
         -exec cp {} "{{ROOT}}/angzarr-client-java/angzarr/proto/examples/" \;
+    rm -rf "{{ROOT}}/_proto_export"
 
 build: proto-gen
     ./gradlew build -x test
