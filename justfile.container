@@ -9,29 +9,11 @@ ROOT := `git rev-parse --show-toplevel`
 default:
     @just --list
 
-# Export core and example protos from angzarr-project submodule.
-# Excludes ai_sidecar.proto (enum conflicts with poker_types.proto).
-#
-# The proto srcDir (angzarr-client-java/angzarr/proto/) needs files in
-# subdirectories matching import paths: angzarr/, examples/, google/api/.
-# The nested submodule has core protos flat at the root, so we replace the
-# entire directory content with the correctly-structured buf export output.
+# Proto compilation is handled by the Gradle protobuf plugin, which reads
+# directly from angzarr-project/proto/ (configured via gradle.properties).
+# No file copying needed.  This recipe only cleans stale build artifacts.
 proto-gen:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    PROTO_DIR="{{ROOT}}/angzarr-client-java/angzarr/proto"
-    # Clean stale Gradle proto build artifacts (contain old protos that cause duplicates)
     rm -rf "{{ROOT}}/angzarr-client-java/proto/build"
-    # Remove all proto sources - flat files from nested submodule and any prior export
-    rm -f "$PROTO_DIR"/*.proto
-    rm -rf "$PROTO_DIR/angzarr" "$PROTO_DIR/examples" "$PROTO_DIR/google" "$PROTO_DIR/io" "$PROTO_DIR/health"
-    # Export protos with correct directory structure (angzarr/, examples/, google/api/)
-    buf export "{{ROOT}}/angzarr-project/proto" -o "{{ROOT}}/_proto_export"
-    # Remove excluded proto before copying
-    rm -f "{{ROOT}}/_proto_export/examples/ai_sidecar.proto"
-    # Copy entire export tree into srcDir, preserving directory structure
-    cp -r "{{ROOT}}/_proto_export/"* "$PROTO_DIR/"
-    rm -rf "{{ROOT}}/_proto_export"
 
 build: proto-gen
     ./gradlew build -x test
