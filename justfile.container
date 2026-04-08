@@ -22,7 +22,7 @@ build-dev: proto-gen
     ./gradlew build -x test --info
 
 test-unit: proto-gen
-    ./gradlew test --tests "*Test"
+    ./gradlew test --tests "*Test" -x :tests:test
 
 test-acceptance: proto-gen
     ./gradlew :tests:test
