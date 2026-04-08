@@ -19,8 +19,7 @@ public class Main {
   }
 
   @GrpcService
-  public static class ProjectorGrpcService
-      extends ProjectorServiceGrpc.ProjectorServiceImplBase {
+  public static class ProjectorGrpcService extends ProjectorServiceGrpc.ProjectorServiceImplBase {
 
     private final OutputProjector projector = new OutputProjector();
 
@@ -32,8 +31,7 @@ public class Main {
     }
 
     @Override
-    public void handleSpeculative(
-        EventBook request, StreamObserver<Projection> responseObserver) {
+    public void handleSpeculative(EventBook request, StreamObserver<Projection> responseObserver) {
       // Speculative: same logic but should avoid side effects
       Projection result = projector.handle(request);
       responseObserver.onNext(result);

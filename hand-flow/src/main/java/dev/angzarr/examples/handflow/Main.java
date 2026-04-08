@@ -26,7 +26,10 @@ public class Main {
       extends ProcessManagerServiceGrpc.ProcessManagerServiceImplBase {
 
     private final HandFlowProcessManager pm =
-        new HandFlowProcessManager(cmd -> { /* commands returned via gRPC response */ });
+        new HandFlowProcessManager(
+            cmd -> {
+              /* commands returned via gRPC response */
+            });
 
     @Override
     public void prepare(
