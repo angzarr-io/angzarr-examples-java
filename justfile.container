@@ -12,6 +12,7 @@ default:
 # Export core and example protos from angzarr-project submodule.
 # Excludes ai_sidecar.proto (enum conflicts with poker_types.proto).
 proto-gen:
+    rm -rf "{{ROOT}}/angzarr-client-java/angzarr/proto/angzarr" "{{ROOT}}/angzarr-client-java/angzarr/proto/examples"
     buf export "{{ROOT}}/angzarr-project/proto" -o "{{ROOT}}/_proto_export"
     mkdir -p "{{ROOT}}/angzarr-client-java/angzarr/proto"
     cp -r "{{ROOT}}/_proto_export/angzarr/"* "{{ROOT}}/angzarr-client-java/angzarr/proto/"
