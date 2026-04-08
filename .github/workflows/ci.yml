@@ -24,6 +24,8 @@ jobs:
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
+    env:
+      DEVCONTAINER: "true"
     steps:
       - uses: actions/checkout@v4
         with:
