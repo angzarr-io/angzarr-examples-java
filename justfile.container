@@ -9,25 +9,40 @@ ROOT := `git rev-parse --show-toplevel`
 default:
     @just --list
 
-build:
+# Copy example protos into the client library's proto source tree so
+# protobuf-gradle-plugin compiles them alongside the core angzarr protos.
+# Excludes ai_player.proto and ai_sidecar.proto (enum conflicts with poker_types.proto).
+proto-gen:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    mkdir -p "{{ROOT}}/angzarr-client-java/angzarr/proto/examples"
+    for f in "{{ROOT}}/angzarr-project/proto/examples/"*.proto; do
+        base="$(basename "$f")"
+        case "$base" in
+            ai_player.proto|ai_sidecar.proto) continue ;;
+        esac
+        cp "$f" "{{ROOT}}/angzarr-client-java/angzarr/proto/examples/"
+    done
+
+build: proto-gen
     ./gradlew build -x test
 
-build-dev:
+build-dev: proto-gen
     ./gradlew build -x test --info
 
-test-unit:
+test-unit: proto-gen
     ./gradlew test --tests "*Test"
 
-test-acceptance:
+test-acceptance: proto-gen
     ./gradlew :tests:test
 
-test:
+test: proto-gen
     ./gradlew test
 
 fmt:
     ./gradlew spotlessApply || echo "Spotless not configured, skipping format"
 
-lint:
+lint: proto-gen
     ./gradlew check -x test
 
 deps:
