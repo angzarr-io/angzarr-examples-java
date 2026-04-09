@@ -388,7 +388,14 @@ jobs:
           kubectl port-forward -n angzarr-test svc/player-aggregate 1310:1310 &
           kubectl port-forward -n angzarr-test svc/table-aggregate 1311:1310 &
           kubectl port-forward -n angzarr-test svc/hand-aggregate 1312:1310 &
-          sleep 3
+          # Wait for port-forwards to establish
+          for i in $(seq 1 15); do
+            if nc -z localhost 1310 2>/dev/null; then
+              echo "Port-forwards ready"
+              break
+            fi
+            sleep 1
+          done
           just -f justfile.container test-acceptance
 
       - name: Show logs on failure
