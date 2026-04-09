@@ -37,7 +37,24 @@ tasks.test {
     useJUnitPlatform {
         excludeTags("grpc-acceptance")
     }
+    // Run only the unit Cucumber runner (AcceptanceTest) and exclude acceptance runners
+    exclude("**/CucumberAcceptanceTest*")
     systemProperty("cucumber.junit-platform.naming-strategy", "long")
+    // No PLAYER_URL -> InProcessCommandClient for unit tests
+}
+
+tasks.register<Test>("cucumberAcceptanceTest") {
+    description = "Run Cucumber acceptance tests (gRPC when PLAYER_URL is set, in-process otherwise)"
+    group = "verification"
+    useJUnitPlatform()
+    // Run only the acceptance Cucumber runner
+    include("**/CucumberAcceptanceTest*")
+    systemProperty("cucumber.junit-platform.naming-strategy", "long")
+    // Pass PLAYER_URL through to the test JVM for gRPC mode
+    val playerUrl = System.getenv("PLAYER_URL")
+    if (playerUrl != null) {
+        environment("PLAYER_URL", playerUrl)
+    }
 }
 
 tasks.register<Test>("grpcAcceptanceTest") {
@@ -50,5 +67,5 @@ tasks.register<Test>("grpcAcceptanceTest") {
     environment("PLAYER_URL", System.getenv("PLAYER_URL") ?: "localhost:1310")
 }
 
-// Feature files are symlinked from examples/features/unit/
-// Step definitions match the shared feature format
+// Feature files are symlinked from angzarr-project/features/
+// Unit step definitions in steps/, acceptance step definitions in steps/acceptance/

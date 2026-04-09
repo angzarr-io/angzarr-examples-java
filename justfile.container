@@ -22,10 +22,10 @@ build-dev: proto-gen
     ./gradlew build -x test --info
 
 test-unit: proto-gen
-    ./gradlew test --tests "*Test" -x :tests:test
+    ./gradlew test
 
 test-acceptance: proto-gen
-    ./gradlew :tests:test
+    PLAYER_URL="${PLAYER_URL:-localhost:1310}" ./gradlew :tests:cucumberAcceptanceTest :tests:grpcAcceptanceTest
 
 test: proto-gen
     ./gradlew test

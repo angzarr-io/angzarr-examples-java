@@ -379,7 +379,7 @@ jobs:
             exit 1
           }
 
-      - name: Run gRPC acceptance tests
+      - name: Run acceptance tests
         run: |
           # Port-forward player aggregate coordinator
           kubectl port-forward -n angzarr-test svc/player-aggregate 1310:1310 &
@@ -399,7 +399,7 @@ jobs:
           done
 
           export PLAYER_URL="localhost:1310"
-          ./gradlew :tests:grpcAcceptanceTest --info
+          just -f justfile.container test-acceptance
 
           kill $PF_PID 2>/dev/null || true
 

@@ -8,10 +8,10 @@ import org.junit.platform.suite.api.IncludeEngines;
 import org.junit.platform.suite.api.SelectClasspathResource;
 import org.junit.platform.suite.api.Suite;
 
-/** Cucumber acceptance test runner for all feature files. */
+/** Cucumber test runner for unit feature files (in-process aggregate tests). */
 @Suite
 @IncludeEngines("cucumber")
-@SelectClasspathResource("features")
+@SelectClasspathResource("features/unit")
 @ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "dev.angzarr.examples.steps")
 @ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "pretty")
 public class AcceptanceTest {}
