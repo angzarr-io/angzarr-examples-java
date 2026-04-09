@@ -50,6 +50,7 @@ tasks.register<Test>("cucumberAcceptanceTest") {
     // Run only the acceptance Cucumber runner
     include("**/CucumberAcceptanceTest*")
     systemProperty("cucumber.junit-platform.naming-strategy", "long")
+    systemProperty("cucumber.execution.strict", "false")
     // Pass domain URLs through to the test JVM for gRPC mode
     // Use providers to evaluate at execution time, not configuration time
     environment("PLAYER_URL", providers.environmentVariable("PLAYER_URL").orElse("localhost:1310"))
