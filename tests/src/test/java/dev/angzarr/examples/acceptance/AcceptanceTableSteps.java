@@ -1,9 +1,5 @@
 package dev.angzarr.examples.acceptance;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import com.google.protobuf.ByteString;
-import dev.angzarr.CommandResponse;
 import dev.angzarr.examples.*;
 import dev.angzarr.examples.client.TestContext;
 import io.cucumber.datatable.DataTable;
@@ -11,9 +7,6 @@ import io.cucumber.java.PendingException;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 /** Acceptance step definitions for table-related scenarios. */
@@ -39,127 +32,27 @@ public class AcceptanceTableSteps {
 
   @When("player {string} joins table {string} at seat {int} with buy-in {int}")
   public void playerJoinsTable(String playerName, String tableName, int seat, int buyIn) {
-    UUID tableRoot = ctx.getTableRoot(tableName);
-    UUID playerRoot = ctx.getPlayerRoot(playerName);
-    JoinTable cmd =
-        JoinTable.newBuilder()
-            .setPlayerRoot(
-                ByteString.copyFrom(playerRoot.toString().getBytes(StandardCharsets.UTF_8)))
-            .setPreferredSeat(seat)
-            .setBuyInAmount(buyIn)
-            .build();
-    ctx.sendCommand("table", tableRoot, cmd);
+    throw new PendingException();
   }
 
   @When("player {string} leaves table {string}")
   public void playerLeavesTable(String playerName, String tableName) {
-    UUID tableRoot = ctx.getTableRoot(tableName);
-    UUID playerRoot = ctx.getPlayerRoot(playerName);
-    LeaveTable cmd =
-        LeaveTable.newBuilder()
-            .setPlayerRoot(
-                ByteString.copyFrom(playerRoot.toString().getBytes(StandardCharsets.UTF_8)))
-            .build();
-    ctx.sendCommand("table", tableRoot, cmd);
+    throw new PendingException();
   }
 
   @Then("table {string} has {int} seated player(s)")
   public void tableHasSeatedPlayers(String tableName, int count) {
-    CommandResponse resp = ctx.getLastResponse();
-    assertThat(resp).isNotNull();
+    throw new PendingException();
   }
 
   @Given("a table {string} with seated players:")
   public void tableWithSeatedPlayers(String tableName, DataTable dataTable) {
-    UUID tableRoot = ctx.getOrCreateTableRoot(tableName);
-
-    // Create the table
-    CreateTable createCmd =
-        CreateTable.newBuilder()
-            .setTableName(tableName)
-            .setGameVariant(GameVariant.TEXAS_HOLDEM)
-            .setSmallBlind(5)
-            .setBigBlind(10)
-            .setMinBuyIn(10)
-            .setMaxBuyIn(10000)
-            .setMaxPlayers(9)
-            .build();
-    ctx.sendCommand("table", tableRoot, createCmd);
-
-    // Register, fund, and seat each player
-    List<Map<String, String>> rows = dataTable.asMaps();
-    for (Map<String, String> row : rows) {
-      String name = row.get("name");
-      int seat = Integer.parseInt(row.get("seat"));
-      int stack = Integer.parseInt(row.get("stack"));
-      UUID playerRoot = ctx.getOrCreatePlayerRoot(name);
-
-      // Register and fund player
-      RegisterPlayer regCmd =
-          RegisterPlayer.newBuilder()
-              .setDisplayName(name)
-              .setEmail(name.toLowerCase() + "@example.com")
-              .setPlayerType(PlayerType.HUMAN)
-              .build();
-      ctx.trySendCommand("player", playerRoot, regCmd);
-
-      DepositFunds depCmd =
-          DepositFunds.newBuilder()
-              .setAmount(Currency.newBuilder().setAmount(stack * 2).setCurrencyCode("CHIPS"))
-              .build();
-      ctx.trySendCommand("player", playerRoot, depCmd);
-
-      // Join the table
-      JoinTable joinCmd =
-          JoinTable.newBuilder()
-              .setPlayerRoot(
-                  ByteString.copyFrom(playerRoot.toString().getBytes(StandardCharsets.UTF_8)))
-              .setPreferredSeat(seat)
-              .setBuyInAmount(stack)
-              .build();
-      ctx.sendCommand("table", tableRoot, joinCmd);
-    }
+    throw new PendingException();
   }
 
   @Given("a table {string} with {int} seated players")
   public void tableWithNSeatedPlayers(String tableName, int count) {
-    UUID tableRoot = ctx.getOrCreateTableRoot(tableName);
-    CreateTable createCmd =
-        CreateTable.newBuilder()
-            .setTableName(tableName)
-            .setGameVariant(GameVariant.TEXAS_HOLDEM)
-            .setSmallBlind(5)
-            .setBigBlind(10)
-            .setMinBuyIn(200)
-            .setMaxBuyIn(1000)
-            .setMaxPlayers(9)
-            .build();
-    ctx.sendCommand("table", tableRoot, createCmd);
-
-    for (int i = 0; i < count; i++) {
-      String name = "Player" + (i + 1);
-      UUID playerRoot = ctx.getOrCreatePlayerRoot(name);
-      RegisterPlayer regCmd =
-          RegisterPlayer.newBuilder()
-              .setDisplayName(name)
-              .setEmail(name.toLowerCase() + "@example.com")
-              .setPlayerType(PlayerType.HUMAN)
-              .build();
-      ctx.trySendCommand("player", playerRoot, regCmd);
-      DepositFunds depCmd =
-          DepositFunds.newBuilder()
-              .setAmount(Currency.newBuilder().setAmount(1000).setCurrencyCode("CHIPS"))
-              .build();
-      ctx.trySendCommand("player", playerRoot, depCmd);
-      JoinTable joinCmd =
-          JoinTable.newBuilder()
-              .setPlayerRoot(
-                  ByteString.copyFrom(playerRoot.toString().getBytes(StandardCharsets.UTF_8)))
-              .setPreferredSeat(i)
-              .setBuyInAmount(500)
-              .build();
-      ctx.sendCommand("table", tableRoot, joinCmd);
-    }
+    throw new PendingException();
   }
 
   @Given("a table {string} with an active hand")
