@@ -2,32 +2,31 @@ package dev.angzarr.examples.client;
 
 import com.google.protobuf.Any;
 import dev.angzarr.CommandBook;
+import dev.angzarr.CommandHandlerCoordinatorServiceGrpc;
 import dev.angzarr.CommandPage;
 import dev.angzarr.CommandRequest;
 import dev.angzarr.CommandResponse;
 import dev.angzarr.Cover;
 import dev.angzarr.PageHeader;
 import dev.angzarr.SyncMode;
-import dev.angzarr.client.CommandHandlerClient;
-import dev.angzarr.client.Helpers;
-import java.util.UUID;
+import dev.angzarr.UUID;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * CommandClient implementation that sends commands via gRPC to per-domain coordinators.
- *
- * <p>Used for acceptance tests against a running deployment. Each domain (player, table, hand) may
- * have its own coordinator endpoint.
+ * CommandClient implementation using raw gRPC channels (not CommandHandlerClient). This avoids
+ * eager connection validation that causes ExceptionInInitializerError when the coordinator takes
+ * time to become available.
  */
 public class GrpcCommandClient implements CommandClient {
 
-  private static final String TYPE_URL_PREFIX = "type.googleapis.com/";
+  private final Map<String, ManagedChannel> channels = new HashMap<>();
+  private final Map<
+          String, CommandHandlerCoordinatorServiceGrpc.CommandHandlerCoordinatorServiceBlockingStub>
+      stubs = new HashMap<>();
 
-  private final java.util.Map<String, CommandHandlerClient> clients = new java.util.HashMap<>();
-
-  /**
-   * Create a client with per-domain routing. playerEndpoint is the default; TABLE_URL and HAND_URL
-   * env vars override table and hand endpoints respectively.
-   */
   public GrpcCommandClient(String playerEndpoint) {
     String tableEndpoint = System.getenv("TABLE_URL");
     String handEndpoint = System.getenv("HAND_URL");
@@ -37,41 +36,27 @@ public class GrpcCommandClient implements CommandClient {
     if (handEndpoint == null || handEndpoint.isEmpty()) {
       handEndpoint = playerEndpoint;
     }
-    clients.put("player", connectWithRetry(playerEndpoint));
-    clients.put("table", connectWithRetry(tableEndpoint));
-    clients.put("hand", connectWithRetry(handEndpoint));
+    addDomain("player", playerEndpoint);
+    addDomain("table", tableEndpoint);
+    addDomain("hand", handEndpoint);
   }
 
-  private static CommandHandlerClient connectWithRetry(String endpoint) {
-    for (int i = 0; i < 10; i++) {
-      try {
-        return CommandHandlerClient.connect(endpoint);
-      } catch (Exception e) {
-        if (i == 9) {
-          throw e;
-        }
-        try {
-          Thread.sleep(1000);
-        } catch (InterruptedException ie) {
-          Thread.currentThread().interrupt();
-          throw new RuntimeException(ie);
-        }
-      }
-    }
-    throw new RuntimeException("unreachable");
+  private void addDomain(String domain, String endpoint) {
+    ManagedChannel channel = ManagedChannelBuilder.forTarget(endpoint).usePlaintext().build();
+    channels.put(domain, channel);
+    stubs.put(domain, CommandHandlerCoordinatorServiceGrpc.newBlockingStub(channel));
   }
 
-  private CommandHandlerClient clientForDomain(String domain) {
-    CommandHandlerClient c = clients.get(domain);
-    if (c != null) {
-      return c;
-    }
-    // Fall back to player client for unknown domains
-    return clients.get("player");
+  private CommandHandlerCoordinatorServiceGrpc.CommandHandlerCoordinatorServiceBlockingStub
+      stubForDomain(String domain) {
+    var stub = stubs.get(domain);
+    return stub != null ? stub : stubs.get("player");
   }
 
   @Override
-  public CommandResponse sendCommand(String domain, UUID root, Any command, int sequence) {
+  public CommandResponse sendCommand(
+      String domain, java.util.UUID root, Any command, int sequence) {
+    byte[] rootBytes = toBytes(root);
     CommandRequest request =
         CommandRequest.newBuilder()
             .setCommand(
@@ -79,21 +64,34 @@ public class GrpcCommandClient implements CommandClient {
                     .setCover(
                         Cover.newBuilder()
                             .setDomain(domain)
-                            .setRoot(Helpers.uuidToProto(root))
-                            .setCorrelationId(UUID.randomUUID().toString()))
+                            .setRoot(
+                                UUID.newBuilder()
+                                    .setValue(com.google.protobuf.ByteString.copyFrom(rootBytes)))
+                            .setCorrelationId(java.util.UUID.randomUUID().toString()))
                     .addPages(
                         CommandPage.newBuilder()
                             .setHeader(PageHeader.newBuilder().setSequence(sequence))
                             .setCommand(command)))
             .setSyncMode(SyncMode.SYNC_MODE_SIMPLE)
             .build();
-    return clientForDomain(domain).handleCommand(request);
+    return stubForDomain(domain).handleCommand(request);
+  }
+
+  private static byte[] toBytes(java.util.UUID uuid) {
+    long msb = uuid.getMostSignificantBits();
+    long lsb = uuid.getLeastSignificantBits();
+    byte[] bytes = new byte[16];
+    for (int i = 0; i < 8; i++) {
+      bytes[i] = (byte) (msb >>> (56 - i * 8));
+      bytes[i + 8] = (byte) (lsb >>> (56 - i * 8));
+    }
+    return bytes;
   }
 
   @Override
   public void close() {
-    for (CommandHandlerClient c : clients.values()) {
-      c.close();
+    for (ManagedChannel ch : channels.values()) {
+      ch.shutdownNow();
     }
   }
 }
