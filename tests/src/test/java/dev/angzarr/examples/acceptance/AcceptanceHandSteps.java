@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.protobuf.ByteString;
 import dev.angzarr.CascadeErrorMode;
-import dev.angzarr.CommandResponse;
 import dev.angzarr.SyncMode;
 import dev.angzarr.examples.*;
 import dev.angzarr.examples.client.TestContext;
@@ -78,7 +77,8 @@ public class AcceptanceHandSteps {
 
   @When("{string} posts small blind {int}")
   public void postsSmallBlind(String playerName, int amount) {
-    String tableName = ctx.getCurrentHandTable() != null ? ctx.getCurrentHandTable() : ctx.getLastTableName();
+    String tableName =
+        ctx.getCurrentHandTable() != null ? ctx.getCurrentHandTable() : ctx.getLastTableName();
     UUID handRoot = ctx.getOrCreateHandRoot(tableName);
     UUID playerRoot = ctx.getPlayerRoot(playerName);
     PostBlind cmd =
@@ -92,7 +92,8 @@ public class AcceptanceHandSteps {
 
   @When("{string} posts big blind {int}")
   public void postsBigBlind(String playerName, int amount) {
-    String tableName = ctx.getCurrentHandTable() != null ? ctx.getCurrentHandTable() : ctx.getLastTableName();
+    String tableName =
+        ctx.getCurrentHandTable() != null ? ctx.getCurrentHandTable() : ctx.getLastTableName();
     UUID handRoot = ctx.getOrCreateHandRoot(tableName);
     UUID playerRoot = ctx.getPlayerRoot(playerName);
     PostBlind cmd =
@@ -143,7 +144,8 @@ public class AcceptanceHandSteps {
 
   @When("{string} folds with sync_mode CASCADE")
   public void playerFoldsCascade(String playerName) {
-    String tableName = ctx.getCurrentHandTable() != null ? ctx.getCurrentHandTable() : ctx.getLastTableName();
+    String tableName =
+        ctx.getCurrentHandTable() != null ? ctx.getCurrentHandTable() : ctx.getLastTableName();
     UUID handRoot = ctx.getOrCreateHandRoot(tableName);
     UUID playerRoot = ctx.getPlayerRoot(playerName);
     PlayerAction cmd =
@@ -153,16 +155,20 @@ public class AcceptanceHandSteps {
             .setAmount(0)
             .build();
     ctx.sendCommandWithMode(
-        "hand", handRoot, cmd, SyncMode.SYNC_MODE_CASCADE, CascadeErrorMode.CASCADE_ERROR_FAIL_FAST);
+        "hand",
+        handRoot,
+        cmd,
+        SyncMode.SYNC_MODE_CASCADE,
+        CascadeErrorMode.CASCADE_ERROR_FAIL_FAST);
   }
 
   @When("{string} discards {int} cards at indices [{string}]")
   public void playerDiscardsCards(String playerName, int count, String indices) {
-    String tableName = ctx.getCurrentHandTable() != null ? ctx.getCurrentHandTable() : ctx.getLastTableName();
+    String tableName =
+        ctx.getCurrentHandTable() != null ? ctx.getCurrentHandTable() : ctx.getLastTableName();
     UUID handRoot = ctx.getOrCreateHandRoot(tableName);
     UUID playerRoot = ctx.getPlayerRoot(playerName);
-    RequestDraw.Builder builder =
-        RequestDraw.newBuilder().setPlayerRoot(toByteString(playerRoot));
+    RequestDraw.Builder builder = RequestDraw.newBuilder().setPlayerRoot(toByteString(playerRoot));
     for (String idx : indices.split(",")) {
       builder.addCardIndices(Integer.parseInt(idx.trim()));
     }
@@ -171,13 +177,11 @@ public class AcceptanceHandSteps {
 
   @When("{string} stands pat")
   public void playerStandsPat(String playerName) {
-    String tableName = ctx.getCurrentHandTable() != null ? ctx.getCurrentHandTable() : ctx.getLastTableName();
+    String tableName =
+        ctx.getCurrentHandTable() != null ? ctx.getCurrentHandTable() : ctx.getLastTableName();
     UUID handRoot = ctx.getOrCreateHandRoot(tableName);
     UUID playerRoot = ctx.getPlayerRoot(playerName);
-    RequestDraw cmd =
-        RequestDraw.newBuilder()
-            .setPlayerRoot(toByteString(playerRoot))
-            .build();
+    RequestDraw cmd = RequestDraw.newBuilder().setPlayerRoot(toByteString(playerRoot)).build();
     ctx.sendCommand("hand", handRoot, cmd);
   }
 
@@ -233,7 +237,8 @@ public class AcceptanceHandSteps {
 
   @When("{string} attempts to act")
   public void playerAttemptsToAct(String playerName) {
-    String tableName = ctx.getCurrentHandTable() != null ? ctx.getCurrentHandTable() : ctx.getLastTableName();
+    String tableName =
+        ctx.getCurrentHandTable() != null ? ctx.getCurrentHandTable() : ctx.getLastTableName();
     UUID handRoot = ctx.getOrCreateHandRoot(tableName);
     UUID playerRoot = ctx.getPlayerRoot(playerName);
     PlayerAction cmd =
@@ -247,14 +252,12 @@ public class AcceptanceHandSteps {
 
   @When("player attempts to raise to {int}")
   public void playerAttemptsToRaise(int amount) {
-    String tableName = ctx.getCurrentHandTable() != null ? ctx.getCurrentHandTable() : ctx.getLastTableName();
+    String tableName =
+        ctx.getCurrentHandTable() != null ? ctx.getCurrentHandTable() : ctx.getLastTableName();
     UUID handRoot = ctx.getOrCreateHandRoot(tableName);
     // Use a generic player root for this step
     PlayerAction cmd =
-        PlayerAction.newBuilder()
-            .setAction(ActionType.RAISE)
-            .setAmount(amount)
-            .build();
+        PlayerAction.newBuilder().setAction(ActionType.RAISE).setAmount(amount).build();
     ctx.trySendCommand("hand", handRoot, cmd);
   }
 
@@ -265,10 +268,7 @@ public class AcceptanceHandSteps {
     UUID tableRoot = ctx.getOrCreateTableRoot(tableName);
     UUID playerRoot = ctx.getPlayerRoot(playerName);
     AddChips cmd =
-        AddChips.newBuilder()
-            .setPlayerRoot(toByteString(playerRoot))
-            .setAmount(amount)
-            .build();
+        AddChips.newBuilder().setPlayerRoot(toByteString(playerRoot)).setAmount(amount).build();
     ctx.sendCommand("table", tableRoot, cmd);
   }
 
@@ -279,10 +279,7 @@ public class AcceptanceHandSteps {
     UUID tableRoot = ctx.getOrCreateTableRoot(tableName);
     UUID playerRoot = ctx.getPlayerRoot(playerName);
     AddChips cmd =
-        AddChips.newBuilder()
-            .setPlayerRoot(toByteString(playerRoot))
-            .setAmount(100)
-            .build();
+        AddChips.newBuilder().setPlayerRoot(toByteString(playerRoot)).setAmount(100).build();
     ctx.trySendCommand("table", tableRoot, cmd);
   }
 
@@ -293,10 +290,7 @@ public class AcceptanceHandSteps {
     UUID tableRoot = ctx.getOrCreateTableRoot(tableName);
     UUID playerRoot = ctx.getPlayerRoot(playerName);
     AddChips cmd =
-        AddChips.newBuilder()
-            .setPlayerRoot(toByteString(playerRoot))
-            .setAmount(amount)
-            .build();
+        AddChips.newBuilder().setPlayerRoot(toByteString(playerRoot)).setAmount(amount).build();
     ctx.trySendCommand("table", tableRoot, cmd);
   }
 
@@ -580,7 +574,8 @@ public class AcceptanceHandSteps {
   // --- Helpers ---
 
   private void sendPlayerAction(String playerName, ActionType action, int amount) {
-    String tableName = ctx.getCurrentHandTable() != null ? ctx.getCurrentHandTable() : ctx.getLastTableName();
+    String tableName =
+        ctx.getCurrentHandTable() != null ? ctx.getCurrentHandTable() : ctx.getLastTableName();
     UUID handRoot = ctx.getOrCreateHandRoot(tableName);
     UUID playerRoot = ctx.getPlayerRoot(playerName);
     PlayerAction cmd =

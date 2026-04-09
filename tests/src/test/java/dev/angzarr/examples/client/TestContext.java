@@ -275,7 +275,11 @@ public class TestContext {
    * @throws RuntimeException if the command fails
    */
   public CommandResponse sendCommandWithMode(
-      String domain, UUID root, Message command, SyncMode syncMode, CascadeErrorMode cascadeErrorMode) {
+      String domain,
+      UUID root,
+      Message command,
+      SyncMode syncMode,
+      CascadeErrorMode cascadeErrorMode) {
     Any commandAny =
         Any.newBuilder()
             .setTypeUrl(TYPE_URL_PREFIX + command.getDescriptorForType().getFullName())
@@ -302,7 +306,11 @@ public class TestContext {
    * @return true if the command succeeded, false if it failed
    */
   public boolean trySendCommandWithMode(
-      String domain, UUID root, Message command, SyncMode syncMode, CascadeErrorMode cascadeErrorMode) {
+      String domain,
+      UUID root,
+      Message command,
+      SyncMode syncMode,
+      CascadeErrorMode cascadeErrorMode) {
     try {
       sendCommandWithMode(domain, root, command, syncMode, cascadeErrorMode);
       return true;

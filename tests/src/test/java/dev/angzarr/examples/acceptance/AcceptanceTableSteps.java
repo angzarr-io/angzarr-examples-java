@@ -52,10 +52,7 @@ public class AcceptanceTableSteps {
   public void playerLeavesTable(String playerName, String tableName) {
     UUID tableRoot = ctx.getOrCreateTableRoot(tableName);
     UUID playerRoot = ctx.getPlayerRoot(playerName);
-    LeaveTable cmd =
-        LeaveTable.newBuilder()
-            .setPlayerRoot(toByteString(playerRoot))
-            .build();
+    LeaveTable cmd = LeaveTable.newBuilder().setPlayerRoot(toByteString(playerRoot)).build();
     ctx.sendCommand("table", tableRoot, cmd);
   }
 

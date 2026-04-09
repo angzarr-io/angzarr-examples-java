@@ -58,7 +58,12 @@ public class GrpcCommandClient implements CommandClient {
   public CommandResponse sendCommand(
       String domain, java.util.UUID root, Any command, int sequence) {
     return sendCommand(
-        domain, root, command, sequence, SyncMode.SYNC_MODE_SIMPLE, CascadeErrorMode.CASCADE_ERROR_FAIL_FAST);
+        domain,
+        root,
+        command,
+        sequence,
+        SyncMode.SYNC_MODE_SIMPLE,
+        CascadeErrorMode.CASCADE_ERROR_FAIL_FAST);
   }
 
   @Override

@@ -134,8 +134,7 @@ public class AcceptanceSyncSteps {
     CommandResponse resp = ctx.getLastResponse();
     assertThat(resp).isNotNull();
     assertThat(resp.getProjectionsList()).isNotEmpty();
-    assertThat(resp.getProjectionsList())
-        .anyMatch(p -> p.getProjector().contains(projector));
+    assertThat(resp.getProjectionsList()).anyMatch(p -> p.getProjector().contains(projector));
   }
 
   @Then("the response includes projection updates")
