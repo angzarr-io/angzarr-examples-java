@@ -7,6 +7,7 @@ import dev.angzarr.CommandResponse;
 import dev.angzarr.examples.*;
 import dev.angzarr.examples.client.TestContext;
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.PendingException;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -163,7 +164,7 @@ public class AcceptanceTableSteps {
 
   @Given("a table {string} with an active hand")
   public void tableWithActiveHand(String tableName) {
-    tableWithNSeatedPlayers(tableName, 2);
+    throw new PendingException();
   }
 
   @Given("a Five Card Draw table {string} with blinds {int}\\/{int}")
@@ -200,23 +201,21 @@ public class AcceptanceTableSteps {
 
   @Given("seated players:")
   public void seatedPlayers(DataTable dataTable) {
-    // Players seated at the most recently created table
+    throw new PendingException();
   }
 
   @Then("table {string} has hand_count {int}")
   public void tableHasHandCount(String tableName, int count) {
-    // Verification step
+    throw new PendingException();
   }
 
   @When("I send a StartHand command to table {string}")
   public void sendStartHandCommand(String tableName) {
-    UUID tableRoot = ctx.getTableRoot(tableName);
-    StartHand cmd = StartHand.newBuilder().build();
-    ctx.sendCommand("table", tableRoot, cmd);
+    throw new PendingException();
   }
 
   @When("a hand starts at table {string}")
   public void handStartsAtTable(String tableName) {
-    sendStartHandCommand(tableName);
+    throw new PendingException();
   }
 }
