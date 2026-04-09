@@ -1,6 +1,7 @@
 package dev.angzarr.examples.client;
 
 import com.google.protobuf.Any;
+import dev.angzarr.CascadeErrorMode;
 import dev.angzarr.CommandBook;
 import dev.angzarr.CommandHandlerCoordinatorServiceGrpc;
 import dev.angzarr.CommandPage;
@@ -56,6 +57,18 @@ public class GrpcCommandClient implements CommandClient {
   @Override
   public CommandResponse sendCommand(
       String domain, java.util.UUID root, Any command, int sequence) {
+    return sendCommand(
+        domain, root, command, sequence, SyncMode.SYNC_MODE_SIMPLE, CascadeErrorMode.CASCADE_ERROR_FAIL_FAST);
+  }
+
+  @Override
+  public CommandResponse sendCommand(
+      String domain,
+      java.util.UUID root,
+      Any command,
+      int sequence,
+      SyncMode syncMode,
+      CascadeErrorMode cascadeErrorMode) {
     byte[] rootBytes = toBytes(root);
     CommandRequest request =
         CommandRequest.newBuilder()
@@ -72,7 +85,8 @@ public class GrpcCommandClient implements CommandClient {
                         CommandPage.newBuilder()
                             .setHeader(PageHeader.newBuilder().setSequence(sequence))
                             .setCommand(command)))
-            .setSyncMode(SyncMode.SYNC_MODE_SIMPLE)
+            .setSyncMode(syncMode)
+            .setCascadeErrorMode(cascadeErrorMode)
             .build();
     return stubForDomain(domain).handleCommand(request);
   }
