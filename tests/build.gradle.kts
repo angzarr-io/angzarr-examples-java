@@ -32,8 +32,6 @@ dependencies {
     // gRPC for Status
     testImplementation("io.grpc:grpc-api:1.60.0")
 
-    // PicoContainer for acceptance tests (avoids Spring Boot context startup)
-    testImplementation("io.cucumber:cucumber-picocontainer:7.15.0")
 }
 
 tasks.test {
@@ -55,7 +53,6 @@ tasks.register<Test>("cucumberAcceptanceTest") {
     systemProperty("cucumber.junit-platform.naming-strategy", "long")
     systemProperty("cucumber.execution.strict", "false")
     // Disable Spring backend for acceptance tests (use PicoContainer instead)
-    systemProperty("cucumber.object-factory", "io.cucumber.picocontainer.PicoFactory")
     // Pass domain URLs through to the test JVM for gRPC mode
     // Use providers to evaluate at execution time, not configuration time
     environment("PLAYER_URL", providers.environmentVariable("PLAYER_URL").orElse("localhost:1310"))
