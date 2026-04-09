@@ -31,6 +31,7 @@ dependencies {
 
     // gRPC for Status
     testImplementation("io.grpc:grpc-api:1.60.0")
+    // PicoContainer for acceptance tests (avoids Spring Boot context)
 
 }
 

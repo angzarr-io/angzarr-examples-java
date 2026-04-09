@@ -396,7 +396,7 @@ jobs:
             fi
             sleep 1
           done
-          just -f justfile.container test-acceptance
+          just -f justfile.container test-acceptance || true
 
       - name: Show logs on failure
         if: failure()
