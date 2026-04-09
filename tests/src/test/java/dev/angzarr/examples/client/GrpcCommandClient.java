@@ -37,9 +37,28 @@ public class GrpcCommandClient implements CommandClient {
     if (handEndpoint == null || handEndpoint.isEmpty()) {
       handEndpoint = playerEndpoint;
     }
-    clients.put("player", CommandHandlerClient.connect(playerEndpoint));
-    clients.put("table", CommandHandlerClient.connect(tableEndpoint));
-    clients.put("hand", CommandHandlerClient.connect(handEndpoint));
+    clients.put("player", connectWithRetry(playerEndpoint));
+    clients.put("table", connectWithRetry(tableEndpoint));
+    clients.put("hand", connectWithRetry(handEndpoint));
+  }
+
+  private static CommandHandlerClient connectWithRetry(String endpoint) {
+    for (int i = 0; i < 10; i++) {
+      try {
+        return CommandHandlerClient.connect(endpoint);
+      } catch (Exception e) {
+        if (i == 9) {
+          throw e;
+        }
+        try {
+          Thread.sleep(1000);
+        } catch (InterruptedException ie) {
+          Thread.currentThread().interrupt();
+          throw new RuntimeException(ie);
+        }
+      }
+    }
+    throw new RuntimeException("unreachable");
   }
 
   private CommandHandlerClient clientForDomain(String domain) {
