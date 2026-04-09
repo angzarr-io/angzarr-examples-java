@@ -25,7 +25,10 @@ test-unit: proto-gen
     ./gradlew test
 
 test-acceptance: proto-gen
-    PLAYER_URL="${PLAYER_URL:-localhost:1310}" ./gradlew :tests:cucumberAcceptanceTest
+    PLAYER_URL="${PLAYER_URL:-localhost:1310}" \
+    TABLE_URL="${TABLE_URL:-localhost:1311}" \
+    HAND_URL="${HAND_URL:-localhost:1312}" \
+    ./gradlew :tests:cucumberAcceptanceTest
 
 test: proto-gen
     ./gradlew test
