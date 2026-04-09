@@ -81,17 +81,22 @@ public class TestContext {
 
   // --- Sequence tracking ---
 
-  public int nextSequence(String domain, UUID root) {
+  public int getSequence(String domain, UUID root) {
+    String key = domain + ":" + root;
+    return sequences.getOrDefault(key, 0);
+  }
+
+  public void advanceSequence(String domain, UUID root, int eventCount) {
     String key = domain + ":" + root;
     int seq = sequences.getOrDefault(key, 0);
-    sequences.put(key, seq + 1);
-    return seq;
+    sequences.put(key, seq + eventCount);
   }
 
   // --- Command sending ---
 
   /**
-   * Send a command and store the response. Returns the response on success.
+   * Send a command and store the response. Returns the response on success. Sequence is advanced
+   * only on success, by the number of event pages in the response.
    *
    * @throws RuntimeException if the command fails (also stored in lastError)
    */
@@ -101,10 +106,13 @@ public class TestContext {
             .setTypeUrl(TYPE_URL_PREFIX + command.getDescriptorForType().getFullName())
             .setValue(command.toByteString())
             .build();
-    int seq = nextSequence(domain, root);
+    int seq = getSequence(domain, root);
     try {
       lastResponse = client.sendCommand(domain, root, commandAny, seq);
       lastError = null;
+      if (lastResponse.hasEvents()) {
+        advanceSequence(domain, root, lastResponse.getEvents().getPagesCount());
+      }
       return lastResponse;
     } catch (Exception e) {
       lastError = e;

@@ -50,10 +50,12 @@ tasks.register<Test>("cucumberAcceptanceTest") {
     // Run only the acceptance Cucumber runner
     include("**/CucumberAcceptanceTest*")
     systemProperty("cucumber.junit-platform.naming-strategy", "long")
-    // Pass PLAYER_URL through to the test JVM for gRPC mode
-    val playerUrl = System.getenv("PLAYER_URL")
-    if (playerUrl != null) {
-        environment("PLAYER_URL", playerUrl)
+    // Pass domain URLs through to the test JVM for gRPC mode
+    listOf("PLAYER_URL", "TABLE_URL", "HAND_URL").forEach { envVar ->
+        val value = System.getenv(envVar)
+        if (value != null) {
+            environment(envVar, value)
+        }
     }
 }
 

@@ -13,18 +13,42 @@ import dev.angzarr.client.Helpers;
 import java.util.UUID;
 
 /**
- * CommandClient implementation that sends commands via gRPC to a coordinator.
+ * CommandClient implementation that sends commands via gRPC to per-domain coordinators.
  *
- * <p>Used for acceptance tests against a running deployment.
+ * <p>Used for acceptance tests against a running deployment. Each domain (player, table, hand) may
+ * have its own coordinator endpoint.
  */
 public class GrpcCommandClient implements CommandClient {
 
   private static final String TYPE_URL_PREFIX = "type.googleapis.com/";
 
-  private final CommandHandlerClient client;
+  private final java.util.Map<String, CommandHandlerClient> clients = new java.util.HashMap<>();
 
-  public GrpcCommandClient(String endpoint) {
-    this.client = CommandHandlerClient.connect(endpoint);
+  /**
+   * Create a client with per-domain routing. playerEndpoint is the default; TABLE_URL and HAND_URL
+   * env vars override table and hand endpoints respectively.
+   */
+  public GrpcCommandClient(String playerEndpoint) {
+    String tableEndpoint = System.getenv("TABLE_URL");
+    String handEndpoint = System.getenv("HAND_URL");
+    if (tableEndpoint == null || tableEndpoint.isEmpty()) {
+      tableEndpoint = playerEndpoint;
+    }
+    if (handEndpoint == null || handEndpoint.isEmpty()) {
+      handEndpoint = playerEndpoint;
+    }
+    clients.put("player", CommandHandlerClient.connect(playerEndpoint));
+    clients.put("table", CommandHandlerClient.connect(tableEndpoint));
+    clients.put("hand", CommandHandlerClient.connect(handEndpoint));
+  }
+
+  private CommandHandlerClient clientForDomain(String domain) {
+    CommandHandlerClient c = clients.get(domain);
+    if (c != null) {
+      return c;
+    }
+    // Fall back to player client for unknown domains
+    return clients.get("player");
   }
 
   @Override
@@ -44,11 +68,13 @@ public class GrpcCommandClient implements CommandClient {
                             .setCommand(command)))
             .setSyncMode(SyncMode.SYNC_MODE_SIMPLE)
             .build();
-    return client.handleCommand(request);
+    return clientForDomain(domain).handleCommand(request);
   }
 
   @Override
   public void close() {
-    client.close();
+    for (CommandHandlerClient c : clients.values()) {
+      c.close();
+    }
   }
 }
