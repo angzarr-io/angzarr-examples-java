@@ -51,12 +51,10 @@ tasks.register<Test>("cucumberAcceptanceTest") {
     include("**/CucumberAcceptanceTest*")
     systemProperty("cucumber.junit-platform.naming-strategy", "long")
     // Pass domain URLs through to the test JVM for gRPC mode
-    listOf("PLAYER_URL", "TABLE_URL", "HAND_URL").forEach { envVar ->
-        val value = System.getenv(envVar)
-        if (value != null) {
-            environment(envVar, value)
-        }
-    }
+    // Use providers to evaluate at execution time, not configuration time
+    environment("PLAYER_URL", providers.environmentVariable("PLAYER_URL").orElse("localhost:1310"))
+    environment("TABLE_URL", providers.environmentVariable("TABLE_URL").orElse("localhost:1311"))
+    environment("HAND_URL", providers.environmentVariable("HAND_URL").orElse("localhost:1312"))
 }
 
 // Feature files are symlinked from angzarr-project/features/
