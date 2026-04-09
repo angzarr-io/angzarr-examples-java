@@ -34,8 +34,20 @@ dependencies {
 }
 
 tasks.test {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        excludeTags("grpc-acceptance")
+    }
     systemProperty("cucumber.junit-platform.naming-strategy", "long")
+}
+
+tasks.register<Test>("grpcAcceptanceTest") {
+    description = "Run gRPC acceptance tests against a live cluster"
+    group = "verification"
+    useJUnitPlatform {
+        includeTags("grpc-acceptance")
+    }
+    // Pass PLAYER_URL through to the test JVM
+    environment("PLAYER_URL", System.getenv("PLAYER_URL") ?: "localhost:1310")
 }
 
 // Feature files are symlinked from examples/features/unit/
