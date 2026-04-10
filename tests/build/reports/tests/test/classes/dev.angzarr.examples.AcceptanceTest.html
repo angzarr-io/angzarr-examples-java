@@ -29,7 +29,7 @@
 </td>
 <td>
 <div class="infoBox" id="failures">
-<div class="counter">6</div>
+<div class="counter">0</div>
 <p>failures</p>
 </div>
 </td>
@@ -41,7 +41,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">1.982s</div>
+<div class="counter">1.965s</div>
 <p>duration</p>
 </div>
 </td>
@@ -50,8 +50,8 @@
 </div>
 </td>
 <td>
-<div class="infoBox failures" id="successRate">
-<div class="percent">96%</div>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
 <p>successful</p>
 </div>
 </td>
@@ -61,111 +61,16 @@
 <div id="tabs">
 <ul class="tabLinks">
 <li>
-<a href="#tab0">Failed tests</a>
+<a href="#tab0">Tests</a>
 </li>
 <li>
-<a href="#tab1">Tests</a>
+<a href="#tab1">Standard output</a>
 </li>
 <li>
-<a href="#tab2">Standard output</a>
-</li>
-<li>
-<a href="#tab3">Standard error</a>
+<a href="#tab2">Standard error</a>
 </li>
 </ul>
 <div id="tab0" class="tab">
-<h2>Failed tests</h2>
-<div class="test">
-<a name="Projector logic - Fallback to truncated player ID"></a>
-<h3 class="failures">Projector logic - Fallback to truncated player ID</h3>
-<span class="code">
-<pre>java.lang.AssertionError: 
-Expecting actual:
-  &quot;Player_33616237363136392d313764352d336634342d616164632d663435366461383831306631 checks&quot;
-to contain:
-  &quot;Player_xyz789&quot; 
-	at dev.angzarr.examples.steps.ProjectorSteps.outputUsesPrefix(ProjectorSteps.java:728)
-	at ✽.the output uses &quot;Player_xyz789&quot; prefix(classpath:features/unit/projector.feature:256)
-</pre>
-</span>
-</div>
-<div class="test">
-<a name="Projector logic - Render CardsDealt event"></a>
-<h3 class="failures">Projector logic - Render CardsDealt event</h3>
-<span class="code">
-<pre>java.lang.AssertionError: 
-Expecting actual:
-  &quot;Alice: [A? Ks]&quot;
-to contain:
-  &quot;Alice: [As Kh]&quot;
- (ignoring case)
-	at dev.angzarr.examples.steps.ProjectorSteps.outputContains(ProjectorSteps.java:704)
-	at ✽.the output contains &quot;Alice: [As Kh]&quot;(classpath:features/unit/projector.feature:125)
-</pre>
-</span>
-</div>
-<div class="test">
-<a name="Projector logic - Render CardsRevealed event"></a>
-<h3 class="failures">Projector logic - Render CardsRevealed event</h3>
-<span class="code">
-<pre>java.lang.AssertionError: 
-Expecting actual:
-  &quot;Alice shows [A? Ah] — Pair&quot;
-to contain:
-  &quot;Alice shows [As Ad]&quot;
- (ignoring case)
-	at dev.angzarr.examples.steps.ProjectorSteps.outputContains(ProjectorSteps.java:704)
-	at ✽.the output contains &quot;Alice shows [As Ad]&quot;(classpath:features/unit/projector.feature:181)
-</pre>
-</span>
-</div>
-<div class="test">
-<a name="Projector logic - Render CommunityCardsDealt for flop"></a>
-<h3 class="failures">Projector logic - Render CommunityCardsDealt for flop</h3>
-<span class="code">
-<pre>java.lang.AssertionError: 
-Expecting actual:
-  &quot;Flop: [As Kh 7?]
-Board: As Kh 7?&quot;
-to contain:
-  &quot;Flop: [Ah Kd 7s]&quot;
- (ignoring case)
-	at dev.angzarr.examples.steps.ProjectorSteps.outputContains(ProjectorSteps.java:704)
-	at ✽.the output contains &quot;Flop: [Ah Kd 7s]&quot;(classpath:features/unit/projector.feature:162)
-</pre>
-</span>
-</div>
-<div class="test">
-<a name="Projector logic - Render CommunityCardsDealt for turn"></a>
-<h3 class="failures">Projector logic - Render CommunityCardsDealt for turn</h3>
-<span class="code">
-<pre>java.lang.AssertionError: 
-Expecting actual:
-  &quot;Turn: [2d]
-Board: 2d&quot;
-to contain:
-  &quot;Turn: [2c]&quot;
- (ignoring case)
-	at dev.angzarr.examples.steps.ProjectorSteps.outputContains(ProjectorSteps.java:704)
-	at ✽.the output contains &quot;Turn: [2c]&quot;(classpath:features/unit/projector.feature:169)
-</pre>
-</span>
-</div>
-<div class="test">
-<a name="Table aggregate logic - Rebuild state with multiple players"></a>
-<h3 class="failures">Table aggregate logic - Rebuild state with multiple players</h3>
-<span class="code">
-<pre>org.opentest4j.AssertionFailedError: 
-expected: &quot;706c617965722d31&quot;
- but was: dev.angzarr.examples.table.state.SeatState@60b616c8
-	at java.base@21.0.10/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
-	at app//dev.angzarr.examples.steps.TableSteps.tableStateHasSeatOccupiedBy(TableSteps.java:349)
-	at ✽.the table state has seat 0 occupied by &quot;player-1&quot;(classpath:features/unit/table.feature:233)
-</pre>
-</span>
-</div>
-</div>
-<div id="tab1" class="tab">
 <h2>Tests</h2>
 <table>
 <thead>
@@ -177,7 +82,7 @@ expected: &quot;706c617965722d31&quot;
 </thead>
 <tr>
 <td class="success">Hand aggregate logic - Award pot generates HandComplete</td>
-<td class="success">0.009s</td>
+<td class="success">0.008s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -192,7 +97,7 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Hand aggregate logic - Cannot check when facing a bet</td>
-<td class="success">0.017s</td>
+<td class="success">0.010s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -202,42 +107,42 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Hand aggregate logic - Cannot deal community cards in Five Card Draw</td>
-<td class="success">0.008s</td>
+<td class="success">0.006s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Hand aggregate logic - Cannot deal with fewer than 2 players</td>
-<td class="success">0.010s</td>
+<td class="success">0.009s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Hand aggregate logic - Cannot draw in Texas Hold'em</td>
-<td class="success">0.008s</td>
+<td class="success">0.006s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Hand aggregate logic - Cannot raise less than minimum raise amount</td>
-<td class="success">0.007s</td>
+<td class="success">0.006s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Hand aggregate logic - Deal Five Card Draw hand to 4 players</td>
-<td class="success">0.014s</td>
+<td class="success">0.016s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Hand aggregate logic - Deal Omaha hand to 3 players</td>
-<td class="success">0.014s</td>
+<td class="success">0.018s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Hand aggregate logic - Deal Texas Hold'em hand to 2 players</td>
-<td class="success">0.827s</td>
+<td class="success">0.842s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Hand aggregate logic - Deal the flop</td>
-<td class="success">0.009s</td>
+<td class="success">0.010s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -247,12 +152,12 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Hand aggregate logic - Deal the turn</td>
-<td class="success">0.007s</td>
+<td class="success">0.009s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Hand aggregate logic - Deterministic shuffle with seed</td>
-<td class="success">0.014s</td>
+<td class="success">0.017s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -262,7 +167,7 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Hand aggregate logic - Handler detects flush</td>
-<td class="success">0.008s</td>
+<td class="success">0.005s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -272,22 +177,22 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Hand aggregate logic - Handler detects full house</td>
-<td class="success">0.007s</td>
+<td class="success">0.008s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Hand aggregate logic - Handler detects high card</td>
-<td class="success">0.007s</td>
+<td class="success">0.008s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Hand aggregate logic - Handler detects pair</td>
-<td class="success">0.006s</td>
+<td class="success">0.005s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Hand aggregate logic - Handler detects royal flush</td>
-<td class="success">0.007s</td>
+<td class="success">0.008s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -297,32 +202,32 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Hand aggregate logic - Handler detects straight flush</td>
-<td class="success">0.005s</td>
-<td class="success">passed</td>
-</tr>
-<tr>
-<td class="success">Hand aggregate logic - Handler detects three of a kind</td>
-<td class="success">0.010s</td>
-<td class="success">passed</td>
-</tr>
-<tr>
-<td class="success">Hand aggregate logic - Handler detects two pair</td>
-<td class="success">0.007s</td>
-<td class="success">passed</td>
-</tr>
-<tr>
-<td class="success">Hand aggregate logic - Handler detects wheel straight (A-2-3-4-5)</td>
-<td class="success">0.007s</td>
-<td class="success">passed</td>
-</tr>
-<tr>
-<td class="success">Hand aggregate logic - High card comparison with kickers</td>
 <td class="success">0.006s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
+<td class="success">Hand aggregate logic - Handler detects three of a kind</td>
+<td class="success">0.006s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Hand aggregate logic - Handler detects two pair</td>
+<td class="success">0.006s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Hand aggregate logic - Handler detects wheel straight (A-2-3-4-5)</td>
+<td class="success">0.008s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Hand aggregate logic - High card comparison with kickers</td>
+<td class="success">0.008s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
 <td class="success">Hand aggregate logic - Kicker determines winner with matching pairs</td>
-<td class="success">0.009s</td>
+<td class="success">0.005s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -332,12 +237,12 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Hand aggregate logic - Player calls the big blind</td>
-<td class="success">0.013s</td>
+<td class="success">0.011s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Hand aggregate logic - Player checks when no bet</td>
-<td class="success">0.017s</td>
+<td class="success">0.013s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -347,12 +252,12 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Hand aggregate logic - Player folds</td>
-<td class="success">0.013s</td>
+<td class="success">0.016s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Hand aggregate logic - Player goes all-in</td>
-<td class="success">0.015s</td>
+<td class="success">0.008s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -362,7 +267,7 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Hand aggregate logic - Player raises</td>
-<td class="success">0.009s</td>
+<td class="success">0.008s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -372,37 +277,37 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Hand aggregate logic - Player stands pat (no discard)</td>
-<td class="success">0.007s</td>
+<td class="success">0.009s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Hand aggregate logic - Post all-in blind when short-stacked</td>
-<td class="success">0.011s</td>
+<td class="success">0.009s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Hand aggregate logic - Post big blind</td>
-<td class="success">0.010s</td>
+<td class="success">0.012s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Hand aggregate logic - Post small blind</td>
-<td class="success">0.019s</td>
+<td class="success">0.017s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Hand aggregate logic - Rebuild state after dealing</td>
-<td class="success">0.008s</td>
+<td class="success">0.005s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Hand aggregate logic - Rebuild state tracks folded players</td>
-<td class="success">0.008s</td>
+<td class="success">0.006s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Hand aggregate logic - Rebuild state with community cards</td>
-<td class="success">0.009s</td>
+<td class="success">0.006s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -412,32 +317,32 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Hand aggregate logic - Split pot when hands are identical</td>
-<td class="success">0.006s</td>
+<td class="success">0.005s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Player aggregate logic - Cannot deposit to non-existent player</td>
-<td class="success">0.003s</td>
+<td class="success">0.007s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Player aggregate logic - Cannot deposit zero or negative</td>
-<td class="success">0.003s</td>
+<td class="success">0.008s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Player aggregate logic - Cannot register player twice</td>
-<td class="success">0.004s</td>
+<td class="success">0.007s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Player aggregate logic - Cannot release non-existent reservation</td>
-<td class="success">0.004s</td>
+<td class="success">0.005s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Player aggregate logic - Cannot reserve for same table twice</td>
-<td class="success">0.004s</td>
+<td class="success">0.005s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -452,37 +357,37 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Player aggregate logic - Cannot withdraw with funds reserved</td>
-<td class="success">0.009s</td>
+<td class="success">0.006s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Player aggregate logic - Deposit funds to bankroll</td>
-<td class="success">0.008s</td>
-<td class="success">passed</td>
-</tr>
-<tr>
-<td class="success">Player aggregate logic - Funds released when table join is rejected</td>
-<td class="success">0.004s</td>
-<td class="success">passed</td>
-</tr>
-<tr>
-<td class="success">Player aggregate logic - Multiple deposits accumulate</td>
-<td class="success">0.004s</td>
-<td class="success">passed</td>
-</tr>
-<tr>
-<td class="success">Player aggregate logic - Rebuild state with deposits and reservations</td>
-<td class="success">0.005s</td>
-<td class="success">passed</td>
-</tr>
-<tr>
-<td class="success">Player aggregate logic - Register a new human player</td>
 <td class="success">0.011s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
+<td class="success">Player aggregate logic - Funds released when table join is rejected</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Player aggregate logic - Multiple deposits accumulate</td>
+<td class="success">0.007s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Player aggregate logic - Rebuild state with deposits and reservations</td>
+<td class="success">0.008s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Player aggregate logic - Register a new human player</td>
+<td class="success">0.014s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
 <td class="success">Player aggregate logic - Register an AI player</td>
-<td class="success">0.004s</td>
+<td class="success">0.007s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -492,37 +397,37 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Player aggregate logic - Reserve funds for table buy-in</td>
-<td class="success">0.012s</td>
+<td class="success">0.006s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Player aggregate logic - Withdraw funds from bankroll</td>
-<td class="success">0.006s</td>
+<td class="success">0.013s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Process Manager orchestration logic - BuyInOrchestrator confirms buy-in on PlayerSeated</td>
-<td class="success">0.006s</td>
+<td class="success">0.005s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Process Manager orchestration logic - BuyInOrchestrator emits SeatPlayer when validation passes</td>
-<td class="success">0.009s</td>
+<td class="success">0.008s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Process Manager orchestration logic - BuyInOrchestrator rejects when buy-in too high</td>
-<td class="success">0.007s</td>
+<td class="success">0.004s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Process Manager orchestration logic - BuyInOrchestrator rejects when buy-in too low</td>
-<td class="success">0.006s</td>
+<td class="success">0.005s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Process Manager orchestration logic - BuyInOrchestrator rejects when seat is occupied</td>
-<td class="success">0.006s</td>
+<td class="success">0.005s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -532,22 +437,22 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Process Manager orchestration logic - BuyInOrchestrator releases funds on SeatingRejected</td>
-<td class="success">0.008s</td>
+<td class="success">0.004s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Process Manager orchestration logic - RebuyOrchestrator adds chips on RebuyProcessed</td>
-<td class="success">0.007s</td>
+<td class="success">0.006s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Process Manager orchestration logic - RebuyOrchestrator confirms fee after RebuyChipsAdded</td>
-<td class="success">0.007s</td>
+<td class="success">0.006s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Process Manager orchestration logic - RebuyOrchestrator emits ProcessRebuy when all validations pass</td>
-<td class="success">0.006s</td>
+<td class="success">0.004s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -557,17 +462,17 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Process Manager orchestration logic - RebuyOrchestrator rejects when rebuy window is closed</td>
-<td class="success">0.007s</td>
+<td class="success">0.004s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Process Manager orchestration logic - RebuyOrchestrator releases fee on RebuyDenied</td>
-<td class="success">0.005s</td>
+<td class="success">0.006s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Process Manager orchestration logic - RegistrationOrchestrator confirms on TournamentPlayerEnrolled</td>
-<td class="success">0.006s</td>
+<td class="success">0.004s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -577,22 +482,22 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Process Manager orchestration logic - RegistrationOrchestrator rejects when registration is closed</td>
-<td class="success">0.006s</td>
+<td class="success">0.004s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Process Manager orchestration logic - RegistrationOrchestrator rejects when tournament is full</td>
-<td class="success">0.006s</td>
+<td class="success">0.004s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Process Manager orchestration logic - RegistrationOrchestrator releases fee on TournamentEnrollmentRejected</td>
-<td class="success">0.006s</td>
+<td class="success">0.004s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Process manager logic - Process manager advances action after player acts</td>
-<td class="success">0.004s</td>
+<td class="success">0.006s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -602,12 +507,12 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Process manager logic - Process manager auto-folds on timeout when facing bet</td>
-<td class="success">0.004s</td>
+<td class="success">0.005s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Process manager logic - Process manager awards pot to last player standing</td>
-<td class="success">0.005s</td>
+<td class="success">0.006s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -617,12 +522,12 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Process manager logic - Process manager deals flop after preflop betting</td>
-<td class="success">0.005s</td>
+<td class="success">0.004s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Process manager logic - Process manager deals river after turn betting</td>
-<td class="success">0.004s</td>
+<td class="success">0.005s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -657,22 +562,22 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Process manager logic - Process manager resets betting state for new round</td>
-<td class="success">0.005s</td>
+<td class="success">0.004s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Process manager logic - Process manager resets has_acted after raise</td>
-<td class="success">0.004s</td>
+<td class="success">0.005s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Process manager logic - Process manager starts betting after big blind posted</td>
-<td class="success">0.004s</td>
+<td class="success">0.005s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Process manager logic - Process manager starts final betting after draw</td>
-<td class="success">0.003s</td>
+<td class="success">0.006s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -687,32 +592,32 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Process manager logic - Process manager tracks pot total correctly</td>
-<td class="success">0.004s</td>
+<td class="success">0.005s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Process manager logic - Process manager transitions to blind posting after cards dealt</td>
-<td class="success">0.010s</td>
+<td class="success">0.008s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Projector logic - Exclude timestamps when disabled</td>
-<td class="success">0.006s</td>
+<td class="success">0.007s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
-<td class="failures">Projector logic - Fallback to truncated player ID</td>
-<td class="failures">0.006s</td>
-<td class="failures">failed</td>
+<td class="success">Projector logic - Fallback to truncated player ID</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Projector logic - Format card with all ranks</td>
-<td class="success">0.006s</td>
+<td class="success">0.008s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Projector logic - Format card with all suits</td>
-<td class="success">0.011s</td>
+<td class="success">0.010s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -722,7 +627,7 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Projector logic - Handle unknown event type gracefully</td>
-<td class="success">0.006s</td>
+<td class="success">0.007s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -732,33 +637,33 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Projector logic - Render ActionTaken with all-in</td>
-<td class="success">0.005s</td>
-<td class="success">passed</td>
-</tr>
-<tr>
-<td class="success">Projector logic - Render ActionTaken with call</td>
-<td class="success">0.005s</td>
-<td class="success">passed</td>
-</tr>
-<tr>
-<td class="success">Projector logic - Render ActionTaken with fold</td>
-<td class="success">0.005s</td>
-<td class="success">passed</td>
-</tr>
-<tr>
-<td class="success">Projector logic - Render ActionTaken with raise</td>
-<td class="success">0.007s</td>
-<td class="success">passed</td>
-</tr>
-<tr>
-<td class="success">Projector logic - Render BlindPosted event</td>
 <td class="success">0.006s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
-<td class="failures">Projector logic - Render CardsDealt event</td>
-<td class="failures">0.011s</td>
-<td class="failures">failed</td>
+<td class="success">Projector logic - Render ActionTaken with call</td>
+<td class="success">0.009s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Projector logic - Render ActionTaken with fold</td>
+<td class="success">0.007s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Projector logic - Render ActionTaken with raise</td>
+<td class="success">0.006s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Projector logic - Render BlindPosted event</td>
+<td class="success">0.008s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">Projector logic - Render CardsDealt event</td>
+<td class="success">0.007s</td>
+<td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Projector logic - Render CardsMucked event</td>
@@ -766,19 +671,19 @@ expected: &quot;706c617965722d31&quot;
 <td class="success">passed</td>
 </tr>
 <tr>
-<td class="failures">Projector logic - Render CardsRevealed event</td>
-<td class="failures">0.008s</td>
-<td class="failures">failed</td>
+<td class="success">Projector logic - Render CardsRevealed event</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
 </tr>
 <tr>
-<td class="failures">Projector logic - Render CommunityCardsDealt for flop</td>
-<td class="failures">0.009s</td>
-<td class="failures">failed</td>
+<td class="success">Projector logic - Render CommunityCardsDealt for flop</td>
+<td class="success">0.007s</td>
+<td class="success">passed</td>
 </tr>
 <tr>
-<td class="failures">Projector logic - Render CommunityCardsDealt for turn</td>
-<td class="failures">0.006s</td>
-<td class="failures">failed</td>
+<td class="success">Projector logic - Render CommunityCardsDealt for turn</td>
+<td class="success">0.006s</td>
+<td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Projector logic - Render FundsDeposited event</td>
@@ -802,7 +707,7 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Projector logic - Render HandEnded event with results</td>
-<td class="success">0.009s</td>
+<td class="success">0.012s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -812,27 +717,27 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Projector logic - Render PlayerJoined event</td>
-<td class="success">0.008s</td>
+<td class="success">0.007s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Projector logic - Render PlayerLeft event</td>
-<td class="success">0.005s</td>
+<td class="success">0.007s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Projector logic - Render PlayerRegistered event</td>
-<td class="success">0.005s</td>
+<td class="success">0.004s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Projector logic - Render PlayerTimedOut event</td>
-<td class="success">0.008s</td>
+<td class="success">0.007s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Projector logic - Render PotAwarded event</td>
-<td class="success">0.006s</td>
+<td class="success">0.007s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -842,17 +747,17 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Projector logic - Render TableCreated event</td>
-<td class="success">0.008s</td>
+<td class="success">0.010s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Projector logic - Use registered player names</td>
-<td class="success">0.006s</td>
+<td class="success">0.009s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Saga logic - Hand results saga routes HandEnded to ReleaseFunds</td>
-<td class="success">0.008s</td>
+<td class="success">0.011s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -862,27 +767,27 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Saga logic - Hand results saga skips players with zero change</td>
-<td class="success">0.005s</td>
+<td class="success">0.003s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Saga logic - Saga handles empty player list gracefully</td>
-<td class="success">0.007s</td>
+<td class="success">0.005s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Saga logic - Saga router continues after saga failure</td>
-<td class="success">0.006s</td>
+<td class="success">0.004s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Saga logic - Saga router dispatches to matching sagas only</td>
-<td class="success">0.008s</td>
+<td class="success">0.007s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Saga logic - Saga router handles multiple events in event book</td>
-<td class="success">0.006s</td>
+<td class="success">0.004s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -892,17 +797,17 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Saga logic - Table sync saga routes HandStarted to DealCards</td>
-<td class="success">0.009s</td>
+<td class="success">0.010s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Table aggregate logic - Cannot create table twice</td>
-<td class="success">0.006s</td>
+<td class="success">0.004s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Table aggregate logic - Cannot end hand not in progress</td>
-<td class="success">0.003s</td>
+<td class="success">0.004s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -912,22 +817,22 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Table aggregate logic - Cannot join occupied seat</td>
-<td class="success">0.004s</td>
+<td class="success">0.005s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Table aggregate logic - Cannot join table twice</td>
-<td class="success">0.004s</td>
+<td class="success">0.005s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Table aggregate logic - Cannot join with insufficient buy-in</td>
-<td class="success">0.005s</td>
+<td class="success">0.004s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Table aggregate logic - Cannot leave during hand</td>
-<td class="success">0.005s</td>
+<td class="success">0.004s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -937,7 +842,7 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Table aggregate logic - Cannot start hand while one is in progress</td>
-<td class="success">0.005s</td>
+<td class="success">0.004s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -947,17 +852,17 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Table aggregate logic - Create a Five Card Draw table</td>
-<td class="success">0.007s</td>
+<td class="success">0.005s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Table aggregate logic - Create a Texas Hold'em table</td>
-<td class="success">0.010s</td>
+<td class="success">0.006s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Table aggregate logic - Dealer button advances each hand</td>
-<td class="success">0.004s</td>
+<td class="success">0.005s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -967,17 +872,17 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Table aggregate logic - End hand updates player stacks with wins and losses</td>
-<td class="success">0.004s</td>
+<td class="success">0.003s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Table aggregate logic - Player joins table at any seat</td>
-<td class="success">0.006s</td>
+<td class="success">0.004s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Table aggregate logic - Player joins table at preferred seat</td>
-<td class="success">0.009s</td>
+<td class="success">0.005s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -987,22 +892,22 @@ expected: &quot;706c617965722d31&quot;
 </tr>
 <tr>
 <td class="success">Table aggregate logic - Rebuild state during hand</td>
-<td class="success">0.006s</td>
+<td class="success">0.004s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
-<td class="failures">Table aggregate logic - Rebuild state with multiple players</td>
-<td class="failures">0.007s</td>
-<td class="failures">failed</td>
+<td class="success">Table aggregate logic - Rebuild state with multiple players</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Table aggregate logic - Start a new hand</td>
-<td class="success">0.006s</td>
+<td class="success">0.007s</td>
 <td class="success">passed</td>
 </tr>
 </table>
 </div>
-<div id="tab2" class="tab">
+<div id="tab1" class="tab">
 <h2>Standard output</h2>
 <span class="code">
 <pre>
@@ -1014,9 +919,9 @@ expected: &quot;706c617965722d31&quot;
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::                (v3.2.0)
 
-2026-04-10T09:42:50.264-05:00  INFO 2711368 --- [    Test worker] d.a.e.steps.CucumberSpringConfiguration  : Starting CucumberSpringConfiguration using Java 21.0.10 with PID 2711368 (started by babbitt in /home/babbitt/workspace/angzarr/examples-java/main/tests)
-2026-04-10T09:42:50.265-05:00  INFO 2711368 --- [    Test worker] d.a.e.steps.CucumberSpringConfiguration  : No active profile set, falling back to 1 default profile: &quot;default&quot;
-2026-04-10T09:42:50.314-05:00  INFO 2711368 --- [    Test worker] d.a.e.steps.CucumberSpringConfiguration  : Started CucumberSpringConfiguration in 0.173 seconds (process running for 0.831)
+2026-04-10T09:54:39.813-05:00  INFO 2747705 --- [    Test worker] d.a.e.steps.CucumberSpringConfiguration  : Starting CucumberSpringConfiguration using Java 21.0.10 with PID 2747705 (started by babbitt in /home/babbitt/workspace/angzarr/examples-java/main/tests)
+2026-04-10T09:54:39.814-05:00  INFO 2747705 --- [    Test worker] d.a.e.steps.CucumberSpringConfiguration  : No active profile set, falling back to 1 default profile: &quot;default&quot;
+2026-04-10T09:54:39.866-05:00  INFO 2747705 --- [    Test worker] d.a.e.steps.CucumberSpringConfiguration  : Started CucumberSpringConfiguration in 0.176 seconds (process running for 0.82)
 
 Scenario: Deal Texas Hold'em hand to 2 players                     ?[90m# features/unit/hand.feature:42?[0m
   ?[32mGiven ?[0m?[32mno prior events for the hand aggregate?[0m                     ?[90m# dev.angzarr.examples.steps.HandSteps.noPriorEventsForHand()?[0m
@@ -1885,16 +1790,7 @@ Scenario: Render CardsDealt event                          ?[90m# features/unit/
   ?[32mGiven ?[0m?[32man OutputProjector with player name ?[0m?[32m?[1m&quot;Alice&quot;?[0m        ?[90m# dev.angzarr.examples.steps.ProjectorSteps.outputProjectorWithPlayerName(java.lang.String)?[0m
   ?[32mAnd ?[0m?[32ma CardsDealt event with player ?[0m?[32m?[1m&quot;Alice&quot;?[0m?[32m holding ?[0m?[32m?[1mAs?[0m?[32m ?[0m?[32m?[1mKh?[0m ?[90m# dev.angzarr.examples.steps.ProjectorSteps.cardsDealtEventWithPlayerHolding(java.lang.String,java.lang.String,java.lang.String)?[0m
   ?[32mWhen ?[0m?[32mthe projector handles the event?[0m                     ?[90m# dev.angzarr.examples.steps.ProjectorSteps.projectorHandlesEvent()?[0m
-  ?[31mThen ?[0m?[31mthe output contains ?[0m?[31m?[1m&quot;Alice: [As Kh]&quot;?[0m                ?[90m# dev.angzarr.examples.steps.ProjectorSteps.outputContains(java.lang.String)?[0m
-      ?[31mjava.lang.AssertionError: 
-Expecting actual:
-  &quot;Alice: [A? Ks]&quot;
-to contain:
-  &quot;Alice: [As Kh]&quot;
- (ignoring case)
-	at dev.angzarr.examples.steps.ProjectorSteps.outputContains(ProjectorSteps.java:704)
-	at ✽.the output contains &quot;Alice: [As Kh]&quot;(classpath:features/unit/projector.feature:125)
-?[0m
+  ?[32mThen ?[0m?[32mthe output contains ?[0m?[32m?[1m&quot;Alice: [As Kh]&quot;?[0m                ?[90m# dev.angzarr.examples.steps.ProjectorSteps.outputContains(java.lang.String)?[0m
 
 Scenario: Render BlindPosted event                          ?[90m# features/unit/projector.feature:127?[0m
   ?[32mGiven ?[0m?[32man OutputProjector with player name ?[0m?[32m?[1m&quot;Alice&quot;?[0m         ?[90m# dev.angzarr.examples.steps.ProjectorSteps.outputProjectorWithPlayerName(java.lang.String)?[0m
@@ -1931,34 +1827,14 @@ Scenario: Render CommunityCardsDealt for flop                  ?[90m# features/u
   ?[32mGiven ?[0m?[32man OutputProjector?[0m                                     ?[90m# dev.angzarr.examples.steps.ProjectorSteps.anOutputProjector()?[0m
   ?[32mAnd ?[0m?[32ma CommunityCardsDealt event for ?[0m?[32m?[1mFLOP?[0m?[32m with cards ?[0m?[32m?[1mAh?[0m?[32m ?[0m?[32m?[1mKd?[0m?[32m ?[0m?[32m?[1m7s?[0m ?[90m# dev.angzarr.examples.steps.ProjectorSteps.communityCardsDealtEventForWithCards(java.lang.String,java.lang.String,java.lang.String,java.lang.String)?[0m
   ?[32mWhen ?[0m?[32mthe projector handles the event?[0m                         ?[90m# dev.angzarr.examples.steps.ProjectorSteps.projectorHandlesEvent()?[0m
-  ?[31mThen ?[0m?[31mthe output contains ?[0m?[31m?[1m&quot;Flop: [Ah Kd 7s]&quot;?[0m                  ?[90m# dev.angzarr.examples.steps.ProjectorSteps.outputContains(java.lang.String)?[0m
-      ?[31mjava.lang.AssertionError: 
-Expecting actual:
-  &quot;Flop: [As Kh 7?]
-Board: As Kh 7?&quot;
-to contain:
-  &quot;Flop: [Ah Kd 7s]&quot;
- (ignoring case)
-	at dev.angzarr.examples.steps.ProjectorSteps.outputContains(ProjectorSteps.java:704)
-	at ✽.the output contains &quot;Flop: [Ah Kd 7s]&quot;(classpath:features/unit/projector.feature:162)
-?[0m
-  ?[36mAnd ?[0m?[36mthe output contains ?[0m?[36m?[1m&quot;Board:&quot;?[0m                             ?[90m# dev.angzarr.examples.steps.ProjectorSteps.outputContains(java.lang.String)?[0m
+  ?[32mThen ?[0m?[32mthe output contains ?[0m?[32m?[1m&quot;Flop: [Ah Kd 7s]&quot;?[0m                  ?[90m# dev.angzarr.examples.steps.ProjectorSteps.outputContains(java.lang.String)?[0m
+  ?[32mAnd ?[0m?[32mthe output contains ?[0m?[32m?[1m&quot;Board:&quot;?[0m                             ?[90m# dev.angzarr.examples.steps.ProjectorSteps.outputContains(java.lang.String)?[0m
 
 Scenario: Render CommunityCardsDealt for turn           ?[90m# features/unit/projector.feature:165?[0m
   ?[32mGiven ?[0m?[32man OutputProjector?[0m                              ?[90m# dev.angzarr.examples.steps.ProjectorSteps.anOutputProjector()?[0m
   ?[32mAnd ?[0m?[32ma CommunityCardsDealt event for ?[0m?[32m?[1mTURN?[0m?[32m with card ?[0m?[32m?[1m2c?[0m ?[90m# dev.angzarr.examples.steps.ProjectorSteps.communityCardsDealtEventForWithCard(java.lang.String,java.lang.String)?[0m
   ?[32mWhen ?[0m?[32mthe projector handles the event?[0m                  ?[90m# dev.angzarr.examples.steps.ProjectorSteps.projectorHandlesEvent()?[0m
-  ?[31mThen ?[0m?[31mthe output contains ?[0m?[31m?[1m&quot;Turn: [2c]&quot;?[0m                 ?[90m# dev.angzarr.examples.steps.ProjectorSteps.outputContains(java.lang.String)?[0m
-      ?[31mjava.lang.AssertionError: 
-Expecting actual:
-  &quot;Turn: [2d]
-Board: 2d&quot;
-to contain:
-  &quot;Turn: [2c]&quot;
- (ignoring case)
-	at dev.angzarr.examples.steps.ProjectorSteps.outputContains(ProjectorSteps.java:704)
-	at ✽.the output contains &quot;Turn: [2c]&quot;(classpath:features/unit/projector.feature:169)
-?[0m
+  ?[32mThen ?[0m?[32mthe output contains ?[0m?[32m?[1m&quot;Turn: [2c]&quot;?[0m                 ?[90m# dev.angzarr.examples.steps.ProjectorSteps.outputContains(java.lang.String)?[0m
 
 Scenario: Render ShowdownStarted event ?[90m# features/unit/projector.feature:171?[0m
   ?[32mGiven ?[0m?[32man OutputProjector?[0m             ?[90m# dev.angzarr.examples.steps.ProjectorSteps.anOutputProjector()?[0m
@@ -1970,17 +1846,8 @@ Scenario: Render CardsRevealed event                                      ?[90m#
   ?[32mGiven ?[0m?[32man OutputProjector with player name ?[0m?[32m?[1m&quot;Alice&quot;?[0m                       ?[90m# dev.angzarr.examples.steps.ProjectorSteps.outputProjectorWithPlayerName(java.lang.String)?[0m
   ?[32mAnd ?[0m?[32ma CardsRevealed event for ?[0m?[32m?[1m&quot;Alice&quot;?[0m?[32m with cards ?[0m?[32m?[1mAs?[0m?[32m ?[0m?[32m?[1mAd?[0m?[32m and ranking ?[0m?[32m?[1mPAIR?[0m ?[90m# dev.angzarr.examples.steps.ProjectorSteps.cardsRevealedEventFor(java.lang.String,java.lang.String,java.lang.String,java.lang.String)?[0m
   ?[32mWhen ?[0m?[32mthe projector handles the event?[0m                                    ?[90m# dev.angzarr.examples.steps.ProjectorSteps.projectorHandlesEvent()?[0m
-  ?[31mThen ?[0m?[31mthe output contains ?[0m?[31m?[1m&quot;Alice shows [As Ad]&quot;?[0m                          ?[90m# dev.angzarr.examples.steps.ProjectorSteps.outputContains(java.lang.String)?[0m
-      ?[31mjava.lang.AssertionError: 
-Expecting actual:
-  &quot;Alice shows [A? Ah] — Pair&quot;
-to contain:
-  &quot;Alice shows [As Ad]&quot;
- (ignoring case)
-	at dev.angzarr.examples.steps.ProjectorSteps.outputContains(ProjectorSteps.java:704)
-	at ✽.the output contains &quot;Alice shows [As Ad]&quot;(classpath:features/unit/projector.feature:181)
-?[0m
-  ?[36mAnd ?[0m?[36mthe output contains ?[0m?[36m?[1m&quot;Pair&quot;?[0m                                          ?[90m# dev.angzarr.examples.steps.ProjectorSteps.outputContains(java.lang.String)?[0m
+  ?[32mThen ?[0m?[32mthe output contains ?[0m?[32m?[1m&quot;Alice shows [As Ad]&quot;?[0m                          ?[90m# dev.angzarr.examples.steps.ProjectorSteps.outputContains(java.lang.String)?[0m
+  ?[32mAnd ?[0m?[32mthe output contains ?[0m?[32m?[1m&quot;Pair&quot;?[0m                                          ?[90m# dev.angzarr.examples.steps.ProjectorSteps.outputContains(java.lang.String)?[0m
 
 Scenario: Render CardsMucked event                  ?[90m# features/unit/projector.feature:184?[0m
   ?[32mGiven ?[0m?[32man OutputProjector with player name ?[0m?[32m?[1m&quot;Alice&quot;?[0m ?[90m# dev.angzarr.examples.steps.ProjectorSteps.outputProjectorWithPlayerName(java.lang.String)?[0m
@@ -2041,15 +1908,7 @@ Scenario: Use registered player names                 ?[90m# features/unit/proje
 Scenario: Fallback to truncated player ID          ?[90m# features/unit/projector.feature:253?[0m
   ?[32mGiven ?[0m?[32man OutputProjector?[0m                         ?[90m# dev.angzarr.examples.steps.ProjectorSteps.anOutputProjector()?[0m
   ?[32mWhen ?[0m?[32man event references unknown ?[0m?[32m?[1m&quot;player-xyz789&quot;?[0m ?[90m# dev.angzarr.examples.steps.ProjectorSteps.eventReferencesUnknown(java.lang.String)?[0m
-  ?[31mThen ?[0m?[31mthe output uses ?[0m?[31m?[1m&quot;Player_xyz789&quot;?[0m?[31m prefix?[0m      ?[90m# dev.angzarr.examples.steps.ProjectorSteps.outputUsesPrefix(java.lang.String)?[0m
-      ?[31mjava.lang.AssertionError: 
-Expecting actual:
-  &quot;Player_33616237363136392d313764352d336634342d616164632d663435366461383831306631 checks&quot;
-to contain:
-  &quot;Player_xyz789&quot; 
-	at dev.angzarr.examples.steps.ProjectorSteps.outputUsesPrefix(ProjectorSteps.java:728)
-	at ✽.the output uses &quot;Player_xyz789&quot; prefix(classpath:features/unit/projector.feature:256)
-?[0m
+  ?[32mThen ?[0m?[32mthe output uses ?[0m?[32m?[1m&quot;Player_xyz789&quot;?[0m?[32m prefix?[0m      ?[90m# dev.angzarr.examples.steps.ProjectorSteps.outputUsesPrefix(java.lang.String)?[0m
 
 Scenario: Include timestamps when enabled               ?[90m# features/unit/projector.feature:264?[0m
   ?[32mGiven ?[0m?[32man OutputProjector with show_timestamps enabled?[0m ?[90m# dev.angzarr.examples.steps.ProjectorSteps.outputProjectorWithTimestampsEnabled()?[0m
@@ -2335,17 +2194,9 @@ Scenario: Rebuild state with multiple players                             ?[90m#
   ?[32mAnd ?[0m?[32ma PlayerJoined event for player ?[0m?[32m?[1m&quot;player-2&quot;?[0m?[32m at seat ?[0m?[32m?[1m3?[0m?[32m with stack ?[0m?[32m?[1m800?[0m ?[90m# dev.angzarr.examples.steps.TableSteps.playerJoinedEventAtSeatWithStack(java.lang.String,int,int)?[0m
   ?[32mWhen ?[0m?[32mI rebuild the table state?[0m                                          ?[90m# dev.angzarr.examples.steps.TableSteps.rebuildTableState()?[0m
   ?[32mThen ?[0m?[32mthe table state has ?[0m?[32m?[1m2?[0m?[32m players?[0m                                      ?[90m# dev.angzarr.examples.steps.TableSteps.tableStateHasPlayers(int)?[0m
-  ?[31mAnd ?[0m?[31mthe table state has seat ?[0m?[31m?[1m0?[0m?[31m occupied by ?[0m?[31m?[1m&quot;player-1&quot;?[0m                   ?[90m# dev.angzarr.examples.steps.TableSteps.tableStateHasSeatOccupiedBy(int,java.lang.String)?[0m
-      ?[31morg.opentest4j.AssertionFailedError: 
-expected: &quot;706c617965722d31&quot;
- but was: dev.angzarr.examples.table.state.SeatState@60b616c8
-	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
-	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
-	at dev.angzarr.examples.steps.TableSteps.tableStateHasSeatOccupiedBy(TableSteps.java:349)
-	at ✽.the table state has seat 0 occupied by &quot;player-1&quot;(classpath:features/unit/table.feature:233)
-?[0m
-  ?[36mAnd ?[0m?[36mthe table state has seat ?[0m?[36m?[1m3?[0m?[36m occupied by ?[0m?[36m?[1m&quot;player-2&quot;?[0m                   ?[90m# dev.angzarr.examples.steps.TableSteps.tableStateHasSeatOccupiedBy(int,java.lang.String)?[0m
-  ?[36mAnd ?[0m?[36mthe table state has status ?[0m?[36m?[1m&quot;waiting&quot;?[0m                                ?[90m# dev.angzarr.examples.steps.TableSteps.tableStateHasStatus(java.lang.String)?[0m
+  ?[32mAnd ?[0m?[32mthe table state has seat ?[0m?[32m?[1m0?[0m?[32m occupied by ?[0m?[32m?[1m&quot;player-1&quot;?[0m                   ?[90m# dev.angzarr.examples.steps.TableSteps.tableStateHasSeatOccupiedBy(int,java.lang.String)?[0m
+  ?[32mAnd ?[0m?[32mthe table state has seat ?[0m?[32m?[1m3?[0m?[32m occupied by ?[0m?[32m?[1m&quot;player-2&quot;?[0m                   ?[90m# dev.angzarr.examples.steps.TableSteps.tableStateHasSeatOccupiedBy(int,java.lang.String)?[0m
+  ?[32mAnd ?[0m?[32mthe table state has status ?[0m?[32m?[1m&quot;waiting&quot;?[0m                                ?[90m# dev.angzarr.examples.steps.TableSteps.tableStateHasStatus(java.lang.String)?[0m
 
 Scenario: Rebuild state during hand                        ?[90m# features/unit/table.feature:237?[0m
   ?[32mGiven ?[0m?[32ma TableCreated event for ?[0m?[32m?[1m&quot;Main Table&quot;?[0m              ?[90m# dev.angzarr.examples.steps.TableSteps.tableCreatedEventFor(java.lang.String)?[0m
@@ -2358,7 +2209,7 @@ Scenario: Rebuild state during hand                        ?[90m# features/unit/
 </pre>
 </span>
 </div>
-<div id="tab3" class="tab">
+<div id="tab2" class="tab">
 <h2>Standard error</h2>
 <span class="code">
 <pre>WARNING: A Java agent has been loaded dynamically (/home/babbitt/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.14.9/dfb8707031008535048bad2b69735f46d0b6c5e5/byte-buddy-agent-1.14.9.jar)
@@ -2376,7 +2227,7 @@ WARNING: Dynamic loading of agents will be disallowed by default in a future rel
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="http://www.gradle.org">Gradle 8.5</a> at Apr 10, 2026, 9:42:52 AM</p>
+<a href="http://www.gradle.org">Gradle 8.5</a> at Apr 10, 2026, 9:54:41 AM</p>
 </div>
 </div>
 </body>

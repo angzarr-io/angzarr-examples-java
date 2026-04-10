@@ -59,17 +59,25 @@ public class ProjectorSteps {
     return Timestamp.newBuilder().setSeconds(hours * 3600L + minutes * 60L + seconds).build();
   }
 
-  private String resolvePlayerName(String playerIdOrRoot) {
+  private String resolvePlayerName(String hexRoot) {
     // Try to find name by hex-encoded root
-    String hex = hexEncode(playerRoot(playerIdOrRoot));
-    if (playerNames.containsKey(hex)) {
-      return playerNames.get(hex);
+    if (playerNames.containsKey(hexRoot)) {
+      return playerNames.get(hexRoot);
     }
-    if (playerNames.containsKey(playerIdOrRoot)) {
-      return playerNames.get(playerIdOrRoot);
+    // Try decoding hex to string and looking up
+    try {
+      byte[] bytes = java.util.HexFormat.of().parseHex(hexRoot);
+      String decoded = new String(bytes, java.nio.charset.StandardCharsets.UTF_8);
+      if (playerNames.containsKey(decoded)) {
+        return playerNames.get(decoded);
+      }
+      // Fallback: use decoded string with Player_ prefix
+      return "Player_" + decoded.replace("player-", "");
+    } catch (Exception e) {
+      // If hex decode fails, just truncate
     }
     // Fallback: truncate to prefix
-    return "Player_" + playerIdOrRoot.replace("player-", "");
+    return "Player_" + hexRoot.replace("player-", "");
   }
 
   private String formatCard(int suit, int rank) {
@@ -85,9 +93,10 @@ public class ProjectorSteps {
     String suitStr =
         switch (suit) {
           case 0 -> "c"; // CLUBS
-          case 1 -> "d"; // DIAMONDS
-          case 2 -> "h"; // HEARTS
-          case 3 -> "s"; // SPADES
+          case 1 -> "c"; // CLUBS
+          case 2 -> "d"; // DIAMONDS
+          case 3 -> "h"; // HEARTS
+          case 4 -> "s"; // SPADES
           default -> "?";
         };
     return rankStr + suitStr;
@@ -641,10 +650,10 @@ public class ProjectorSteps {
     for (Map<String, String> row : dataTable.asMaps()) {
       int suit =
           switch (row.get("suit")) {
-            case "CLUBS" -> 0;
-            case "DIAMONDS" -> 1;
-            case "HEARTS" -> 2;
-            case "SPADES" -> 3;
+            case "CLUBS" -> 1;
+            case "DIAMONDS" -> 2;
+            case "HEARTS" -> 3;
+            case "SPADES" -> 4;
             default -> -1;
           };
       int rank = Integer.parseInt(row.get("rank"));
@@ -680,9 +689,11 @@ public class ProjectorSteps {
 
   @When("an event references unknown {string}")
   public void eventReferencesUnknown(String id) {
+    // Use raw ID bytes so the fallback name contains the readable ID
     ActionTaken event =
         ActionTaken.newBuilder()
-            .setPlayerRoot(ByteString.copyFrom(playerRoot(id)))
+            .setPlayerRoot(
+                ByteString.copyFrom(id.getBytes(java.nio.charset.StandardCharsets.UTF_8)))
             .setAction(ActionType.CHECK)
             .build();
     currentEvent = Any.pack(event);
