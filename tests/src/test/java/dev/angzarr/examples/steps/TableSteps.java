@@ -1,5 +1,6 @@
 package dev.angzarr.examples.steps;
 
+import static dev.angzarr.examples.steps.CommonSteps.bytesToHex;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.protobuf.Any;
@@ -344,7 +345,7 @@ public class TableSteps {
   public void tableStateHasSeatOccupiedBy(int seat, String playerId) {
     var player = table.getPlayerAtSeat(seat);
     assertThat(player).isNotNull();
-    var expectedHex = HexFormat.of().formatHex(playerId.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+    var expectedHex = bytesToHex(playerId.getBytes(java.nio.charset.StandardCharsets.UTF_8));
     assertThat(player).isEqualTo(expectedHex);
   }
 

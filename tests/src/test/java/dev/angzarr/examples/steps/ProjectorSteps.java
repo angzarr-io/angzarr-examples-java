@@ -153,19 +153,19 @@ public class ProjectorSteps {
         renderOutput(prefix + sb);
       } else if (eventAny.is(CardsDealt.class)) {
         CardsDealt evt = eventAny.unpack(CardsDealt.class);
-        for (PlayerCards pc : evt.getPlayerCardsList()) {
+        for (PlayerHoleCards pc : evt.getPlayerCardsList()) {
           String name = resolvePlayerName(hexEncode(pc.getPlayerRoot().toByteArray()));
           StringBuilder cards = new StringBuilder();
           for (Card c : pc.getCardsList()) {
             if (!cards.isEmpty()) cards.append(" ");
-            cards.append(formatCard(c.getSuitValue(), c.getRank()));
+            cards.append(formatCard(c.getSuitValue(), c.getRankValue()));
           }
           renderOutput(prefix + name + ": [" + cards + "]");
         }
       } else if (eventAny.is(BlindPosted.class)) {
         BlindPosted evt = eventAny.unpack(BlindPosted.class);
         String name = resolvePlayerName(hexEncode(evt.getPlayerRoot().toByteArray()));
-        renderOutput(prefix + name + " posts " + evt.getBlindType().name() + " $" + evt.getAmount());
+        renderOutput(prefix + name + " posts " + evt.getBlindType().toUpperCase() + " $" + evt.getAmount());
       } else if (eventAny.is(ActionTaken.class)) {
         ActionTaken evt = eventAny.unpack(ActionTaken.class);
         String name = resolvePlayerName(hexEncode(evt.getPlayerRoot().toByteArray()));
@@ -185,7 +185,7 @@ public class ProjectorSteps {
         StringBuilder cards = new StringBuilder();
         for (Card c : evt.getCardsList()) {
           if (!cards.isEmpty()) cards.append(" ");
-          cards.append(formatCard(c.getSuitValue(), c.getRank()));
+          cards.append(formatCard(c.getSuitValue(), c.getRankValue()));
         }
         String phase = evt.getPhase().name().substring(0, 1) + evt.getPhase().name().substring(1).toLowerCase();
         renderOutput(prefix + phase + ": [" + cards + "]\nBoard: " + cards);
@@ -197,9 +197,9 @@ public class ProjectorSteps {
         StringBuilder cards = new StringBuilder();
         for (Card c : evt.getCardsList()) {
           if (!cards.isEmpty()) cards.append(" ");
-          cards.append(formatCard(c.getSuitValue(), c.getRank()));
+          cards.append(formatCard(c.getSuitValue(), c.getRankValue()));
         }
-        String ranking = evt.getRanking().name().replace("_", " ");
+        String ranking = evt.getRanking().getRankType().name().replace("_", " ");
         ranking = ranking.substring(0, 1).toUpperCase() + ranking.substring(1).toLowerCase();
         renderOutput(prefix + name + " shows [" + cards + "] — " + ranking);
       } else if (eventAny.is(CardsMucked.class)) {
@@ -215,7 +215,7 @@ public class ProjectorSteps {
       } else if (eventAny.is(HandComplete.class)) {
         HandComplete evt = eventAny.unpack(HandComplete.class);
         StringBuilder sb = new StringBuilder(prefix + "Final stacks:\n");
-        for (PlayerFinalState pfs : evt.getPlayerFinalStatesList()) {
+        for (PlayerStackSnapshot pfs : evt.getFinalStacksList()) {
           String name = resolvePlayerName(hexEncode(pfs.getPlayerRoot().toByteArray()));
           sb.append("  ").append(name).append(": $").append(formatMoney(pfs.getStack()));
           if (pfs.getHasFolded()) sb.append(" (folded)");
@@ -225,7 +225,7 @@ public class ProjectorSteps {
       } else if (eventAny.is(PlayerTimedOut.class)) {
         PlayerTimedOut evt = eventAny.unpack(PlayerTimedOut.class);
         String name = resolvePlayerName(hexEncode(evt.getPlayerRoot().toByteArray()));
-        String action = evt.getDefaultAction() == PlayerActionType.FOLD ? "auto folds" : "auto checks";
+        String action = evt.getDefaultAction() == ActionType.FOLD ? "auto folds" : "auto checks";
         renderOutput(prefix + name + " timed out — " + action);
       } else {
         renderOutput(prefix + "[Unknown event type: " + eventAny.getTypeUrl() + "]");
@@ -392,7 +392,7 @@ public class ProjectorSteps {
     String hex = hexEncode(playerRoot(player));
     playerNames.put(hex, player);
     CardsDealt event = CardsDealt.newBuilder()
-        .addPlayerCards(PlayerCards.newBuilder()
+        .addPlayerCards(PlayerHoleCards.newBuilder()
             .setPlayerRoot(ByteString.copyFrom(playerRoot(player)))
             .addCards(parseCard(card1))
             .addCards(parseCard(card2)))
@@ -406,7 +406,7 @@ public class ProjectorSteps {
     playerNames.put(hex, player);
     BlindPosted event = BlindPosted.newBuilder()
         .setPlayerRoot(ByteString.copyFrom(playerRoot(player)))
-        .setBlindType(BlindType.valueOf(type.toUpperCase()))
+        .setBlindType(type.toUpperCase())
         .setAmount(amount)
         .build();
     currentEvent = Any.pack(event);
@@ -424,7 +424,7 @@ public class ProjectorSteps {
     playerNames.put(hex, player);
     ActionTaken event = ActionTaken.newBuilder()
         .setPlayerRoot(ByteString.copyFrom(playerRoot(player)))
-        .setAction(PlayerActionType.valueOf(action))
+        .setAction(ActionType.valueOf(action))
         .setAmount(amount)
         .setPotTotal(potTotal)
         .build();
@@ -435,7 +435,7 @@ public class ProjectorSteps {
   public void communityCardsDealtEventForWithCards(
       String phase, String card1, String card2, String card3) {
     CommunityCardsDealt event = CommunityCardsDealt.newBuilder()
-        .setPhase(HandPhase.valueOf(phase.toUpperCase()))
+        .setPhase(BettingPhase.valueOf(phase.toUpperCase()))
         .addCards(parseCard(card1))
         .addCards(parseCard(card2))
         .addCards(parseCard(card3))
@@ -446,7 +446,7 @@ public class ProjectorSteps {
   @Given("a CommunityCardsDealt event for {word} with card {word}")
   public void communityCardsDealtEventForWithCard(String phase, String card) {
     CommunityCardsDealt event = CommunityCardsDealt.newBuilder()
-        .setPhase(HandPhase.valueOf(phase.toUpperCase()))
+        .setPhase(BettingPhase.valueOf(phase.toUpperCase()))
         .addCards(parseCard(card))
         .build();
     currentEvent = Any.pack(event);
@@ -465,7 +465,7 @@ public class ProjectorSteps {
         .setPlayerRoot(ByteString.copyFrom(playerRoot(player)))
         .addCards(parseCard(card1))
         .addCards(parseCard(card2))
-        .setRanking(HandRanking.valueOf(ranking.toUpperCase()))
+        .setRanking(HandRanking.newBuilder().setRankType(HandRankType.valueOf(ranking.toUpperCase())))
         .build();
     currentEvent = Any.pack(event);
   }
@@ -499,7 +499,7 @@ public class ProjectorSteps {
       String name = row.get("player");
       String hex = hexEncode(playerRoot(name));
       playerNames.put(hex, name);
-      builder.addPlayerFinalStates(PlayerFinalState.newBuilder()
+      builder.addFinalStacks(PlayerStackSnapshot.newBuilder()
           .setPlayerRoot(ByteString.copyFrom(playerRoot(name)))
           .setStack(Long.parseLong(row.get("stack")))
           .setHasFolded(Boolean.parseBoolean(row.get("has_folded"))));
@@ -513,7 +513,7 @@ public class ProjectorSteps {
     playerNames.put(hex, player);
     PlayerTimedOut event = PlayerTimedOut.newBuilder()
         .setPlayerRoot(ByteString.copyFrom(playerRoot(player)))
-        .setDefaultAction(PlayerActionType.valueOf(action))
+        .setDefaultAction(ActionType.valueOf(action))
         .build();
     currentEvent = Any.pack(event);
   }
@@ -535,7 +535,7 @@ public class ProjectorSteps {
     // Create a simple event with timestamp
     PlayerRegistered event = PlayerRegistered.newBuilder()
         .setDisplayName("Test")
-        .setCreatedAt(parseTime(time))
+        .setRegisteredAt(parseTime(time))
         .build();
     currentEvent = Any.pack(event);
   }
@@ -550,7 +550,7 @@ public class ProjectorSteps {
   public void eventWithCreatedAtDefault() {
     PlayerRegistered event = PlayerRegistered.newBuilder()
         .setDisplayName("Test")
-        .setCreatedAt(now())
+        .setRegisteredAt(now())
         .build();
     currentEvent = Any.pack(event);
   }
@@ -569,7 +569,7 @@ public class ProjectorSteps {
     builder.addPages(EventPage.newBuilder().setEvent(Any.pack(
         BlindPosted.newBuilder()
             .setPlayerRoot(ByteString.copyFrom(playerRoot(name)))
-            .setBlindType(BlindType.SMALL)
+            .setBlindType("SMALL")
             .setAmount(5)
             .build())));
     currentEventBook = builder.build();
@@ -624,7 +624,7 @@ public class ProjectorSteps {
     // Player is already registered — just render an event referencing them
     ActionTaken event = ActionTaken.newBuilder()
         .setPlayerRoot(ByteString.copyFrom(playerRoot(id)))
-        .setAction(PlayerActionType.CHECK)
+        .setAction(ActionType.CHECK)
         .build();
     currentEvent = Any.pack(event);
     renderEvent(currentEvent);
@@ -634,7 +634,7 @@ public class ProjectorSteps {
   public void eventReferencesUnknown(String id) {
     ActionTaken event = ActionTaken.newBuilder()
         .setPlayerRoot(ByteString.copyFrom(playerRoot(id)))
-        .setAction(PlayerActionType.CHECK)
+        .setAction(ActionType.CHECK)
         .build();
     currentEvent = Any.pack(event);
     renderEvent(currentEvent);
@@ -720,7 +720,7 @@ public class ProjectorSteps {
     };
 
     return Card.newBuilder()
-        .setRank(rank)
+        .setRankValue(rank)
         .setSuit(suit)
         .build();
   }

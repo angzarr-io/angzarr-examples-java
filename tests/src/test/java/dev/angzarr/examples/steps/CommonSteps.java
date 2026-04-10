@@ -41,6 +41,15 @@ public class CommonSteps {
     assertThat(lastRejectedError.getStatusCode()).isEqualTo(expectedCode);
   }
 
+  /** Convert bytes to hex string (Java 8 compatible). */
+  public static String bytesToHex(byte[] bytes) {
+    StringBuilder sb = new StringBuilder();
+    for (byte b : bytes) {
+      sb.append(String.format("%02x", b));
+    }
+    return sb.toString();
+  }
+
   @Then("the error message contains {string}")
   public void errorMessageContains(String substring) {
     assertThat(lastRejectedError)

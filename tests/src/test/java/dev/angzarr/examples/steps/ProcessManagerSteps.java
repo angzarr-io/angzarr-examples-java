@@ -60,35 +60,11 @@ public class ProcessManagerSteps {
     emittedCommands.clear();
   }
 
-  @Given("a HandStarted event with:")
-  public void handStartedEventWith(DataTable dataTable) {
-    Map<String, String> row = dataTable.asMaps().get(0);
-    process = new HandProcess();
-    process.phase = "DEALING";
-    if (row.containsKey("hand_number")) process.dealerPosition = 0;
-    if (row.containsKey("game_variant")) process.gameVariant = row.get("game_variant");
-    if (row.containsKey("dealer_position"))
-      process.dealerPosition = Integer.parseInt(row.get("dealer_position"));
-    if (row.containsKey("small_blind"))
-      process.smallBlind = Long.parseLong(row.get("small_blind"));
-    if (row.containsKey("big_blind"))
-      process.bigBlind = Long.parseLong(row.get("big_blind"));
-  }
+  // "a HandStarted event with:" step defined in SagaSteps (shared)
+  // PM scenarios use "an active hand process" Given steps instead
 
-  @Given("active players:")
-  public void activePlayers(DataTable dataTable) {
-    if (process == null) {
-      process = new HandProcess();
-    }
-    process.players.clear();
-    for (Map<String, String> row : dataTable.asMaps()) {
-      PlayerState p = new PlayerState();
-      p.position = Integer.parseInt(row.get("position"));
-      p.stack = Long.parseLong(row.get("stack"));
-      p.playerRoot = row.get("player_root");
-      process.players.put(p.position, p);
-    }
-  }
+  // "active players:" step defined in SagaSteps (shared across sagas and PMs)
+  // PM-specific player setup is done via activeHandProcessInPhase which initializes defaults
 
   @Given("an active hand process in phase {word}")
   public void activeHandProcessInPhase(String phase) {
@@ -298,16 +274,7 @@ public class ProcessManagerSteps {
     // PotAwarded event received
   }
 
-  @Given("a CommunityCardsDealt event for {word}")
-  public void communityCardsDealtEventFor(String phase) {
-    // Reset betting state for new round
-    for (PlayerState p : process.players.values()) {
-      p.betThisRound = 0;
-      p.hasActed = false;
-    }
-    process.currentBet = 0;
-    process.bettingPhase = phase;
-  }
+  // "a CommunityCardsDealt event for {word}" step defined in HandSteps (shared)
 
   // --- When steps ---
 
