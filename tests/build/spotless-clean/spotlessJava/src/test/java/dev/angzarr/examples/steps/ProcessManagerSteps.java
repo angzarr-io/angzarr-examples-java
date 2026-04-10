@@ -125,8 +125,17 @@ public class ProcessManagerSteps {
   @Given("players at positions {int}, {int}, {int} have all acted")
   public void playersAtPositionsHaveAllActed(int p1, int p2, int p3) {
     for (int pos : List.of(p1, p2, p3)) {
-      PlayerState p = process.players.get(pos);
-      if (p != null) p.hasActed = true;
+      process.players.computeIfAbsent(
+                  pos,
+                  k -> {
+                    PlayerState newP = new PlayerState();
+                    newP.position = k;
+                    newP.stack = 500;
+                    newP.playerRoot = "player-" + (k + 1);
+                    return newP;
+                  })
+              .hasActed =
+          true;
     }
   }
 
