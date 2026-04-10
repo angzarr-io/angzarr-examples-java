@@ -342,7 +342,10 @@ public class TableSteps {
 
   @Then("the table state has seat {int} occupied by {string}")
   public void tableStateHasSeatOccupiedBy(int seat, String playerId) {
-    assertThat(table.getPlayerAtSeat(seat)).isNotNull();
+    var player = table.getPlayerAtSeat(seat);
+    assertThat(player).isNotNull();
+    var expectedHex = HexFormat.of().formatHex(playerId.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+    assertThat(player).isEqualTo(expectedHex);
   }
 
   @Then("the table state has status {string}")
