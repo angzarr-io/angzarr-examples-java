@@ -85,24 +85,34 @@ public class AcceptancePlayerSteps {
 
   @Then("player {string} has bankroll {int}")
   public void playerHasBankroll(String name, int expected) {
-    // For in-process, verify via the last response event.
-    // For gRPC, we trust the command succeeded and check the event.
     CommandResponse resp = ctx.getLastResponse();
     assertThat(resp).isNotNull();
     assertThat(resp.hasEvents()).isTrue();
+    // Verify bankroll from the most recent balance-related event
+    var pages = resp.getEvents().getPagesList();
+    assertThat(pages).isNotEmpty();
+    for (int i = pages.size() - 1; i >= 0; i--) {
+      var event = pages.get(i).getEvent();
+      if (event.is(dev.angzarr.examples.FundsDeposited.class)) {
+        try {
+          var e = event.unpack(dev.angzarr.examples.FundsDeposited.class);
+          assertThat(e.getNewBalance().getAmount()).isEqualTo(expected);
+          return;
+        } catch (Exception ignored) {}
+      }
+    }
   }
 
   @Then("player {string} has available balance {int}")
   public void playerHasAvailableBalance(String name, int expected) {
-    // Verified by the command response events
-    CommandResponse resp = ctx.getLastResponse();
-    assertThat(resp).isNotNull();
+    // Track via accumulated events — available = bankroll - reserved
+    assertThat(ctx.getPlayerBankroll(name) - ctx.getPlayerReserved(name))
+        .isEqualTo(expected);
   }
 
   @Then("player {string} has reserved funds {int}")
   public void playerHasReservedFunds(String name, int expected) {
-    CommandResponse resp = ctx.getLastResponse();
-    assertThat(resp).isNotNull();
+    assertThat(ctx.getPlayerReserved(name)).isEqualTo(expected);
   }
 
   @Given("player {string} has bankroll {int} with {int} reserved")

@@ -62,6 +62,11 @@ public class TestContext {
   /** Timing for sync mode tests. */
   private long syncTestStartTime;
 
+  /** Player financial tracking for assertion depth. */
+  private final Map<String, Long> playerBankrolls = new HashMap<>();
+  private final Map<String, Long> playerReserved = new HashMap<>();
+  private final Map<String, Long> playerStacks = new HashMap<>();
+
   public TestContext() {
     String playerUrl = System.getenv("PLAYER_URL");
     if (playerUrl == null || playerUrl.isEmpty()) {
@@ -340,6 +345,35 @@ public class TestContext {
     domainNoSagas = false;
     monitoringBus = false;
     syncTestStartTime = 0;
+    playerBankrolls.clear();
+    playerReserved.clear();
+    playerStacks.clear();
+  }
+
+  // --- Player financial tracking ---
+
+  public long getPlayerBankroll(String name) {
+    return playerBankrolls.getOrDefault(name, 0L);
+  }
+
+  public void addPlayerBankroll(String name, long amount) {
+    playerBankrolls.merge(name, amount, Long::sum);
+  }
+
+  public long getPlayerReserved(String name) {
+    return playerReserved.getOrDefault(name, 0L);
+  }
+
+  public void addPlayerReserved(String name, long amount) {
+    playerReserved.merge(name, amount, Long::sum);
+  }
+
+  public long getPlayerStack(String name) {
+    return playerStacks.getOrDefault(name, 0L);
+  }
+
+  public void setPlayerStack(String name, long stack) {
+    playerStacks.put(name, stack);
   }
 
   public void close() {
