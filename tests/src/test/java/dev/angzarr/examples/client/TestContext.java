@@ -64,6 +64,7 @@ public class TestContext {
 
   /** Player financial tracking for assertion depth. */
   private final Map<String, Long> playerBankrolls = new HashMap<>();
+
   private final Map<String, Long> playerReserved = new HashMap<>();
   private final Map<String, Long> playerStacks = new HashMap<>();
 
