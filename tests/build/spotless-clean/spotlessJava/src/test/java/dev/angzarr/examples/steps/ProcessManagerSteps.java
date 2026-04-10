@@ -28,6 +28,8 @@ public class ProcessManagerSteps {
     long potTotal;
     long currentBet;
     int actionOn;
+    boolean smallBlindPosted;
+    boolean bigBlindPosted;
     Map<Integer, PlayerState> players = new LinkedHashMap<>();
   }
 
@@ -81,6 +83,7 @@ public class ProcessManagerSteps {
   @Given("small_blind_posted is true")
   public void smallBlindPostedIsTrue() {
     process.potTotal += process.smallBlind;
+    process.smallBlindPosted = true;
   }
 
   @Given("a BlindPosted event for small blind")
@@ -92,6 +95,7 @@ public class ProcessManagerSteps {
   public void blindPostedEventForBigBlind() {
     process.potTotal += process.bigBlind;
     process.currentBet = process.bigBlind;
+    process.bigBlindPosted = true;
   }
 
   @Given("action_on is position {int}")
@@ -280,6 +284,26 @@ public class ProcessManagerSteps {
   @When("the process manager starts the hand")
   public void processManagerStartsHand() {
     emittedCommands.clear();
+    // Initialize PM process from shared HandStarted data
+    if (process == null) {
+      process = new HandProcess();
+      Map<String, String> hsData = CommonSteps.getSharedHandStartedData();
+      if (hsData.containsKey("game_variant")) process.gameVariant = hsData.get("game_variant");
+      if (hsData.containsKey("dealer_position"))
+        process.dealerPosition = Integer.parseInt(hsData.get("dealer_position"));
+      if (hsData.containsKey("small_blind"))
+        process.smallBlind = Long.parseLong(hsData.get("small_blind"));
+      if (hsData.containsKey("big_blind"))
+        process.bigBlind = Long.parseLong(hsData.get("big_blind"));
+      // Add players from shared active players data
+      for (Map<String, String> row : CommonSteps.getSharedActivePlayersData()) {
+        PlayerState p = new PlayerState();
+        p.position = Integer.parseInt(row.get("position"));
+        p.stack = Long.parseLong(row.get("stack"));
+        p.playerRoot = row.get("player_root");
+        process.players.put(p.position, p);
+      }
+    }
     process.phase = "DEALING";
   }
 
@@ -291,9 +315,13 @@ public class ProcessManagerSteps {
       process.phase = "POSTING_BLINDS";
       emittedCommands.add("PostBlind:small");
     } else if ("POSTING_BLINDS".equals(process.phase)) {
-      process.phase = "BETTING";
-      // Set action to UTG (after big blind position)
-      process.actionOn = (process.dealerPosition + 2) % process.players.size();
+      if (process.smallBlindPosted && !process.bigBlindPosted) {
+        emittedCommands.add("PostBlind:big");
+        process.bigBlindPosted = true;
+      } else {
+        process.phase = "BETTING";
+        process.actionOn = (process.dealerPosition + 2) % process.players.size();
+      }
     } else if ("BETTING".equals(process.phase)) {
       // Advance action
       int next = (process.actionOn + 1) % process.players.size();

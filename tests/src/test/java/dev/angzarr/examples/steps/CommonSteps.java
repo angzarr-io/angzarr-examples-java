@@ -5,6 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import dev.angzarr.client.Errors;
 import io.cucumber.java.en.Then;
 import io.grpc.Status;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Shared step definitions used across all aggregate tests.
@@ -48,6 +52,26 @@ public class CommonSteps {
       sb.append(String.format("%02x", b));
     }
     return sb.toString();
+  }
+
+  // Shared cross-step-class state for PM/saga/projector scenarios
+  private static Map<String, String> sharedHandStartedData = new HashMap<>();
+  private static List<Map<String, String>> sharedActivePlayersData = new ArrayList<>();
+
+  public static void setSharedHandStartedData(Map<String, String> data) {
+    sharedHandStartedData = new HashMap<>(data);
+  }
+
+  public static Map<String, String> getSharedHandStartedData() {
+    return sharedHandStartedData;
+  }
+
+  public static void setSharedActivePlayersData(List<Map<String, String>> data) {
+    sharedActivePlayersData = new ArrayList<>(data);
+  }
+
+  public static List<Map<String, String>> getSharedActivePlayersData() {
+    return sharedActivePlayersData;
   }
 
   @Then("the error message contains {string}")

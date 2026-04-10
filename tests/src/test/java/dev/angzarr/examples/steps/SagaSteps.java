@@ -92,6 +92,7 @@ public class SagaSteps {
   @Given("active players:")
   public void activePlayersTable(DataTable dataTable) {
     activePlayers.clear();
+    CommonSteps.setSharedActivePlayersData(dataTable.asMaps());
     for (Map<String, String> row : dataTable.asMaps()) {
       activePlayers.add(
           SeatSnapshot.newBuilder()
@@ -100,9 +101,9 @@ public class SagaSteps {
               .setStack(Long.parseLong(row.get("stack")))
               .build());
     }
-    // Update HandStarted event with active players
+    // Update HandStarted event with active players (if in saga context)
     try {
-      if (sourceEvent.is(HandStarted.class)) {
+      if (sourceEvent != null && sourceEvent.is(HandStarted.class)) {
         HandStarted hs = sourceEvent.unpack(HandStarted.class);
         sourceEvent = Any.pack(hs.toBuilder().addAllActivePlayers(activePlayers).build());
       }

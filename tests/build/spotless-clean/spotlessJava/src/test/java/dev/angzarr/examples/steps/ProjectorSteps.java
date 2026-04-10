@@ -368,15 +368,19 @@ public class ProjectorSteps {
   @Given("a HandStarted event with:")
   public void handStartedEventWith(DataTable dataTable) {
     Map<String, String> row = dataTable.asMaps().get(0);
-    HandStarted event =
+    HandStarted.Builder builder =
         HandStarted.newBuilder()
             .setHandNumber(Long.parseLong(row.get("hand_number")))
             .setDealerPosition(Integer.parseInt(row.get("dealer_position")))
-            .setSmallBlind(Long.parseLong(row.get("small_blind")))
-            .setBigBlind(Long.parseLong(row.get("big_blind")))
-            .setStartedAt(now())
-            .build();
-    currentEvent = Any.pack(event);
+            .setStartedAt(now());
+    if (row.containsKey("small_blind"))
+      builder.setSmallBlind(Long.parseLong(row.get("small_blind")));
+    if (row.containsKey("big_blind")) builder.setBigBlind(Long.parseLong(row.get("big_blind")));
+    if (row.containsKey("game_variant"))
+      builder.setGameVariant(GameVariant.valueOf(row.get("game_variant")));
+    currentEvent = Any.pack(builder.build());
+    // Share with PM steps via CommonSteps
+    CommonSteps.setSharedHandStartedData(row);
   }
 
   @Given("active players {string}, {string}, {string} at seats {int}, {int}, {int}")
