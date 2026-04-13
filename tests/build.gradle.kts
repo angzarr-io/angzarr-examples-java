@@ -31,12 +31,35 @@ dependencies {
 
     // gRPC for Status
     testImplementation("io.grpc:grpc-api:1.60.0")
+    // PicoContainer for acceptance tests (avoids Spring Boot context)
+
 }
 
 tasks.test {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        excludeTags("grpc-acceptance")
+    }
+    // Run only the unit Cucumber runner (AcceptanceTest) and exclude acceptance runners
+    exclude("**/CucumberAcceptanceTest*")
     systemProperty("cucumber.junit-platform.naming-strategy", "long")
+    // No PLAYER_URL -> InProcessCommandClient for unit tests
 }
 
-// Feature files are symlinked from examples/features/unit/
-// Step definitions match the shared feature format
+tasks.register<Test>("cucumberAcceptanceTest") {
+    description = "Run Cucumber acceptance tests (gRPC when PLAYER_URL is set, in-process otherwise)"
+    group = "verification"
+    useJUnitPlatform()
+    // Run only the acceptance Cucumber runner
+    include("**/CucumberAcceptanceTest*")
+    systemProperty("cucumber.junit-platform.naming-strategy", "long")
+    systemProperty("cucumber.execution.strict", "false")
+    // Disable Spring backend for acceptance tests (use PicoContainer instead)
+    // Pass domain URLs through to the test JVM for gRPC mode
+    // Use providers to evaluate at execution time, not configuration time
+    environment("PLAYER_URL", providers.environmentVariable("PLAYER_URL").orElse("localhost:1310"))
+    environment("TABLE_URL", providers.environmentVariable("TABLE_URL").orElse("localhost:1311"))
+    environment("HAND_URL", providers.environmentVariable("HAND_URL").orElse("localhost:1312"))
+}
+
+// Feature files are symlinked from angzarr-project/features/
+// Unit step definitions in steps/, acceptance step definitions in acceptance/

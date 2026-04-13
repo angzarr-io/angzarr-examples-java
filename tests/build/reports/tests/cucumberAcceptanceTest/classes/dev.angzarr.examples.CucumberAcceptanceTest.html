@@ -1,0 +1,2023 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - CucumberAcceptanceTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>CucumberAcceptanceTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/dev.angzarr.examples.html">dev.angzarr.examples</a> &gt; CucumberAcceptanceTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">51</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">48</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">1.348s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox failures" id="successRate">
+<div class="percent">5%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Failed tests</a>
+</li>
+<li>
+<a href="#tab1">Tests</a>
+</li>
+<li>
+<a href="#tab2">Standard output</a>
+</li>
+<li>
+<a href="#tab3">Standard error</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Failed tests</h2>
+<div class="test">
+<a name="Poker Game Flow - All-in above half min-raise reopens action"></a>
+<h3 class="failures">Poker Game Flow - All-in above half min-raise reopens action</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:497)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Poker Game Flow - All-in and call"></a>
+<h3 class="failures">Poker Game Flow - All-in and call</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:151)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Poker Game Flow - All-in below min-raise does not reopen action"></a>
+<h3 class="failures">Poker Game Flow - All-in below min-raise does not reopen action</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:484)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Poker Game Flow - Big blind walks - everyone folds preflop"></a>
+<h3 class="failures">Poker Game Flow - Big blind walks - everyone folds preflop</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:424)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Poker Game Flow - Cannot add chips beyond available bankroll"></a>
+<h3 class="failures">Poker Game Flow - Cannot add chips beyond available bankroll</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:540)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Poker Game Flow - Cannot add chips during active hand"></a>
+<h3 class="failures">Poker Game Flow - Cannot add chips during active hand</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:530)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Poker Game Flow - Check-raise on the flop"></a>
+<h3 class="failures">Poker Game Flow - Check-raise on the flop</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:374)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Poker Game Flow - Chopped board - community cards make the best hand"></a>
+<h3 class="failures">Poker Game Flow - Chopped board - community cards make the best hand</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:337)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Poker Game Flow - Complete hand through showdown"></a>
+<h3 class="failures">Poker Game Flow - Complete hand through showdown</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:108)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Poker Game Flow - Complete heads-up hand with fold"></a>
+<h3 class="failures">Poker Game Flow - Complete heads-up hand with fold</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:86)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Poker Game Flow - Create table and seat players"></a>
+<h3 class="failures">Poker Game Flow - Create table and seat players</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptancePlayerSteps.registeredPlayersWithBankroll(AcceptancePlayerSteps.java:76)
+	at ✽.registered players with bankroll:(classpath:features/acceptance/poker_game.feature:55)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Poker Game Flow - Five Card Draw with discard"></a>
+<h3 class="failures">Poker Game Flow - Five Card Draw with discard</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.fiveCardDrawTable(AcceptanceTableSteps.java:182)
+	at ✽.a Five Card Draw table &quot;Draw&quot; with blinds 5/10(classpath:features/acceptance/poker_game.feature:206)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Poker Game Flow - HandComplete triggers EndHand via saga"></a>
+<h3 class="failures">Poker Game Flow - HandComplete triggers EndHand via saga</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithNSeatedPlayers(AcceptanceTableSteps.java:136)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithActiveHand(AcceptanceTableSteps.java:166)
+	at ✽.a table &quot;Main&quot; with an active hand(classpath:features/acceptance/poker_game.feature:285)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Poker Game Flow - HandStarted triggers DealCards via saga"></a>
+<h3 class="failures">Poker Game Flow - HandStarted triggers DealCards via saga</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithNSeatedPlayers(AcceptanceTableSteps.java:136)
+	at ✽.a table &quot;Main&quot; with 2 seated players(classpath:features/acceptance/poker_game.feature:275)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Poker Game Flow - Heads-up - big blind wins when button folds preflop"></a>
+<h3 class="failures">Poker Game Flow - Heads-up - big blind wins when button folds preflop</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:407)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Poker Game Flow - Heads-up blind posting - button is small blind"></a>
+<h3 class="failures">Poker Game Flow - Heads-up blind posting - button is small blind</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:396)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Poker Game Flow - Higher kicker wins with same pair"></a>
+<h3 class="failures">Poker Game Flow - Higher kicker wins with same pair</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:354)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Poker Game Flow - Multiple hands with stack changes"></a>
+<h3 class="failures">Poker Game Flow - Multiple hands with stack changes</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:255)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Poker Game Flow - Omaha deals 4 hole cards"></a>
+<h3 class="failures">Poker Game Flow - Omaha deals 4 hole cards</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.omahaTable(AcceptanceTableSteps.java:198)
+	at ✽.an Omaha table &quot;Omaha&quot; with blinds 10/20(classpath:features/acceptance/poker_game.feature:223)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Poker Game Flow - Player adds chips between hands"></a>
+<h3 class="failures">Poker Game Flow - Player adds chips between hands</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:517)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Poker Game Flow - Player elimination"></a>
+<h3 class="failures">Poker Game Flow - Player elimination</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:240)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Poker Game Flow - Player leaves table and recovers funds"></a>
+<h3 class="failures">Poker Game Flow - Player leaves table and recovers funds</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:68)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Poker Game Flow - Raise and re-raise sequence"></a>
+<h3 class="failures">Poker Game Flow - Raise and re-raise sequence</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:138)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Poker Game Flow - Register player and deposit funds"></a>
+<h3 class="failures">Poker Game Flow - Register player and deposit funds</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptancePlayerSteps.registerPlayer(AcceptancePlayerSteps.java:39)
+	at ✽.I register player &quot;Alice&quot; with email &quot;alice@example.com&quot;(classpath:features/acceptance/poker_game.feature:41)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Poker Game Flow - Reject action from wrong player"></a>
+<h3 class="failures">Poker Game Flow - Reject action from wrong player</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:301)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Poker Game Flow - Reject invalid bet amount"></a>
+<h3 class="failures">Poker Game Flow - Reject invalid bet amount</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithNSeatedPlayers(AcceptanceTableSteps.java:136)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithActiveHand(AcceptanceTableSteps.java:166)
+	at ✽.a table &quot;Main&quot; with an active hand(classpath:features/acceptance/poker_game.feature:311)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Poker Game Flow - Side pot awarded to second-best hand when main pot winner is all-in"></a>
+<h3 class="failures">Poker Game Flow - Side pot awarded to second-best hand when main pot winner is all-in</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:461)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Poker Game Flow - Side pot creation with all-in"></a>
+<h3 class="failures">Poker Game Flow - Side pot creation with all-in</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:185)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Poker Game Flow - Split pot when both players have identical hands"></a>
+<h3 class="failures">Poker Game Flow - Split pot when both players have identical hands</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:324)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Poker Game Flow - Three player hand with one fold"></a>
+<h3 class="failures">Poker Game Flow - Three player hand with one fold</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:169)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Poker Game Flow - Three side pots with four players"></a>
+<h3 class="failures">Poker Game Flow - Three side pots with four players</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:444)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Synchronous Processing Modes - ASYNC mode does not wait for saga execution"></a>
+<h3 class="failures">Synchronous Processing Modes - ASYNC mode does not wait for saga execution</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/sync_modes.feature:47)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Synchronous Processing Modes - ASYNC mode has lowest latency"></a>
+<h3 class="failures">Synchronous Processing Modes - ASYNC mode has lowest latency</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptancePlayerSteps.nRegisteredPlayers(AcceptancePlayerSteps.java:124)
+	at ✽.10 registered players(classpath:features/acceptance/sync_modes.feature:240)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Synchronous Processing Modes - ASYNC mode returns before projectors complete"></a>
+<h3 class="failures">Synchronous Processing Modes - ASYNC mode returns before projectors complete</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptancePlayerSteps.registeredPlayersWithBankroll(AcceptancePlayerSteps.java:76)
+	at ✽.registered players with bankroll:(classpath:features/acceptance/sync_modes.feature:37)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Synchronous Processing Modes - CASCADE mode does not publish to event bus"></a>
+<h3 class="failures">Synchronous Processing Modes - CASCADE mode does not publish to event bus</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/sync_modes.feature:136)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Synchronous Processing Modes - CASCADE mode follows multi-hop saga chains"></a>
+<h3 class="failures">Synchronous Processing Modes - CASCADE mode follows multi-hop saga chains</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/sync_modes.feature:121)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Synchronous Processing Modes - CASCADE mode has highest latency but full consistency"></a>
+<h3 class="failures">Synchronous Processing Modes - CASCADE mode has highest latency but full consistency</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/sync_modes.feature:247)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Synchronous Processing Modes - CASCADE mode includes all projection updates"></a>
+<h3 class="failures">Synchronous Processing Modes - CASCADE mode includes all projection updates</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/sync_modes.feature:112)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Synchronous Processing Modes - CASCADE mode includes process manager execution"></a>
+<h3 class="failures">Synchronous Processing Modes - CASCADE mode includes process manager execution</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/sync_modes.feature:213)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Synchronous Processing Modes - CASCADE mode waits for full saga chain"></a>
+<h3 class="failures">Synchronous Processing Modes - CASCADE mode waits for full saga chain</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/sync_modes.feature:101)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Synchronous Processing Modes - COMPENSATE rolls back on saga error"></a>
+<h3 class="failures">Synchronous Processing Modes - COMPENSATE rolls back on saga error</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/sync_modes.feature:179)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Synchronous Processing Modes - CONTINUE collects errors and proceeds"></a>
+<h3 class="failures">Synchronous Processing Modes - CONTINUE collects errors and proceeds</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/sync_modes.feature:165)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Synchronous Processing Modes - DEAD_LETTER sends failures to DLQ and continues"></a>
+<h3 class="failures">Synchronous Processing Modes - DEAD_LETTER sends failures to DLQ and continues</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/sync_modes.feature:191)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Synchronous Processing Modes - FAIL_FAST stops on first saga error"></a>
+<h3 class="failures">Synchronous Processing Modes - FAIL_FAST stops on first saga error</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/sync_modes.feature:153)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Synchronous Processing Modes - Process manager skipped without correlation ID"></a>
+<h3 class="failures">Synchronous Processing Modes - Process manager skipped without correlation ID</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/sync_modes.feature:224)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Synchronous Processing Modes - SIMPLE mode includes projection updates in response"></a>
+<h3 class="failures">Synchronous Processing Modes - SIMPLE mode includes projection updates in response</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptancePlayerSteps.registeredPlayersWithBankroll(AcceptancePlayerSteps.java:76)
+	at ✽.registered players with bankroll:(classpath:features/acceptance/sync_modes.feature:64)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Synchronous Processing Modes - SIMPLE mode projectors see events immediately"></a>
+<h3 class="failures">Synchronous Processing Modes - SIMPLE mode projectors see events immediately</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/sync_modes.feature:74)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="Synchronous Processing Modes - SIMPLE mode saga execution is asynchronous"></a>
+<h3 class="failures">Synchronous Processing Modes - SIMPLE mode saga execution is asynchronous</h3>
+<span class="code">
+<pre>dev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at app//dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at app//dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at app//dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at app//dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/sync_modes.feature:85)
+</pre>
+</span>
+</div>
+</div>
+<div id="tab1" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="failures">Poker Game Flow - All-in above half min-raise reopens action</td>
+<td class="failures">0.005s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Poker Game Flow - All-in and call</td>
+<td class="failures">0.012s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Poker Game Flow - All-in below min-raise does not reopen action</td>
+<td class="failures">0.005s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Poker Game Flow - Big blind walks - everyone folds preflop</td>
+<td class="failures">0.008s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Poker Game Flow - Cannot add chips beyond available bankroll</td>
+<td class="failures">0.004s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Poker Game Flow - Cannot add chips during active hand</td>
+<td class="failures">0.005s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Poker Game Flow - Check-raise on the flop</td>
+<td class="failures">0.005s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Poker Game Flow - Chopped board - community cards make the best hand</td>
+<td class="failures">0.006s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Poker Game Flow - Complete hand through showdown</td>
+<td class="failures">0.012s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Poker Game Flow - Complete heads-up hand with fold</td>
+<td class="failures">0.013s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Poker Game Flow - Create table and seat players</td>
+<td class="failures">0.019s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Poker Game Flow - Five Card Draw with discard</td>
+<td class="failures">0.024s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Poker Game Flow - HandComplete triggers EndHand via saga</td>
+<td class="failures">0.012s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Poker Game Flow - HandStarted triggers DealCards via saga</td>
+<td class="failures">0.008s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Poker Game Flow - Heads-up - big blind wins when button folds preflop</td>
+<td class="failures">0.005s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Poker Game Flow - Heads-up blind posting - button is small blind</td>
+<td class="failures">0.005s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Poker Game Flow - Higher kicker wins with same pair</td>
+<td class="failures">0.007s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Poker Game Flow - Multiple hands with stack changes</td>
+<td class="failures">0.010s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Poker Game Flow - Omaha deals 4 hole cards</td>
+<td class="failures">0.012s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Poker Game Flow - Player adds chips between hands</td>
+<td class="failures">0.005s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Poker Game Flow - Player elimination</td>
+<td class="failures">0.009s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Poker Game Flow - Player leaves table and recovers funds</td>
+<td class="failures">0.015s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Poker Game Flow - Raise and re-raise sequence</td>
+<td class="failures">0.010s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Poker Game Flow - Register player and deposit funds</td>
+<td class="failures">0.947s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Poker Game Flow - Reject action from wrong player</td>
+<td class="failures">0.006s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Poker Game Flow - Reject invalid bet amount</td>
+<td class="failures">0.005s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Poker Game Flow - Side pot awarded to second-best hand when main pot winner is all-in</td>
+<td class="failures">0.005s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Poker Game Flow - Side pot creation with all-in</td>
+<td class="failures">0.009s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Poker Game Flow - Split pot when both players have identical hands</td>
+<td class="failures">0.006s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Poker Game Flow - Three player hand with one fold</td>
+<td class="failures">0.008s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Poker Game Flow - Three side pots with four players</td>
+<td class="failures">0.009s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Synchronous Processing Modes - ASYNC mode does not wait for saga execution</td>
+<td class="failures">0.004s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Synchronous Processing Modes - ASYNC mode has lowest latency</td>
+<td class="failures">0.005s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Synchronous Processing Modes - ASYNC mode returns before projectors complete</td>
+<td class="failures">0.009s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="success">Synchronous Processing Modes - All sagas fail in CONTINUE mode</td>
+<td class="success">0.005s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="failures">Synchronous Processing Modes - CASCADE mode does not publish to event bus</td>
+<td class="failures">0.005s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Synchronous Processing Modes - CASCADE mode follows multi-hop saga chains</td>
+<td class="failures">0.005s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Synchronous Processing Modes - CASCADE mode has highest latency but full consistency</td>
+<td class="failures">0.005s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Synchronous Processing Modes - CASCADE mode includes all projection updates</td>
+<td class="failures">0.005s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Synchronous Processing Modes - CASCADE mode includes process manager execution</td>
+<td class="failures">0.004s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Synchronous Processing Modes - CASCADE mode waits for full saga chain</td>
+<td class="failures">0.005s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Synchronous Processing Modes - COMPENSATE rolls back on saga error</td>
+<td class="failures">0.007s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Synchronous Processing Modes - CONTINUE collects errors and proceeds</td>
+<td class="failures">0.006s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Synchronous Processing Modes - DEAD_LETTER sends failures to DLQ and continues</td>
+<td class="failures">0.007s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="success">Synchronous Processing Modes - Empty saga list in CASCADE mode succeeds</td>
+<td class="success">0.028s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="failures">Synchronous Processing Modes - FAIL_FAST stops on first saga error</td>
+<td class="failures">0.004s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Synchronous Processing Modes - Process manager skipped without correlation ID</td>
+<td class="failures">0.009s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Synchronous Processing Modes - SIMPLE mode includes projection updates in response</td>
+<td class="failures">0.010s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Synchronous Processing Modes - SIMPLE mode projectors see events immediately</td>
+<td class="failures">0.005s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="failures">Synchronous Processing Modes - SIMPLE mode saga execution is asynchronous</td>
+<td class="failures">0.005s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="success">Synchronous Processing Modes - Saga producing no commands in CASCADE mode</td>
+<td class="success">0.004s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab2" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.0)
+
+2026-04-08T20:21:49.550-05:00  INFO 1347306 --- [    Test worker] d.a.e.a.CucumberAcceptanceConfiguration  : Starting CucumberAcceptanceConfiguration using Java 21.0.10 with PID 1347306 (started by babbitt in /home/babbitt/workspace/angzarr/examples-java/main/tests)
+2026-04-08T20:21:49.551-05:00  INFO 1347306 --- [    Test worker] d.a.e.a.CucumberAcceptanceConfiguration  : No active profile set, falling back to 1 default profile: &quot;default&quot;
+2026-04-08T20:21:49.596-05:00  INFO 1347306 --- [    Test worker] d.a.e.a.CucumberAcceptanceConfiguration  : Started CucumberAcceptanceConfiguration in 0.156 seconds (process running for 0.782)
+
+@e2e @player
+Scenario: Register player and deposit funds                     ?[90m# features/acceptance/poker_game.feature:40?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m          ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mWhen ?[0m?[31mI register player ?[0m?[31m?[1m&quot;Alice&quot;?[0m?[31m with email ?[0m?[31m?[1m&quot;alice@example.com&quot;?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.registerPlayer(java.lang.String,java.lang.String)?[0m
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptancePlayerSteps.registerPlayer(AcceptancePlayerSteps.java:39)
+	at ✽.I register player &quot;Alice&quot; with email &quot;alice@example.com&quot;(classpath:features/acceptance/poker_game.feature:41)
+?[0m
+  ?[36mAnd ?[0m?[36mI deposit ?[0m?[36m?[1m1000?[0m?[36m chips to player ?[0m?[36m?[1m&quot;Alice&quot;?[0m                    ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.depositChips(int,java.lang.String)?[0m
+  ?[36mThen ?[0m?[36mplayer ?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m has bankroll ?[0m?[36m?[1m1000?[0m                         ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.playerHasBankroll(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36mplayer ?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m has available balance ?[0m?[36m?[1m1000?[0m                 ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.playerHasAvailableBalance(java.lang.String,int)?[0m
+
+@e2e @table
+Scenario: Create table and seat players                           ?[90m# features/acceptance/poker_game.feature:54?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m            ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31mregistered players with bankroll:?[0m                         ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.registeredPlayersWithBankroll(io.cucumber.datatable.DataTable)?[0m
+    | name  | bankroll |
+    | Alice | 1000     |
+    | Bob   | 1000     |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptancePlayerSteps.registeredPlayersWithBankroll(AcceptancePlayerSteps.java:76)
+	at ✽.registered players with bankroll:(classpath:features/acceptance/poker_game.feature:55)
+?[0m
+  ?[36mWhen ?[0m?[36mI create a Texas Hold'em table ?[0m?[36m?[1m&quot;Main&quot;?[0m?[36m with blinds ?[0m?[36m?[1m5?[0m?[36m/?[0m?[36m?[1m10?[0m     ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.createTexasHoldemTable(java.lang.String,int,int)?[0m
+  ?[36mAnd ?[0m?[36mplayer ?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m joins table ?[0m?[36m?[1m&quot;Main&quot;?[0m?[36m at seat ?[0m?[36m?[1m0?[0m?[36m with buy-in ?[0m?[36m?[1m500?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.playerJoinsTable(java.lang.String,java.lang.String,int,int)?[0m
+  ?[36mAnd ?[0m?[36mplayer ?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m joins table ?[0m?[36m?[1m&quot;Main&quot;?[0m?[36m at seat ?[0m?[36m?[1m1?[0m?[36m with buy-in ?[0m?[36m?[1m500?[0m   ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.playerJoinsTable(java.lang.String,java.lang.String,int,int)?[0m
+  ?[36mThen ?[0m?[36mtable ?[0m?[36m?[1m&quot;Main&quot;?[0m?[36m has ?[0m?[36m?[1m2?[0m?[36m seated players?[0m                          ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableHasSeatedPlayers(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36mplayer ?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m has reserved funds ?[0m?[36m?[1m500?[0m                       ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.playerHasReservedFunds(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36mplayer ?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m has available balance ?[0m?[36m?[1m500?[0m                    ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.playerHasAvailableBalance(java.lang.String,int)?[0m
+
+@e2e @table
+Scenario: Player leaves table and recovers funds       ?[90m# features/acceptance/poker_game.feature:67?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m            ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:68)
+?[0m
+  ?[36mWhen ?[0m?[36mplayer ?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m leaves table ?[0m?[36m?[1m&quot;Main&quot;?[0m              ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.playerLeavesTable(java.lang.String,java.lang.String)?[0m
+  ?[36mThen ?[0m?[36mplayer ?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m has bankroll ?[0m?[36m?[1m1000?[0m                ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.playerHasBankroll(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36mplayer ?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m has reserved funds ?[0m?[36m?[1m0?[0m              ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.playerHasReservedFunds(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36mtable ?[0m?[36m?[1m&quot;Main&quot;?[0m?[36m has ?[0m?[36m?[1m1?[0m?[36m seated player?[0m                 ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableHasSeatedPlayers(java.lang.String,int)?[0m
+
+@e2e @hand
+Scenario: Complete heads-up hand with fold             ?[90m# features/acceptance/poker_game.feature:85?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m            ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:86)
+?[0m
+  ?[36mWhen ?[0m?[36ma hand starts at table ?[0m?[36m?[1m&quot;Main&quot;?[0m                   ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.handStartsAtTable(java.lang.String)?[0m
+  ?[36mThen ?[0m?[36mwithin ?[0m?[36m?[1m2?[0m?[36m seconds:?[0m                               ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.withinNSeconds(int,io.cucumber.datatable.DataTable)?[0m
+    | domain | event_type  |
+    | table  | HandStarted |
+    | hand   | CardsDealt  |
+  ?[36mWhen ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m posts small blind ?[0m?[36m?[1m5?[0m                     ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.postsSmallBlind(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m posts big blind ?[0m?[36m?[1m10?[0m                         ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.postsBigBlind(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m folds?[0m                                    ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerFolds(java.lang.String)?[0m
+  ?[36mThen ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m wins the pot of ?[0m?[36m?[1m15?[0m                        ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerWinsPotOf(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36mwithin ?[0m?[36m?[1m2?[0m?[36m seconds:?[0m                                ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.withinNSeconds(int,io.cucumber.datatable.DataTable)?[0m
+    | domain | event_type   |
+    | hand   | HandComplete |
+    | table  | HandEnded    |
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m stack is ?[0m?[36m?[1m495?[0m                             ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerStackIs(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m stack is ?[0m?[36m?[1m505?[0m                               ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerStackIs(java.lang.String,int)?[0m
+
+@e2e @hand
+Scenario: Complete hand through showdown               ?[90m# features/acceptance/poker_game.feature:107?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m            ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:108)
+?[0m
+  ?[36mAnd ?[0m?[36mdeterministic deck seed ?[0m?[36m?[1m&quot;showdown-test&quot;?[0m          ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.deterministicDeckSeed(java.lang.String)?[0m
+  ?[36mWhen ?[0m?[36ma hand starts at table ?[0m?[36m?[1m&quot;Main&quot;?[0m                   ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.handStartsAtTable(java.lang.String)?[0m
+  ?[36mAnd ?[0m?[36mblinds are posted (?[0m?[36m?[1m5?[0m?[36m/?[0m?[36m?[1m10?[0m?[36m)?[0m                         ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.blindsArePosted(int,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m calls ?[0m?[36m?[1m10?[0m                                 ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerCalls(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m checks?[0m                                     ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerChecks(java.lang.String)?[0m
+  ?[36mThen ?[0m?[36mthe flop is dealt?[0m                               ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.flopIsDealt()?[0m
+  ?[36mWhen ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m checks?[0m                                    ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerChecks(java.lang.String)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m checks?[0m                                   ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerChecks(java.lang.String)?[0m
+  ?[36mThen ?[0m?[36mthe turn is dealt?[0m                               ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.turnIsDealt()?[0m
+  ?[36mWhen ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m checks?[0m                                    ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerChecks(java.lang.String)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m checks?[0m                                   ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerChecks(java.lang.String)?[0m
+  ?[36mThen ?[0m?[36mthe river is dealt?[0m                              ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.riverIsDealt()?[0m
+  ?[36mWhen ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m checks?[0m                                    ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerChecks(java.lang.String)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m checks?[0m                                   ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerChecks(java.lang.String)?[0m
+  ?[36mThen ?[0m?[36mshowdown begins?[0m                                 ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.showdownBegins()?[0m
+  ?[36mAnd ?[0m?[36mthe winner is determined by hand ranking?[0m         ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.winnerDeterminedByRanking()?[0m
+  ?[36mAnd ?[0m?[36mthe hand completes?[0m                               ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.handCompletes()?[0m
+
+@e2e @betting
+Scenario: Raise and re-raise sequence                  ?[90m# features/acceptance/poker_game.feature:137?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m            ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:138)
+?[0m
+  ?[36mWhen ?[0m?[36ma hand starts and blinds are posted (?[0m?[36m?[1m5?[0m?[36m/?[0m?[36m?[1m10?[0m?[36m)?[0m      ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.handStartsAndBlindsPosted(int,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m raises to ?[0m?[36m?[1m30?[0m                             ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerRaisesTo(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m re-raises to ?[0m?[36m?[1m90?[0m                            ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerReRaisesTo(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m calls ?[0m?[36m?[1m60?[0m                                 ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerCalls(java.lang.String,int)?[0m
+  ?[36mThen ?[0m?[36mthe pot is ?[0m?[36m?[1m180?[0m                                  ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.potIs(int)?[0m
+  ?[36mAnd ?[0m?[36mthe flop is dealt?[0m                                ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.flopIsDealt()?[0m
+
+@e2e @betting
+Scenario: All-in and call                              ?[90m# features/acceptance/poker_game.feature:150?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m            ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 100   |
+    | Bob   | 1    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:151)
+?[0m
+  ?[36mWhen ?[0m?[36ma hand starts and blinds are posted (?[0m?[36m?[1m5?[0m?[36m/?[0m?[36m?[1m10?[0m?[36m)?[0m      ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.handStartsAndBlindsPosted(int,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m goes all-in for ?[0m?[36m?[1m100?[0m                      ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerGoesAllIn(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m calls ?[0m?[36m?[1m100?[0m                                  ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerCalls(java.lang.String,int)?[0m
+  ?[36mThen ?[0m?[36mthe pot is ?[0m?[36m?[1m200?[0m                                  ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.potIs(int)?[0m
+  ?[36mAnd ?[0m?[36mshowdown is triggered immediately?[0m                ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.showdownTriggeredImmediately()?[0m
+
+@e2e @multiplayer
+Scenario: Three player hand with one fold              ?[90m# features/acceptance/poker_game.feature:168?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m            ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 500   |
+    | Carol | 2    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:169)
+?[0m
+  ?[36mWhen ?[0m?[36ma hand starts with dealer at seat ?[0m?[36m?[1m0?[0m             ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.handStartsWithDealerAtSeat(int)?[0m
+  ?[36mThen ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m is small blind and ?[0m?[36m?[1m&quot;Carol&quot;?[0m?[36m is big blind?[0m   ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.smallAndBigBlinds(java.lang.String,java.lang.String)?[0m
+  ?[36mWhen ?[0m?[36mblinds are posted (?[0m?[36m?[1m5?[0m?[36m/?[0m?[36m?[1m10?[0m?[36m)?[0m                        ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.blindsArePosted(int,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m calls ?[0m?[36m?[1m10?[0m                                 ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerCalls(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m folds?[0m                                      ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerFolds(java.lang.String)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Carol&quot;?[0m?[36m checks?[0m                                   ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerChecks(java.lang.String)?[0m
+  ?[36mThen ?[0m?[36mactive player count is ?[0m?[36m?[1m2?[0m                        ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.activePlayerCountIs(int)?[0m
+  ?[36mAnd ?[0m?[36mthe pot is ?[0m?[36m?[1m25?[0m                                    ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.potIs(int)?[0m
+
+@e2e @multiplayer
+Scenario: Side pot creation with all-in                   ?[90m# features/acceptance/poker_game.feature:184?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m    ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m               ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 50    |
+    | Bob   | 1    | 500   |
+    | Carol | 2    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:185)
+?[0m
+  ?[36mWhen ?[0m?[36ma hand starts and blinds are posted (?[0m?[36m?[1m5?[0m?[36m/?[0m?[36m?[1m10?[0m?[36m)?[0m         ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.handStartsAndBlindsPosted(int,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m goes all-in for ?[0m?[36m?[1m50?[0m                          ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerGoesAllIn(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m calls ?[0m?[36m?[1m50?[0m                                      ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerCalls(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Carol&quot;?[0m?[36m raises to ?[0m?[36m?[1m150?[0m                               ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerRaisesTo(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m calls ?[0m?[36m?[1m100?[0m                                     ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerCalls(java.lang.String,int)?[0m
+  ?[36mThen ?[0m?[36mthere is a main pot of ?[0m?[36m?[1m150?[0m?[36m with ?[0m?[36m?[1m3?[0m?[36m players eligible?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.mainPotWithEligible(int,int)?[0m
+  ?[36mAnd ?[0m?[36mthere is a side pot of ?[0m?[36m?[1m200?[0m?[36m with ?[0m?[36m?[1m2?[0m?[36m players eligible?[0m  ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.sidePotWithEligible(int,int)?[0m
+
+@e2e @variant
+Scenario: Five Card Draw with discard                  ?[90m# features/acceptance/poker_game.feature:205?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma Five Card Draw table ?[0m?[31m?[1m&quot;Draw&quot;?[0m?[31m with blinds ?[0m?[31m?[1m5?[0m?[31m/?[0m?[31m?[1m10?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.fiveCardDrawTable(java.lang.String,int,int)?[0m
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.fiveCardDrawTable(AcceptanceTableSteps.java:182)
+	at ✽.a Five Card Draw table &quot;Draw&quot; with blinds 5/10(classpath:features/acceptance/poker_game.feature:206)
+?[0m
+  ?[36mAnd ?[0m?[36mseated players:?[0m                                  ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.seatedPlayers(io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 500   |
+  ?[36mWhen ?[0m?[36ma hand starts at table ?[0m?[36m?[1m&quot;Draw&quot;?[0m                   ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.handStartsAtTable(java.lang.String)?[0m
+  ?[36mAnd ?[0m?[36mblinds are posted (?[0m?[36m?[1m5?[0m?[36m/?[0m?[36m?[1m10?[0m?[36m)?[0m                         ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.blindsArePosted(int,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m calls ?[0m?[36m?[1m10?[0m                                 ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerCalls(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m checks?[0m                                     ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerChecks(java.lang.String)?[0m
+  ?[36mThen ?[0m?[36mthe draw phase begins?[0m                           ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.drawPhaseBegins()?[0m
+  ?[36mWhen ?[0m?[36m&quot;Alice&quot; discards 2 cards at indices [0, 1]?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m stands pat?[0m                                 ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerStandsPat(java.lang.String)?[0m
+  ?[36mThen ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m has ?[0m?[36m?[1m5?[0m?[36m hole cards?[0m                        ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerHasHoleCards(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36mthe second betting round begins?[0m                  ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.secondBettingRoundBegins()?[0m
+
+@e2e @variant
+Scenario: Omaha deals 4 hole cards                     ?[90m# features/acceptance/poker_game.feature:222?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31man Omaha table ?[0m?[31m?[1m&quot;Omaha&quot;?[0m?[31m with blinds ?[0m?[31m?[1m10?[0m?[31m/?[0m?[31m?[1m20?[0m       ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.omahaTable(java.lang.String,int,int)?[0m
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.omahaTable(AcceptanceTableSteps.java:198)
+	at ✽.an Omaha table &quot;Omaha&quot; with blinds 10/20(classpath:features/acceptance/poker_game.feature:223)
+?[0m
+  ?[36mAnd ?[0m?[36mseated players:?[0m                                  ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.seatedPlayers(io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 1000  |
+    | Bob   | 1    | 1000  |
+  ?[36mWhen ?[0m?[36ma hand starts at table ?[0m?[36m?[1m&quot;Omaha&quot;?[0m                  ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.handStartsAtTable(java.lang.String)?[0m
+  ?[36mThen ?[0m?[36meach player has ?[0m?[36m?[1m4?[0m?[36m hole cards?[0m                    ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.eachPlayerHasHoleCards(int)?[0m
+  ?[36mAnd ?[0m?[36mthe remaining deck has ?[0m?[36m?[1m44?[0m?[36m cards?[0m                  ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.remainingDeckHasCards(int)?[0m
+
+@e2e @tournament
+Scenario: Player elimination                           ?[90m# features/acceptance/poker_game.feature:239?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m            ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 15    |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:240)
+?[0m
+  ?[36mWhen ?[0m?[36ma hand starts and blinds are posted (?[0m?[36m?[1m5?[0m?[36m/?[0m?[36m?[1m10?[0m?[36m)?[0m      ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.handStartsAndBlindsPosted(int,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m raises to ?[0m?[36m?[1m30?[0m                             ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerRaisesTo(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m goes all-in for ?[0m?[36m?[1m15?[0m                         ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerGoesAllIn(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m calls ?[0m?[36m?[1m0?[0m                                  ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerCalls(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36mshowdown occurs with ?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m winning?[0m             ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.showdownOccursWithWinner(java.lang.String)?[0m
+  ?[36mThen ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m has stack ?[0m?[36m?[1m0?[0m                               ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerHasStack(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m is eliminated from table ?[0m?[36m?[1m&quot;Main&quot;?[0m            ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerEliminatedFromTable(java.lang.String,java.lang.String)?[0m
+  ?[36mAnd ?[0m?[36mtable ?[0m?[36m?[1m&quot;Main&quot;?[0m?[36m has ?[0m?[36m?[1m1?[0m?[36m seated player?[0m                 ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableHasSeatedPlayers(java.lang.String,int)?[0m
+
+@e2e @tournament
+Scenario: Multiple hands with stack changes            ?[90m# features/acceptance/poker_game.feature:254?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m            ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:255)
+?[0m
+  ?[36mWhen ?[0m?[36mhand ?[0m?[36m?[1m1?[0m?[36m completes with ?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m winning ?[0m?[36m?[1m50?[0m        ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.handCompletesWithWinner(int,java.lang.String,int)?[0m
+  ?[36mThen ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m has stack ?[0m?[36m?[1m550?[0m                           ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerHasStack(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m has stack ?[0m?[36m?[1m450?[0m                              ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerHasStack(java.lang.String,int)?[0m
+  ?[36mWhen ?[0m?[36mhand ?[0m?[36m?[1m2?[0m?[36m completes with ?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m winning ?[0m?[36m?[1m100?[0m         ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.handCompletesWithWinner(int,java.lang.String,int)?[0m
+  ?[36mThen ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m has stack ?[0m?[36m?[1m450?[0m                           ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerHasStack(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m has stack ?[0m?[36m?[1m550?[0m                              ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerHasStack(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36mtable ?[0m?[36m?[1m&quot;Main&quot;?[0m?[36m has hand_count ?[0m?[36m?[1m2?[0m                    ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableHasHandCount(java.lang.String,int)?[0m
+
+@e2e @saga
+Scenario: HandStarted triggers DealCards via saga          ?[90m# features/acceptance/poker_game.feature:274?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m     ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with ?[0m?[31m?[1m2?[0m?[31m seated players?[0m               ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithNSeatedPlayers(java.lang.String,int)?[0m
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithNSeatedPlayers(AcceptanceTableSteps.java:136)
+	at ✽.a table &quot;Main&quot; with 2 seated players(classpath:features/acceptance/poker_game.feature:275)
+?[0m
+  ?[36mWhen ?[0m?[36mI send a StartHand command to table ?[0m?[36m?[1m&quot;Main&quot;?[0m          ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.sendStartHandCommand(java.lang.String)?[0m
+  ?[36mThen ?[0m?[36mwithin ?[0m?[36m?[1m3?[0m?[36m seconds:?[0m                                   ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.withinNSeconds(int,io.cucumber.datatable.DataTable)?[0m
+    | domain | event_type  |
+    | table  | HandStarted |
+    | hand   | CardsDealt  |
+  ?[36mAnd ?[0m?[36mthe hand has the same hand_number as the table event?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.handSameHandNumber()?[0m
+
+@e2e @saga
+Scenario: HandComplete triggers EndHand via saga       ?[90m# features/acceptance/poker_game.feature:284?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with an active hand?[0m             ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithActiveHand(java.lang.String)?[0m
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithNSeatedPlayers(AcceptanceTableSteps.java:136)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithActiveHand(AcceptanceTableSteps.java:166)
+	at ✽.a table &quot;Main&quot; with an active hand(classpath:features/acceptance/poker_game.feature:285)
+?[0m
+  ?[36mWhen ?[0m?[36mthe hand completes with winner ?[0m?[36m?[1m&quot;Alice&quot;?[0m          ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.handCompletesWithWinner(java.lang.String)?[0m
+  ?[36mThen ?[0m?[36mwithin ?[0m?[36m?[1m3?[0m?[36m seconds:?[0m                               ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.withinNSeconds(int,io.cucumber.datatable.DataTable)?[0m
+    | domain | event_type   |
+    | hand   | HandComplete |
+    | table  | HandEnded    |
+  ?[36mAnd ?[0m?[36mthe table updates player stacks?[0m                  ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.tableUpdatesPlayerStacks()?[0m
+
+@e2e @error
+Scenario: Reject action from wrong player              ?[90m# features/acceptance/poker_game.feature:300?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m            ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:301)
+?[0m
+  ?[36mAnd ?[0m?[36ma hand is dealt with ?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m to act?[0m              ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.handDealtWithPlayerToAct(java.lang.String)?[0m
+  ?[36mWhen ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m attempts to act?[0m                           ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerAttemptsToAct(java.lang.String)?[0m
+  ?[36mThen ?[0m?[36mthe command fails with ?[0m?[36m?[1m&quot;not your turn&quot;?[0m          ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.commandFailsWith(java.lang.String)?[0m
+
+@e2e @error
+Scenario: Reject invalid bet amount                    ?[90m# features/acceptance/poker_game.feature:310?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with an active hand?[0m             ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithActiveHand(java.lang.String)?[0m
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithNSeatedPlayers(AcceptanceTableSteps.java:136)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithActiveHand(AcceptanceTableSteps.java:166)
+	at ✽.a table &quot;Main&quot; with an active hand(classpath:features/acceptance/poker_game.feature:311)
+?[0m
+  ?[36mAnd ?[0m?[36mcurrent bet is ?[0m?[36m?[1m10?[0m?[36m and min raise is ?[0m?[36m?[1m10?[0m            ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.currentBetAndMinRaise(int,int)?[0m
+  ?[36mWhen ?[0m?[36mplayer attempts to raise to ?[0m?[36m?[1m15?[0m                  ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerAttemptsToRaise(int)?[0m
+  ?[36mThen ?[0m?[36mthe command fails with ?[0m?[36m?[1m&quot;minimum raise&quot;?[0m          ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.commandFailsWith(java.lang.String)?[0m
+
+@e2e @showdown
+Scenario: Split pot when both players have identical hands      ?[90m# features/acceptance/poker_game.feature:323?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m          ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m                     ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:324)
+?[0m
+  ?[36mAnd ?[0m?[36mdeterministic deck where both players make the same flush?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.deterministicDeckSameFlush()?[0m
+  ?[36mWhen ?[0m?[36ma hand starts and blinds are posted (?[0m?[36m?[1m5?[0m?[36m/?[0m?[36m?[1m10?[0m?[36m)?[0m               ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.handStartsAndBlindsPosted(int,int)?[0m
+  ?[36mAnd ?[0m?[36mboth players check to showdown?[0m                            ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.bothPlayersCheckToShowdown()?[0m
+  ?[36mThen ?[0m?[36mthe pot of ?[0m?[36m?[1m20?[0m?[36m is split evenly?[0m                            ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.potSplitEvenly(int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m wins ?[0m?[36m?[1m10?[0m                                           ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerWinsAmount(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m wins ?[0m?[36m?[1m10?[0m                                             ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerWinsAmount(java.lang.String,int)?[0m
+
+@e2e @showdown
+Scenario: Chopped board - community cards make the best hand       ?[90m# features/acceptance/poker_game.feature:336?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m             ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m                        ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:337)
+?[0m
+  ?[36mAnd ?[0m?[36mdeterministic deck with community cards making a royal flush?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.deterministicDeckRoyalFlush()?[0m
+  ?[36mWhen ?[0m?[36ma hand completes through showdown?[0m                           ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.handCompletesThroughShowdown()?[0m
+  ?[36mThen ?[0m?[36mboth players play the board?[0m                                 ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.bothPlayersPlayTheBoard()?[0m
+  ?[36mAnd ?[0m?[36mthe pot is split evenly?[0m                                      ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.potIsSplitEvenly()?[0m
+
+@e2e @showdown
+Scenario: Higher kicker wins with same pair            ?[90m# features/acceptance/poker_game.feature:353?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m            ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:354)
+?[0m
+  ?[36mAnd ?[0m?[36mdeterministic deck where:?[0m                        ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.deterministicDeckWhere(io.cucumber.datatable.DataTable)?[0m
+    | player | hole_cards | community      |
+    | Alice  | Ah Kc      | As 9d 7h 4c 2s |
+    | Bob    | Ad Qc      | As 9d 7h 4c 2s |
+  ?[36mWhen ?[0m?[36ma hand completes through showdown?[0m               ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.handCompletesThroughShowdown()?[0m
+  ?[36mThen ?[0m?[36mboth players have a pair of aces?[0m                ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.bothHavePairOfAces()?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m wins with king kicker over queen?[0m         ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerWinsWithKicker(java.lang.String)?[0m
+
+@e2e @betting
+Scenario: Check-raise on the flop                      ?[90m# features/acceptance/poker_game.feature:373?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m            ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:374)
+?[0m
+  ?[36mWhen ?[0m?[36ma hand starts and blinds are posted (?[0m?[36m?[1m5?[0m?[36m/?[0m?[36m?[1m10?[0m?[36m)?[0m      ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.handStartsAndBlindsPosted(int,int)?[0m
+  ?[36mAnd ?[0m?[36mpreflop betting completes with calls?[0m             ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.preflopBettingCompletes()?[0m
+  ?[36mAnd ?[0m?[36mthe flop is dealt?[0m                                ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.flopIsDealt()?[0m
+  ?[36mWhen ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m checks?[0m                                  ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerChecks(java.lang.String)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m bets ?[0m?[36m?[1m20?[0m                                    ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerBets(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m raises to ?[0m?[36m?[1m60?[0m                             ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerRaisesTo(java.lang.String,int)?[0m
+  ?[36mThen ?[0m?[36mthe pot is ?[0m?[36m?[1m100?[0m                                  ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.potIs(int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m must act?[0m                                   ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerMustAct(java.lang.String)?[0m
+
+@e2e @headsup
+Scenario: Heads-up blind posting - button is small blind ?[90m# features/acceptance/poker_game.feature:395?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m   ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m              ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:396)
+?[0m
+  ?[36mWhen ?[0m?[36ma hand starts with dealer at seat ?[0m?[36m?[1m0?[0m               ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.handStartsWithDealerAtSeat(int)?[0m
+  ?[36mThen ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m posts the small blind of ?[0m?[36m?[1m5?[0m                ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerPostsSmallBlindOf(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m posts the big blind of ?[0m?[36m?[1m10?[0m                    ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerPostsBigBlindOf(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m acts first preflop?[0m                         ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerActsFirstPreflop(java.lang.String)?[0m
+
+@e2e @headsup
+Scenario: Heads-up - big blind wins when button folds preflop ?[90m# features/acceptance/poker_game.feature:406?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m        ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m                   ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:407)
+?[0m
+  ?[36mWhen ?[0m?[36ma hand starts and blinds are posted (?[0m?[36m?[1m5?[0m?[36m/?[0m?[36m?[1m10?[0m?[36m)?[0m             ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.handStartsAndBlindsPosted(int,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m folds?[0m                                           ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerFolds(java.lang.String)?[0m
+  ?[36mThen ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m wins the pot of ?[0m?[36m?[1m15?[0m?[36m uncontested?[0m                   ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerWinsPotUncontested(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36mno showdown occurs?[0m                                      ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.noShowdownOccurs()?[0m
+
+@e2e @multiplayer
+Scenario: Big blind walks - everyone folds preflop     ?[90m# features/acceptance/poker_game.feature:423?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m            ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 500   |
+    | Carol | 2    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:424)
+?[0m
+  ?[36mWhen ?[0m?[36ma hand starts with dealer at seat ?[0m?[36m?[1m0?[0m             ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.handStartsWithDealerAtSeat(int)?[0m
+  ?[36mAnd ?[0m?[36mblinds are posted (?[0m?[36m?[1m5?[0m?[36m/?[0m?[36m?[1m10?[0m?[36m)?[0m                         ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.blindsArePosted(int,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m folds?[0m                                    ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerFolds(java.lang.String)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m folds?[0m                                      ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerFolds(java.lang.String)?[0m
+  ?[36mThen ?[0m?[36m?[0m?[36m?[1m&quot;Carol&quot;?[0m?[36m wins the pot of ?[0m?[36m?[1m15?[0m?[36m uncontested?[0m          ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerWinsPotUncontested(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36mthe hand ends without showdown?[0m                   ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.handEndsWithoutShowdown()?[0m
+
+@e2e @sidepots
+Scenario: Three side pots with four players               ?[90m# features/acceptance/poker_game.feature:443?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m    ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m               ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 50    |
+    | Bob   | 1    | 150   |
+    | Carol | 2    | 300   |
+    | Dave  | 3    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:444)
+?[0m
+  ?[36mWhen ?[0m?[36ma hand starts and blinds are posted (?[0m?[36m?[1m5?[0m?[36m/?[0m?[36m?[1m10?[0m?[36m)?[0m         ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.handStartsAndBlindsPosted(int,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m goes all-in for ?[0m?[36m?[1m50?[0m                          ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerGoesAllIn(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m goes all-in for ?[0m?[36m?[1m150?[0m                           ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerGoesAllIn(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Carol&quot;?[0m?[36m goes all-in for ?[0m?[36m?[1m300?[0m                         ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerGoesAllIn(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Dave&quot;?[0m?[36m calls ?[0m?[36m?[1m300?[0m                                    ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerCalls(java.lang.String,int)?[0m
+  ?[36mThen ?[0m?[36mthere is a main pot of ?[0m?[36m?[1m200?[0m?[36m with ?[0m?[36m?[1m4?[0m?[36m players eligible?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.mainPotWithEligible(int,int)?[0m
+  ?[36mAnd ?[0m?[36mthere is a side pot of ?[0m?[36m?[1m300?[0m?[36m with ?[0m?[36m?[1m3?[0m?[36m players eligible?[0m  ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.sidePotWithEligible(int,int)?[0m
+  ?[36mAnd ?[0m?[36mthere is a side pot of ?[0m?[36m?[1m300?[0m?[36m with ?[0m?[36m?[1m2?[0m?[36m players eligible?[0m  ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.sidePotWithEligible(int,int)?[0m
+
+@e2e @sidepots
+Scenario: Side pot awarded to second-best hand when main pot winner is all-in ?[90m# features/acceptance/poker_game.feature:460?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m                        ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m                                   ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 50    |
+    | Bob   | 1    | 500   |
+    | Carol | 2    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:461)
+?[0m
+  ?[36mAnd ?[0m?[36mdeterministic deck where Alice has best hand, Bob has second best?[0m       ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.deterministicDeckAliceBestBobSecond()?[0m
+  ?[36mWhen ?[0m?[36ma hand starts and blinds are posted (?[0m?[36m?[1m5?[0m?[36m/?[0m?[36m?[1m10?[0m?[36m)?[0m                             ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.handStartsAndBlindsPosted(int,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m goes all-in for ?[0m?[36m?[1m50?[0m                                              ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerGoesAllIn(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m raises to ?[0m?[36m?[1m200?[0m                                                     ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerRaisesTo(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Carol&quot;?[0m?[36m calls ?[0m?[36m?[1m200?[0m                                                       ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerCalls(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36mshowdown occurs?[0m                                                         ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.showdownOccurs()?[0m
+  ?[36mThen ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m wins main pot of ?[0m?[36m?[1m150?[0m                                           ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerWinsMainPot(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m wins side pot of ?[0m?[36m?[1m300?[0m                                              ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerWinsSidePot(java.lang.String,int)?[0m
+
+@e2e @betting
+Scenario: All-in below min-raise does not reopen action ?[90m# features/acceptance/poker_game.feature:483?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m  ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m             ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 25    |
+    | Carol | 2    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:484)
+?[0m
+  ?[36mWhen ?[0m?[36ma hand starts and blinds are posted (?[0m?[36m?[1m5?[0m?[36m/?[0m?[36m?[1m10?[0m?[36m)?[0m       ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.handStartsAndBlindsPosted(int,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m raises to ?[0m?[36m?[1m30?[0m                              ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerRaisesTo(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m goes all-in for ?[0m?[36m?[1m25?[0m                          ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerGoesAllIn(java.lang.String,int)?[0m
+  ?[36mThen ?[0m?[36m?[0m?[36m?[1m&quot;Carol&quot;?[0m?[36m may call ?[0m?[36m?[1m30?[0m?[36m or raise to at least ?[0m?[36m?[1m50?[0m      ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerMayCallOrRaise(java.lang.String,int,int)?[0m
+  ?[36mBut ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m may only call ?[0m?[36m?[1m0?[0m?[36m if ?[0m?[36m?[1m&quot;Carol&quot;?[0m?[36m just calls?[0m     ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerMayOnlyCall(java.lang.String,int,java.lang.String)?[0m
+
+@e2e @betting
+Scenario: All-in above half min-raise reopens action   ?[90m# features/acceptance/poker_game.feature:496?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m            ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 45    |
+    | Carol | 2    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:497)
+?[0m
+  ?[36mWhen ?[0m?[36ma hand starts and blinds are posted (?[0m?[36m?[1m5?[0m?[36m/?[0m?[36m?[1m10?[0m?[36m)?[0m      ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.handStartsAndBlindsPosted(int,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m raises to ?[0m?[36m?[1m30?[0m                             ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerRaisesTo(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Bob&quot;?[0m?[36m goes all-in for ?[0m?[36m?[1m45?[0m                         ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerGoesAllIn(java.lang.String,int)?[0m
+  ?[36mThen ?[0m?[36m?[0m?[36m?[1m&quot;Carol&quot;?[0m?[36m may call ?[0m?[36m?[1m45?[0m?[36m or raise to at least ?[0m?[36m?[1m60?[0m     ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerMayCallOrRaise(java.lang.String,int,int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m may re-raise if ?[0m?[36m?[1m&quot;Carol&quot;?[0m?[36m raises?[0m           ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerMayReRaise(java.lang.String,java.lang.String)?[0m
+
+@e2e @rebuy
+Scenario: Player adds chips between hands                ?[90m# features/acceptance/poker_game.feature:516?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m   ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m              ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 200   |
+    | Bob   | 1    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:517)
+?[0m
+  ?[36mAnd ?[0m?[36mplayer ?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m has bankroll ?[0m?[36m?[1m1000?[0m?[36m with ?[0m?[36m?[1m200?[0m?[36m reserved?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.playerHasBankrollWithReserved(java.lang.String,int,int)?[0m
+  ?[36mWhen ?[0m?[36mhand ?[0m?[36m?[1m1?[0m?[36m completes?[0m                                  ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.handCompletes(int)?[0m
+  ?[36mAnd ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m adds ?[0m?[36m?[1m300?[0m?[36m chips to her stack?[0m                ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerAddsChips(java.lang.String,int)?[0m
+  ?[36mThen ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m has stack ?[0m?[36m?[1m500?[0m                             ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerHasStack(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36mplayer ?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m has reserved funds ?[0m?[36m?[1m500?[0m              ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.playerHasReservedFunds(java.lang.String,int)?[0m
+  ?[36mAnd ?[0m?[36mplayer ?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m has available balance ?[0m?[36m?[1m500?[0m           ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.playerHasAvailableBalance(java.lang.String,int)?[0m
+
+@e2e @rebuy
+Scenario: Cannot add chips during active hand                ?[90m# features/acceptance/poker_game.feature:529?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m       ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m                  ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 200   |
+    | Bob   | 1    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:530)
+?[0m
+  ?[36mAnd ?[0m?[36ma hand is in progress?[0m                                  ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.handInProgress()?[0m
+  ?[36mWhen ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m attempts to add chips?[0m                         ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerAttemptsToAddChips(java.lang.String)?[0m
+  ?[36mThen ?[0m?[36mthe request fails with ?[0m?[36m?[1m&quot;cannot add chips during hand&quot;?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.requestFailsWith(java.lang.String)?[0m
+
+@e2e @rebuy
+Scenario: Cannot add chips beyond available bankroll    ?[90m# features/acceptance/poker_game.feature:539?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m  ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m             ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 200   |
+    | Bob   | 1    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/poker_game.feature:540)
+?[0m
+  ?[36mAnd ?[0m?[36mplayer ?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m has bankroll ?[0m?[36m?[1m300?[0m?[36m with ?[0m?[36m?[1m200?[0m?[36m reserved?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.playerHasBankrollWithReserved(java.lang.String,int,int)?[0m
+  ?[36mWhen ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m attempts to add ?[0m?[36m?[1m200?[0m?[36m chips?[0m                ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerAttemptsToAddNChips(java.lang.String,int)?[0m
+  ?[36mThen ?[0m?[36mthe request fails with ?[0m?[36m?[1m&quot;insufficient funds&quot;?[0m      ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.requestFailsWith(java.lang.String)?[0m
+
+@sync-mode @async
+Scenario: ASYNC mode returns before projectors complete              ?[90m# features/acceptance/sync_modes.feature:36?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m               ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31mregistered players with bankroll:?[0m                            ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.registeredPlayersWithBankroll(io.cucumber.datatable.DataTable)?[0m
+    | name  | bankroll |
+    | Alice | 1000     |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptancePlayerSteps.registeredPlayersWithBankroll(AcceptancePlayerSteps.java:76)
+	at ✽.registered players with bankroll:(classpath:features/acceptance/sync_modes.feature:37)
+?[0m
+  ?[36mWhen ?[0m?[36mI deposit ?[0m?[36m?[1m500?[0m?[36m chips to player ?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m with sync_mode ASYNC?[0m    ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.depositChipsAsync(int,java.lang.String)?[0m
+  ?[36mThen ?[0m?[36mthe command succeeds immediately?[0m                              ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.commandSucceedsImmediately()?[0m
+  ?[36mAnd ?[0m?[36mthe response does not include projection updates?[0m               ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.responseNoProjectionUpdates()?[0m
+  ?[36mBut ?[0m?[36mwithin ?[0m?[36m?[1m2?[0m?[36m seconds player ?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m bankroll projection shows ?[0m?[36m?[1m1500?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.withinNSecondsBankrollShows(int,java.lang.String,int)?[0m
+
+@sync-mode @async
+Scenario: ASYNC mode does not wait for saga execution      ?[90m# features/acceptance/sync_modes.feature:46?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m     ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m                ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/sync_modes.feature:47)
+?[0m
+  ?[36mWhen ?[0m?[36mI start a hand at table ?[0m?[36m?[1m&quot;Main&quot;?[0m?[36m with sync_mode ASYNC?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.startHandAsync(java.lang.String)?[0m
+  ?[36mThen ?[0m?[36mthe command succeeds with HandStarted event?[0m         ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.commandSucceedsWithHandStarted()?[0m
+  ?[36mAnd ?[0m?[36mthe response does not include cascade results?[0m        ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.responseNoCascadeResults()?[0m
+  ?[36mBut ?[0m?[36mwithin ?[0m?[36m?[1m3?[0m?[36m seconds hand domain has CardsDealt event?[0m    ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.withinSecondsCardsDealt(int)?[0m
+
+@sync-mode @simple
+Scenario: SIMPLE mode includes projection updates in response         ?[90m# features/acceptance/sync_modes.feature:63?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m                ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31mregistered players with bankroll:?[0m                             ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.registeredPlayersWithBankroll(io.cucumber.datatable.DataTable)?[0m
+    | name  | bankroll |
+    | Alice | 1000     |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptancePlayerSteps.registeredPlayersWithBankroll(AcceptancePlayerSteps.java:76)
+	at ✽.registered players with bankroll:(classpath:features/acceptance/sync_modes.feature:64)
+?[0m
+  ?[36mWhen ?[0m?[36mI deposit ?[0m?[36m?[1m500?[0m?[36m chips to player ?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m with sync_mode SIMPLE?[0m    ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.depositChipsSimple(int,java.lang.String)?[0m
+  ?[36mThen ?[0m?[36mthe command succeeds?[0m                                           ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.commandSucceeds()?[0m
+  ?[36mAnd ?[0m?[36mthe response includes projection updates for ?[0m?[36m?[1m&quot;output-projector&quot;?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.responseIncludesProjectionUpdatesFor(java.lang.String)?[0m
+  ?[36mAnd ?[0m?[36mthe projection shows bankroll ?[0m?[36m?[1m1500?[0m                              ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.projectionShowsBankroll(int)?[0m
+
+@sync-mode @simple
+Scenario: SIMPLE mode projectors see events immediately        ?[90m# features/acceptance/sync_modes.feature:73?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m         ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m                    ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/sync_modes.feature:74)
+?[0m
+  ?[36mWhen ?[0m?[36mI start a hand at table ?[0m?[36m?[1m&quot;Main&quot;?[0m?[36m with sync_mode SIMPLE?[0m    ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.startHandSimple(java.lang.String)?[0m
+  ?[36mThen ?[0m?[36mthe response includes projection updates?[0m                ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.responseIncludesProjectionUpdates()?[0m
+  ?[36mAnd ?[0m?[36mthe table projection shows hand_count incremented?[0m        ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.tableProjectionHandCountIncremented()?[0m
+  ?[36mBut ?[0m?[36mthe response does not include cascade results from sagas?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.responseNoCascadeResultsFromSagas()?[0m
+
+@sync-mode @simple
+Scenario: SIMPLE mode saga execution is asynchronous        ?[90m# features/acceptance/sync_modes.feature:84?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m      ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m                 ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/sync_modes.feature:85)
+?[0m
+  ?[36mWhen ?[0m?[36mI start a hand at table ?[0m?[36m?[1m&quot;Main&quot;?[0m?[36m with sync_mode SIMPLE?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.startHandSimple(java.lang.String)?[0m
+  ?[36mThen ?[0m?[36mthe command returns before DealCards is issued?[0m       ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.commandReturnsBeforeDealCards()?[0m
+  ?[36mBut ?[0m?[36mwithin ?[0m?[36m?[1m3?[0m?[36m seconds hand domain has CardsDealt event?[0m     ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.withinSecondsCardsDealt(int)?[0m
+
+@sync-mode @cascade
+Scenario: CASCADE mode waits for full saga chain                    ?[90m# features/acceptance/sync_modes.feature:100?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m              ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m                         ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/sync_modes.feature:101)
+?[0m
+  ?[36mWhen ?[0m?[36mI start a hand at table ?[0m?[36m?[1m&quot;Main&quot;?[0m?[36m with sync_mode CASCADE?[0m        ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.startHandCascade(java.lang.String)?[0m
+  ?[36mThen ?[0m?[36mthe response includes cascade results?[0m                        ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.responseIncludesCascadeResults()?[0m
+  ?[36mAnd ?[0m?[36mthe cascade results include DealCards command to hand domain?[0m  ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.cascadeIncludesDealCards()?[0m
+  ?[36mAnd ?[0m?[36mthe cascade results include CardsDealt event from hand domain?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.cascadeIncludesCardsDealt()?[0m
+
+@sync-mode @cascade
+Scenario: CASCADE mode includes all projection updates                          ?[90m# features/acceptance/sync_modes.feature:111?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m                          ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m                                     ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/sync_modes.feature:112)
+?[0m
+  ?[36mWhen ?[0m?[36mI start a hand at table ?[0m?[36m?[1m&quot;Main&quot;?[0m?[36m with sync_mode CASCADE?[0m                    ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.startHandCascade(java.lang.String)?[0m
+  ?[36mThen ?[0m?[36mthe response includes projection updates for both table and hand domains?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.responseIncludesProjectionUpdatesBothDomains()?[0m
+
+@sync-mode @cascade
+Scenario: CASCADE mode follows multi-hop saga chains   ?[90m# features/acceptance/sync_modes.feature:120?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m            ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/sync_modes.feature:121)
+?[0m
+  ?[36mAnd ?[0m?[36ma hand is in progress with ?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m to act?[0m        ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.handInProgressWithPlayerToAct(java.lang.String)?[0m
+  ?[36mWhen ?[0m?[36m?[0m?[36m?[1m&quot;Alice&quot;?[0m?[36m folds with sync_mode CASCADE?[0m            ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.playerFoldsCascade(java.lang.String)?[0m
+  ?[36mThen ?[0m?[36mthe response includes the full cascade chain:?[0m   ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.responseIncludesCascadeChain(io.cucumber.datatable.DataTable)?[0m
+    | domain | event_type    |
+    | hand   | PlayerFolded  |
+    | hand   | HandComplete  |
+    | table  | HandEnded     |
+    | player | FundsReleased |
+
+@sync-mode @cascade
+Scenario: CASCADE mode does not publish to event bus               ?[90m# features/acceptance/sync_modes.feature:135?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m             ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m                        ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/sync_modes.feature:136)
+?[0m
+  ?[36mAnd ?[0m?[36mI am monitoring the event bus?[0m                                ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.monitoringEventBus()?[0m
+  ?[36mWhen ?[0m?[36mI start a hand at table ?[0m?[36m?[1m&quot;Main&quot;?[0m?[36m with sync_mode CASCADE?[0m       ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.startHandCascade(java.lang.String)?[0m
+  ?[36mThen ?[0m?[36mno events are published to the bus during command execution?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.noEventsBusPublished()?[0m
+  ?[36mAnd ?[0m?[36mall events remain in-process?[0m                                 ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.allEventsInProcess()?[0m
+
+@cascade-error @fail-fast
+Scenario: FAIL_FAST stops on first saga error                                                 ?[90m# features/acceptance/sync_modes.feature:152?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m                                        ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m                                                   ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/sync_modes.feature:153)
+?[0m
+  ?[36mAnd ?[0m?[36mthe table-hand saga is configured to fail?[0m                                               ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.tableHandSagaConfiguredToFail()?[0m
+  ?[36mWhen ?[0m?[36mI start a hand at table ?[0m?[36m?[1m&quot;Main&quot;?[0m?[36m with sync_mode CASCADE and cascade_error_mode FAIL_FAST?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.startHandCascadeFailFast(java.lang.String)?[0m
+  ?[36mThen ?[0m?[36mthe command fails with saga error?[0m                                                      ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.commandFailsWithSagaError()?[0m
+  ?[36mAnd ?[0m?[36mno further sagas are executed after the failure?[0m                                         ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.noFurtherSagasAfterFailure()?[0m
+  ?[36mAnd ?[0m?[36mthe original HandStarted event is still persisted?[0m                                       ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.originalHandStartedPersisted()?[0m
+
+@cascade-error @continue
+Scenario: CONTINUE collects errors and proceeds                                              ?[90m# features/acceptance/sync_modes.feature:164?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m                                       ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m                                                  ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/sync_modes.feature:165)
+?[0m
+  ?[36mAnd ?[0m?[36mthe table-hand saga is configured to fail?[0m                                              ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.tableHandSagaConfiguredToFail()?[0m
+  ?[36mAnd ?[0m?[36mthe output projector is healthy?[0m                                                        ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.outputProjectorHealthy()?[0m
+  ?[36mWhen ?[0m?[36mI start a hand at table ?[0m?[36m?[1m&quot;Main&quot;?[0m?[36m with sync_mode CASCADE and cascade_error_mode CONTINUE?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.startHandCascadeContinue(java.lang.String)?[0m
+  ?[36mThen ?[0m?[36mthe command succeeds?[0m                                                                  ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.commandSucceeds()?[0m
+  ?[36mAnd ?[0m?[36mthe response includes cascade_errors with the saga failure?[0m                             ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.responseIncludesCascadeErrors()?[0m
+  ?[36mAnd ?[0m?[36mthe response includes successful projection updates?[0m                                    ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.responseIncludesSuccessfulProjectionUpdates()?[0m
+  ?[36mAnd ?[0m?[36mother sagas continue executing despite the failure?[0m                                     ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.otherSagasContinue()?[0m
+
+@cascade-error @compensate
+Scenario: COMPENSATE rolls back on saga error                                      ?[90m# features/acceptance/sync_modes.feature:178?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m                             ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m                                        ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/sync_modes.feature:179)
+?[0m
+  ?[36mAnd ?[0m?[36mthe hand-player saga is configured to fail on PotAwarded?[0m                     ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.handPlayerSagaConfiguredToFail()?[0m
+  ?[36mAnd ?[0m?[36ma hand is in progress?[0m                                                        ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.handInProgress()?[0m
+  ?[36mWhen ?[0m?[36mthe hand completes with sync_mode CASCADE and cascade_error_mode COMPENSATE?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptanceHandSteps.handCompletesWithCascadeCompensate()?[0m
+  ?[36mThen ?[0m?[36mcompensation commands are issued in reverse order?[0m                           ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.compensationInReverseOrder()?[0m
+  ?[36mAnd ?[0m?[36mthe command fails after compensation completes?[0m                               ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.commandFailsAfterCompensation()?[0m
+
+@cascade-error @dead-letter
+Scenario: DEAD_LETTER sends failures to DLQ and continues                                       ?[90m# features/acceptance/sync_modes.feature:190?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m                                          ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m                                                     ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/sync_modes.feature:191)
+?[0m
+  ?[36mAnd ?[0m?[36mthe table-hand saga is configured to fail?[0m                                                 ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.tableHandSagaConfiguredToFail()?[0m
+  ?[36mAnd ?[0m?[36ma dead letter queue is configured?[0m                                                         ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.deadLetterQueueConfigured()?[0m
+  ?[36mWhen ?[0m?[36mI start a hand at table ?[0m?[36m?[1m&quot;Main&quot;?[0m?[36m with sync_mode CASCADE and cascade_error_mode DEAD_LETTER?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.startHandCascadeDeadLetter(java.lang.String)?[0m
+  ?[36mThen ?[0m?[36mthe command succeeds?[0m                                                                     ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.commandSucceeds()?[0m
+  ?[36mAnd ?[0m?[36mthe saga failure is published to the dead letter queue?[0m                                    ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.sagaFailureToDeadLetter()?[0m
+  ?[36mAnd ?[0m?[36mthe dead letter includes:?[0m                                                                 ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.deadLetterIncludes(io.cucumber.datatable.DataTable)?[0m
+    | field            | value           |
+    | source_component | saga-table-hand |
+    | rejection_reason | contains error  |
+  ?[36mAnd ?[0m?[36mother sagas continue executing?[0m                                                            ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.otherSagasContinueExecuting()?[0m
+
+@sync-mode @cascade @pm
+Scenario: CASCADE mode includes process manager execution    ?[90m# features/acceptance/sync_modes.feature:212?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m       ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m                  ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/sync_modes.feature:213)
+?[0m
+  ?[36mAnd ?[0m?[36mthe hand-flow process manager is registered?[0m            ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.handFlowPmRegistered()?[0m
+  ?[36mWhen ?[0m?[36mI start a hand at table ?[0m?[36m?[1m&quot;Main&quot;?[0m?[36m with sync_mode CASCADE?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.startHandCascade(java.lang.String)?[0m
+  ?[36mThen ?[0m?[36mthe process manager receives the correlated events?[0m    ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.pmReceivesCorrelatedEvents()?[0m
+  ?[36mAnd ?[0m?[36mthe response includes PM state updates?[0m                 ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.responseIncludesPmUpdates()?[0m
+
+@sync-mode @cascade @pm
+Scenario: Process manager skipped without correlation ID             ?[90m# features/acceptance/sync_modes.feature:223?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m               ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m                          ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/sync_modes.feature:224)
+?[0m
+  ?[36mAnd ?[0m?[36mthe hand-flow process manager is registered?[0m                    ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.handFlowPmRegistered()?[0m
+  ?[36mWhen ?[0m?[36mI send an event without correlation_id with sync_mode CASCADE?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.sendEventWithoutCorrelationCascade()?[0m
+  ?[36mThen ?[0m?[36mthe process manager is not invoked?[0m                            ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.pmNotInvoked()?[0m
+  ?[36mAnd ?[0m?[36msagas still execute normally?[0m                                   ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.sagasExecuteNormally()?[0m
+
+@sync-mode @performance
+Scenario: ASYNC mode has lowest latency                    ?[90m# features/acceptance/sync_modes.feature:239?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m     ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31m?[0m?[31m?[1m10?[0m?[31m registered players?[0m                              ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.nRegisteredPlayers(int)?[0m
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptancePlayerSteps.nRegisteredPlayers(AcceptancePlayerSteps.java:124)
+	at ✽.10 registered players(classpath:features/acceptance/sync_modes.feature:240)
+?[0m
+  ?[36mWhen ?[0m?[36mI deposit chips to all players with sync_mode ASYNC?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.depositChipsToAllPlayersAsync()?[0m
+  ?[36mThen ?[0m?[36mall commands complete within ?[0m?[36m?[1m100?[0m?[36mms each?[0m             ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.allCommandsWithinMs(int)?[0m
+  ?[36mAnd ?[0m?[36mtotal execution time is less than with SIMPLE mode?[0m   ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.totalTimeLessThanSimple()?[0m
+
+@sync-mode @performance
+Scenario: CASCADE mode has highest latency but full consistency ?[90m# features/acceptance/sync_modes.feature:246?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m          ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[31mGiven ?[0m?[31ma table ?[0m?[31m?[1m&quot;Main&quot;?[0m?[31m with seated players:?[0m                     ?[90m# dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(java.lang.String,io.cucumber.datatable.DataTable)?[0m
+    | name  | seat | stack |
+    | Alice | 0    | 500   |
+    | Bob   | 1    | 500   |
+      ?[31mdev.angzarr.client.Errors$GrpcError: UNAVAILABLE: io exception
+	at dev.angzarr.client.CommandHandlerClient.handleCommand(CommandHandlerClient.java:145)
+	at dev.angzarr.examples.client.GrpcCommandClient.sendCommand(GrpcCommandClient.java:47)
+	at dev.angzarr.examples.client.TestContext.sendCommand(TestContext.java:106)
+	at dev.angzarr.examples.acceptance.AcceptanceTableSteps.tableWithSeatedPlayers(AcceptanceTableSteps.java:86)
+	at ✽.a table &quot;Main&quot; with seated players:(classpath:features/acceptance/sync_modes.feature:247)
+?[0m
+  ?[36mWhen ?[0m?[36mI start a hand at table ?[0m?[36m?[1m&quot;Main&quot;?[0m?[36m with sync_mode CASCADE?[0m    ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.startHandCascade(java.lang.String)?[0m
+  ?[36mThen ?[0m?[36mthe response time is higher than ASYNC or SIMPLE?[0m         ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.responseTimeHigher()?[0m
+  ?[36mBut ?[0m?[36mall cross-domain state is consistent immediately?[0m          ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.allStateConsistent()?[0m
+
+@sync-mode @edge-case
+Scenario: Empty saga list in CASCADE mode succeeds     ?[90m# features/acceptance/sync_modes.feature:260?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[32mGiven ?[0m?[32ma domain with no registered sagas?[0m              ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.domainWithNoSagas()?[0m
+  ?[32mWhen ?[0m?[32mI execute a command with sync_mode CASCADE?[0m      ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.executeCommandCascade()?[0m
+  ?[32mThen ?[0m?[32mthe command succeeds?[0m                            ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.commandSucceeds()?[0m
+  ?[32mAnd ?[0m?[32mthe response has empty cascade_results?[0m           ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.emptyResponse()?[0m
+
+@sync-mode @edge-case
+Scenario: Saga producing no commands in CASCADE mode          ?[90m# features/acceptance/sync_modes.feature:267?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m        ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[32mGiven ?[0m?[32ma table with no seated players?[0m                        ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.tableWithNoSeatedPlayers()?[0m
+  ?[32mWhen ?[0m?[32mI start a hand at table ?[0m?[32m?[1m&quot;Empty&quot;?[0m?[32m with sync_mode CASCADE?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.startHandCascade(java.lang.String)?[0m
+  ?[32mThen ?[0m?[32mthe saga produces no commands?[0m                          ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.sagaProducesNoCommands()?[0m
+  ?[32mAnd ?[0m?[32mthe command succeeds with HandStarted only?[0m              ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.commandSucceedsWithHandStartedOnly()?[0m
+
+@cascade-error @edge-case
+Scenario: All sagas fail in CONTINUE mode                              ?[90m# features/acceptance/sync_modes.feature:274?[0m
+  ?[32mGiven ?[0m?[32mthe poker system is running in standalone mode?[0m                 ?[90m# dev.angzarr.examples.acceptance.AcceptancePlayerSteps.pokerSystemRunning()?[0m
+  ?[32mGiven ?[0m?[32mmultiple sagas configured to fail?[0m                              ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.multipleSagasConfiguredToFail()?[0m
+  ?[32mWhen ?[0m?[32mI execute a triggering command with cascade_error_mode CONTINUE?[0m ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.executeTriggeringContinue()?[0m
+  ?[32mThen ?[0m?[32mthe command succeeds?[0m                                            ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.commandSucceeds()?[0m
+  ?[32mAnd ?[0m?[32mall saga errors are collected in cascade_errors?[0m                  ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.allSagaErrorsCollected()?[0m
+  ?[32mAnd ?[0m?[32mthe original event is still persisted?[0m                            ?[90m# dev.angzarr.examples.acceptance.AcceptanceSyncSteps.originalEventPersisted()?[0m
+</pre>
+</span>
+</div>
+<div id="tab3" class="tab">
+<h2>Standard error</h2>
+<span class="code">
+<pre>WARNING: A Java agent has been loaded dynamically (/home/babbitt/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.14.9/dfb8707031008535048bad2b69735f46d0b6c5e5/byte-buddy-agent-1.14.9.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 8.5</a> at Apr 8, 2026, 8:21:51 PM</p>
+</div>
+</div>
+</body>
+</html>

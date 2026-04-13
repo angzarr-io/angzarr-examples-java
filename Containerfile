@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.4
 # Java poker examples - optimized multi-stage build
-# Build: podman build -t poker-java-player --target agg-player -f examples/java/Containerfile .
-# Context must be repo root for client library access
+# Build: podman build -t poker-java-player --target agg-player -f Containerfile .
+# Context is the repo root
 #
 # Optimizations:
 # 1. Shared gradle dependency download - runs once
@@ -32,43 +32,42 @@ FROM base AS deps
 
 WORKDIR /app
 
-# Copy proto files (required by client/java/proto for proto compilation)
-COPY proto ./proto
+# Copy client library submodule (includes proto and client/java)
+COPY angzarr-client-java ./angzarr-client-java
 
-# Copy client library (composite build dependency)
-COPY client/java ./client/java
+# Copy angzarr-project protos (needed by generateProto via gradle.properties)
+COPY angzarr-project/proto ./angzarr-project/proto
 
 # Copy gradle wrapper and build files
-COPY examples/java/gradle ./examples/java/gradle
-COPY examples/java/gradlew ./examples/java/
-COPY examples/java/build.gradle.kts ./examples/java/
-COPY examples/java/settings.gradle.kts ./examples/java/
+COPY gradle ./gradle
+COPY gradle.properties ./
+COPY gradlew ./
+COPY build.gradle.kts ./
+COPY settings.gradle.kts ./
 
 # Copy all project build files for dependency resolution
-COPY examples/java/player/agg/build.gradle.kts ./examples/java/player/agg/
-COPY examples/java/table/agg/build.gradle.kts ./examples/java/table/agg/
-COPY examples/java/hand/agg/build.gradle.kts ./examples/java/hand/agg/
-COPY examples/java/table/saga-hand/build.gradle.kts ./examples/java/table/saga-hand/
-COPY examples/java/table/saga-player/build.gradle.kts ./examples/java/table/saga-player/
-COPY examples/java/hand/saga-table/build.gradle.kts ./examples/java/hand/saga-table/
-COPY examples/java/hand/saga-player/build.gradle.kts ./examples/java/hand/saga-player/
-COPY examples/java/hand-flow/build.gradle.kts ./examples/java/hand-flow/
-COPY examples/java/prj-output/build.gradle.kts ./examples/java/prj-output/
-COPY examples/java/tests/build.gradle.kts ./examples/java/tests/
+COPY player/agg/build.gradle.kts ./player/agg/
+COPY table/agg/build.gradle.kts ./table/agg/
+COPY hand/agg/build.gradle.kts ./hand/agg/
+COPY table/saga-hand/build.gradle.kts ./table/saga-hand/
+COPY table/saga-player/build.gradle.kts ./table/saga-player/
+COPY hand/saga-table/build.gradle.kts ./hand/saga-table/
+COPY hand/saga-player/build.gradle.kts ./hand/saga-player/
+COPY hand-flow/build.gradle.kts ./hand-flow/
+COPY prj-output/build.gradle.kts ./prj-output/
+COPY tests/build.gradle.kts ./tests/
 
 # Create source stubs for dependency resolution
-RUN mkdir -p examples/java/player/agg/src/main/java \
-    examples/java/table/agg/src/main/java \
-    examples/java/hand/agg/src/main/java \
-    examples/java/table/saga-hand/src/main/java \
-    examples/java/table/saga-player/src/main/java \
-    examples/java/hand/saga-table/src/main/java \
-    examples/java/hand/saga-player/src/main/java \
-    examples/java/hand-flow/src/main/java \
-    examples/java/prj-output/src/main/java \
-    examples/java/tests/src/test/java
-
-WORKDIR /app/examples/java
+RUN mkdir -p player/agg/src/main/java \
+    table/agg/src/main/java \
+    hand/agg/src/main/java \
+    table/saga-hand/src/main/java \
+    table/saga-player/src/main/java \
+    hand/saga-table/src/main/java \
+    hand/saga-player/src/main/java \
+    hand-flow/src/main/java \
+    prj-output/src/main/java \
+    tests/src/test/java
 
 # Download dependencies with persistent cache
 RUN --mount=type=cache,id=gradle-cache,target=/root/.gradle,sharing=locked \
@@ -82,29 +81,29 @@ FROM deps AS source
 WORKDIR /app
 
 # Copy all source files
-COPY examples/java/player ./examples/java/player
-COPY examples/java/table ./examples/java/table
-COPY examples/java/hand ./examples/java/hand
-COPY examples/java/hand-flow ./examples/java/hand-flow
-COPY examples/java/prj-output ./examples/java/prj-output
+COPY player ./player
+COPY table ./table
+COPY hand ./hand
+COPY hand-flow ./hand-flow
+COPY prj-output ./prj-output
 
 # ============================================================================
 # Aggregate builds (Spring Boot uses bootJar, not shadowJar)
 # ============================================================================
 FROM source AS build-player
-WORKDIR /app/examples/java
+WORKDIR /app
 RUN --mount=type=cache,id=gradle-cache,target=/root/.gradle,sharing=locked \
     ./gradlew :player-agg:bootJar --no-daemon \
     && cp player/agg/build/libs/*.jar /out.jar
 
 FROM source AS build-table
-WORKDIR /app/examples/java
+WORKDIR /app
 RUN --mount=type=cache,id=gradle-cache,target=/root/.gradle,sharing=locked \
     ./gradlew :table-agg:bootJar --no-daemon \
     && cp table/agg/build/libs/*.jar /out.jar
 
 FROM source AS build-hand
-WORKDIR /app/examples/java
+WORKDIR /app
 RUN --mount=type=cache,id=gradle-cache,target=/root/.gradle,sharing=locked \
     ./gradlew :hand-agg:bootJar --no-daemon \
     && cp hand/agg/build/libs/*.jar /out.jar
@@ -113,25 +112,25 @@ RUN --mount=type=cache,id=gradle-cache,target=/root/.gradle,sharing=locked \
 # Saga builds
 # ============================================================================
 FROM source AS build-saga-table-hand
-WORKDIR /app/examples/java
+WORKDIR /app
 RUN --mount=type=cache,id=gradle-cache,target=/root/.gradle,sharing=locked \
     ./gradlew :table-saga-hand:bootJar --no-daemon \
     && cp table/saga-hand/build/libs/*.jar /out.jar
 
 FROM source AS build-saga-table-player
-WORKDIR /app/examples/java
+WORKDIR /app
 RUN --mount=type=cache,id=gradle-cache,target=/root/.gradle,sharing=locked \
     ./gradlew :table-saga-player:bootJar --no-daemon \
     && cp table/saga-player/build/libs/*.jar /out.jar
 
 FROM source AS build-saga-hand-table
-WORKDIR /app/examples/java
+WORKDIR /app
 RUN --mount=type=cache,id=gradle-cache,target=/root/.gradle,sharing=locked \
     ./gradlew :hand-saga-table:bootJar --no-daemon \
     && cp hand/saga-table/build/libs/*.jar /out.jar
 
 FROM source AS build-saga-hand-player
-WORKDIR /app/examples/java
+WORKDIR /app
 RUN --mount=type=cache,id=gradle-cache,target=/root/.gradle,sharing=locked \
     ./gradlew :hand-saga-player:bootJar --no-daemon \
     && cp hand/saga-player/build/libs/*.jar /out.jar
@@ -140,7 +139,7 @@ RUN --mount=type=cache,id=gradle-cache,target=/root/.gradle,sharing=locked \
 # Process Manager build
 # ============================================================================
 FROM source AS build-pmg-hand-flow
-WORKDIR /app/examples/java
+WORKDIR /app
 RUN --mount=type=cache,id=gradle-cache,target=/root/.gradle,sharing=locked \
     ./gradlew :hand-flow:bootJar --no-daemon \
     && cp hand-flow/build/libs/*.jar /out.jar
@@ -149,7 +148,7 @@ RUN --mount=type=cache,id=gradle-cache,target=/root/.gradle,sharing=locked \
 # Projector build
 # ============================================================================
 FROM source AS build-prj-output
-WORKDIR /app/examples/java
+WORKDIR /app
 RUN --mount=type=cache,id=gradle-cache,target=/root/.gradle,sharing=locked \
     ./gradlew :prj-output:bootJar --no-daemon \
     && cp prj-output/build/libs/*.jar /out.jar

@@ -9,25 +9,34 @@ ROOT := `git rev-parse --show-toplevel`
 default:
     @just --list
 
-build:
+# Proto compilation is handled by the Gradle protobuf plugin, which reads
+# directly from angzarr-project/proto/ (configured via gradle.properties).
+# No file copying needed.  This recipe only cleans stale build artifacts.
+proto-gen:
+    rm -rf "{{ROOT}}/angzarr-client-java/proto/build"
+
+build: proto-gen
     ./gradlew build -x test
 
-build-dev:
+build-dev: proto-gen
     ./gradlew build -x test --info
 
-test-unit:
-    ./gradlew test --tests "*Test"
+test-unit: proto-gen
+    ./gradlew test
 
-test-acceptance:
-    ./gradlew :tests:test
+test-acceptance: proto-gen
+    PLAYER_URL="${PLAYER_URL:-localhost:1310}" \
+    TABLE_URL="${TABLE_URL:-localhost:1311}" \
+    HAND_URL="${HAND_URL:-localhost:1312}" \
+    ./gradlew :tests:cucumberAcceptanceTest
 
-test:
+test: proto-gen
     ./gradlew test
 
 fmt:
     ./gradlew spotlessApply || echo "Spotless not configured, skipping format"
 
-lint:
+lint: proto-gen
     ./gradlew check -x test
 
 deps:
