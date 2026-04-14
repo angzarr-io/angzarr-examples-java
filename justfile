@@ -81,3 +81,7 @@ run: build
 clean:
     just _container "./gradlew clean" || true
     rm -rf "{{ROOT}}/data"
+
+# Auto-format code
+fmt-fix:
+    just _container fmt-fix
