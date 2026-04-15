@@ -144,7 +144,7 @@ public class TournamentSteps {
     state.applyPaused(TournamentPaused.newBuilder().setReason("break").build());
   }
 
-  @Given("{int} players enrolled")
+  @Given("^(\\d+) players? enrolled$")
   public void nPlayersEnrolled(int n) {
     for (int i = 0; i < n; i++) {
       enrollPlayer("player-" + (i + 1));
