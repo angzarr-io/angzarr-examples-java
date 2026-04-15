@@ -279,8 +279,7 @@ jobs:
         run: |
           # Generate proto descriptor for gateway type discovery
           echo "Generating gateway descriptor from examples protos..."
-          buf export buf.build/angzarr/examples -o examples-proto
-          buf build examples-proto -o types.bin
+          buf build angzarr-project/proto -o types.bin
           echo "Descriptor size: $(stat -c%s types.bin) bytes"
 
       - name: Create gateway descriptor ConfigMap
