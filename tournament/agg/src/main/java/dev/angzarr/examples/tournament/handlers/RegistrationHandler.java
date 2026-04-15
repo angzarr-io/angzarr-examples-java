@@ -36,8 +36,8 @@ public final class RegistrationHandler {
   }
 
   /**
-   * Handle EnrollPlayer — returns either enrolled or rejected event.
-   * Returns Object to support dual-event pattern (enrolled OR rejected).
+   * Handle EnrollPlayer — returns either enrolled or rejected event. Returns Object to support
+   * dual-event pattern (enrolled OR rejected).
    */
   public static com.google.protobuf.Message handleEnroll(EnrollPlayer cmd, TournamentState state) {
     String rootHex = bytesToHex(cmd.getPlayerRoot().toByteArray());

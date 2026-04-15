@@ -32,14 +32,15 @@ public final class CreateHandler {
     }
 
     // Compute
-    TournamentCreated.Builder builder = TournamentCreated.newBuilder()
-        .setName(cmd.getName())
-        .setGameVariant(cmd.getGameVariant())
-        .setBuyIn(cmd.getBuyIn())
-        .setStartingStack(cmd.getStartingStack())
-        .setMaxPlayers(cmd.getMaxPlayers())
-        .setMinPlayers(cmd.getMinPlayers())
-        .setCreatedAt(now());
+    TournamentCreated.Builder builder =
+        TournamentCreated.newBuilder()
+            .setName(cmd.getName())
+            .setGameVariant(cmd.getGameVariant())
+            .setBuyIn(cmd.getBuyIn())
+            .setStartingStack(cmd.getStartingStack())
+            .setMaxPlayers(cmd.getMaxPlayers())
+            .setMinPlayers(cmd.getMinPlayers())
+            .setCreatedAt(now());
 
     if (cmd.hasRebuyConfig()) {
       builder.setRebuyConfig(cmd.getRebuyConfig());

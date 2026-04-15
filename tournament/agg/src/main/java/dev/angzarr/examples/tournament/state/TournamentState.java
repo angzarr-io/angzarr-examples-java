@@ -9,8 +9,8 @@ import java.util.Map;
 /**
  * Internal state for the Tournament aggregate.
  *
- * <p>Tracks tournament configuration, registration status, enrolled players,
- * blind level progression, and elimination tracking.
+ * <p>Tracks tournament configuration, registration status, enrolled players, blind level
+ * progression, and elimination tracking.
  */
 public class TournamentState {
 
@@ -28,11 +28,25 @@ public class TournamentState {
   private int playersRemaining = 0;
   private long totalPrizePool = 0;
 
-  public boolean exists() { return !name.isEmpty(); }
-  public boolean isRegistrationOpen() { return status == TournamentStatus.TOURNAMENT_REGISTRATION_OPEN; }
-  public boolean isRunning() { return status == TournamentStatus.TOURNAMENT_RUNNING; }
-  public boolean isFull() { return registeredPlayers.size() >= maxPlayers; }
-  public boolean isPlayerRegistered(String rootHex) { return registeredPlayers.containsKey(rootHex); }
+  public boolean exists() {
+    return !name.isEmpty();
+  }
+
+  public boolean isRegistrationOpen() {
+    return status == TournamentStatus.TOURNAMENT_REGISTRATION_OPEN;
+  }
+
+  public boolean isRunning() {
+    return status == TournamentStatus.TOURNAMENT_RUNNING;
+  }
+
+  public boolean isFull() {
+    return registeredPlayers.size() >= maxPlayers;
+  }
+
+  public boolean isPlayerRegistered(String rootHex) {
+    return registeredPlayers.containsKey(rootHex);
+  }
 
   public int playerRebuyCount(String rootHex) {
     PlayerRegistration reg = registeredPlayers.get(rootHex);
@@ -40,18 +54,53 @@ public class TournamentState {
   }
 
   // Getters
-  public String getName() { return name; }
-  public TournamentStatus getStatus() { return status; }
-  public long getBuyIn() { return buyIn; }
-  public long getStartingStack() { return startingStack; }
-  public int getMaxPlayers() { return maxPlayers; }
-  public int getMinPlayers() { return minPlayers; }
-  public RebuyConfig getRebuyConfig() { return rebuyConfig; }
-  public List<BlindLevel> getBlindStructure() { return blindStructure; }
-  public int getCurrentLevel() { return currentLevel; }
-  public Map<String, PlayerRegistration> getRegisteredPlayers() { return registeredPlayers; }
-  public int getPlayersRemaining() { return playersRemaining; }
-  public long getTotalPrizePool() { return totalPrizePool; }
+  public String getName() {
+    return name;
+  }
+
+  public TournamentStatus getStatus() {
+    return status;
+  }
+
+  public long getBuyIn() {
+    return buyIn;
+  }
+
+  public long getStartingStack() {
+    return startingStack;
+  }
+
+  public int getMaxPlayers() {
+    return maxPlayers;
+  }
+
+  public int getMinPlayers() {
+    return minPlayers;
+  }
+
+  public RebuyConfig getRebuyConfig() {
+    return rebuyConfig;
+  }
+
+  public List<BlindLevel> getBlindStructure() {
+    return blindStructure;
+  }
+
+  public int getCurrentLevel() {
+    return currentLevel;
+  }
+
+  public Map<String, PlayerRegistration> getRegisteredPlayers() {
+    return registeredPlayers;
+  }
+
+  public int getPlayersRemaining() {
+    return playersRemaining;
+  }
+
+  public long getTotalPrizePool() {
+    return totalPrizePool;
+  }
 
   // Event appliers
 
@@ -81,11 +130,12 @@ public class TournamentState {
 
   public void applyPlayerEnrolled(TournamentPlayerEnrolled event) {
     String rootHex = bytesToHex(event.getPlayerRoot().toByteArray());
-    PlayerRegistration reg = PlayerRegistration.newBuilder()
-        .setPlayerRoot(event.getPlayerRoot())
-        .setFeePaid(event.getFeePaid())
-        .setStartingStack(event.getStartingStack())
-        .build();
+    PlayerRegistration reg =
+        PlayerRegistration.newBuilder()
+            .setPlayerRoot(event.getPlayerRoot())
+            .setFeePaid(event.getFeePaid())
+            .setStartingStack(event.getStartingStack())
+            .build();
     registeredPlayers.put(rootHex, reg);
     playersRemaining++;
     totalPrizePool += event.getFeePaid();
@@ -99,9 +149,8 @@ public class TournamentState {
     String rootHex = bytesToHex(event.getPlayerRoot().toByteArray());
     PlayerRegistration existing = registeredPlayers.get(rootHex);
     if (existing != null) {
-      registeredPlayers.put(rootHex, existing.toBuilder()
-          .setRebuysUsed(event.getRebuyCount())
-          .build());
+      registeredPlayers.put(
+          rootHex, existing.toBuilder().setRebuysUsed(event.getRebuyCount()).build());
     }
     totalPrizePool += event.getRebuyCost();
   }

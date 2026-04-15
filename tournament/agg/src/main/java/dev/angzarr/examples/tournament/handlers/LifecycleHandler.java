@@ -11,7 +11,8 @@ public final class LifecycleHandler {
 
   private LifecycleHandler() {}
 
-  public static BlindLevelAdvanced handleAdvanceBlind(AdvanceBlindLevel cmd, TournamentState state) {
+  public static BlindLevelAdvanced handleAdvanceBlind(
+      AdvanceBlindLevel cmd, TournamentState state) {
     if (!state.isRunning()) {
       throw Errors.CommandRejectedError.preconditionFailed("Tournament not running");
     }
@@ -61,10 +62,7 @@ public final class LifecycleHandler {
       throw Errors.CommandRejectedError.preconditionFailed("Tournament not running");
     }
 
-    return TournamentPaused.newBuilder()
-        .setReason(cmd.getReason())
-        .setPausedAt(now())
-        .build();
+    return TournamentPaused.newBuilder().setReason(cmd.getReason()).setPausedAt(now()).build();
   }
 
   public static TournamentResumed handleResume(ResumeTournament cmd, TournamentState state) {
@@ -72,9 +70,7 @@ public final class LifecycleHandler {
       throw Errors.CommandRejectedError.preconditionFailed("Tournament not paused");
     }
 
-    return TournamentResumed.newBuilder()
-        .setResumedAt(now())
-        .build();
+    return TournamentResumed.newBuilder().setResumedAt(now()).build();
   }
 
   private static String bytesToHex(byte[] bytes) {
