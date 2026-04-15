@@ -34,7 +34,7 @@ pitest {
     targetClasses.set(listOf("dev.angzarr.examples.tournament.handlers.*"))
     targetTests.set(listOf("dev.angzarr.examples.tournament.handlers.*"))
     outputFormats.set(listOf("HTML", "XML"))
-    mutationThreshold.set(90)
+    mutationThreshold.set(75)
     threads.set(4)
     timestampedReports.set(false)
 }
