@@ -13,6 +13,7 @@ dependencies {
     testImplementation(project(":player-agg"))
     testImplementation(project(":table-agg"))
     testImplementation(project(":hand-agg"))
+    testImplementation(project(":tournament-agg"))
 
     // Cucumber
     testImplementation("io.cucumber:cucumber-java:7.15.0")
