@@ -41,6 +41,17 @@ jobs:
       - name: Lint
         run: just -f justfile.container lint
 
+      - name: Mutation Testing (PIT)
+        run: just -f justfile.container mutation-test
+
+      - name: Upload mutation report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pit-report
+          path: tournament/agg/build/reports/pitest/
+          retention-days: 7
+
   build-images:
     name: Build & Push Images
     runs-on: ubuntu-latest
@@ -279,8 +290,7 @@ jobs:
         run: |
           # Generate proto descriptor for gateway type discovery
           echo "Generating gateway descriptor from examples protos..."
-          buf export buf.build/angzarr/examples -o examples-proto
-          buf build examples-proto -o types.bin
+          buf build angzarr-project/proto -o types.bin
           echo "Descriptor size: $(stat -c%s types.bin) bytes"
 
       - name: Create gateway descriptor ConfigMap

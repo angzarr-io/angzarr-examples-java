@@ -39,8 +39,21 @@ fmt:
 lint: proto-gen
     ./gradlew check -x test
 
+# Run PIT mutation testing on tournament handlers
+mutation-test: proto-gen
+    ./gradlew :tournament-agg:pitest
+
 deps:
     ./gradlew dependencies --configuration compileClasspath
 
 wrapper-update:
     ./gradlew wrapper --gradle-version latest
+
+# Auto-format code (google-java-format)
+fmt-fix:
+    #!/usr/bin/env bash
+    JAR="/tmp/google-java-format.jar"
+    if [ ! -f "$JAR" ]; then
+        curl -sL -o "$JAR" "https://github.com/google/google-java-format/releases/download/v1.25.2/google-java-format-1.25.2-all-deps.jar"
+    fi
+    find . -name "*.java" -not -path "*/build/*" -not -path "*/angzarr-*/*" | xargs java -jar "$JAR" --replace
