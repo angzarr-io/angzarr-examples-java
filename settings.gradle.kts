@@ -38,6 +38,14 @@ project(":hand-saga-player").projectDir = file("hand/saga-player")
 include("hand-flow")
 include("hand-flow-oo")
 
+// Tournament domain
+include("tournament-agg")
+project(":tournament-agg").projectDir = file("tournament/agg")
+
+// Hand upcaster
+include("hand-upc")
+project(":hand-upc").projectDir = file("hand/upc")
+
 // Projector
 include("prj-output")
 
