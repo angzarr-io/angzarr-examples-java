@@ -43,7 +43,6 @@ jobs:
 
       - name: Mutation Testing (PIT)
         run: just -f justfile.container mutation-test
-        continue-on-error: true
 
       - name: Upload mutation report
         uses: actions/upload-artifact@v4
