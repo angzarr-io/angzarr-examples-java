@@ -2,6 +2,7 @@ plugins {
     java
     idea
     id("com.diffplug.spotless") version "7.0.2"
+    id("info.solidsoft.pitest") version "1.15.0" apply false
 }
 
 allprojects {

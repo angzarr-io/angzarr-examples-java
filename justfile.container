@@ -39,6 +39,10 @@ fmt:
 lint: proto-gen
     ./gradlew check -x test
 
+# Run PIT mutation testing on tournament handlers
+mutation-test: proto-gen
+    ./gradlew :tournament-agg:pitest
+
 deps:
     ./gradlew dependencies --configuration compileClasspath
 

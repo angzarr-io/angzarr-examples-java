@@ -3,6 +3,7 @@ plugins {
     application
     id("org.springframework.boot") version "3.2.0"
     id("io.spring.dependency-management") version "1.1.4"
+    id("info.solidsoft.pitest")
 }
 
 dependencies {
@@ -25,4 +26,15 @@ application {
 
 springBoot {
     mainClass.set("dev.angzarr.examples.tournament.Main")
+}
+
+pitest {
+    pitestVersion.set("1.17.4")
+    junit5PluginVersion.set("1.2.1")
+    targetClasses.set(listOf("dev.angzarr.examples.tournament.handlers.*"))
+    targetTests.set(listOf("dev.angzarr.examples.tournament.handlers.*"))
+    outputFormats.set(listOf("HTML", "XML"))
+    mutationThreshold.set(90)
+    threads.set(4)
+    timestampedReports.set(false)
 }
