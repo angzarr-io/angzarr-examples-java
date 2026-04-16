@@ -1,7 +1,7 @@
 package dev.angzarr.examples.hand.sagaplayer;
 
 import dev.angzarr.*;
-import dev.angzarr.client.EventRouter;
+import dev.angzarr.client.router.SagaHandlerResponse;
 import io.grpc.stub.StreamObserver;
 import java.util.List;
 import net.devh.boot.grpc.server.service.GrpcService;
@@ -11,8 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * Spring Boot application for Hand -> Player saga.
  *
- * <p>Uses the functional EventRouter pattern. Sagas are stateless translators - framework handles
- * sequence stamping.
+ * <p>Uses the OO Saga pattern with annotation-based handler registration.
  */
 @SpringBootApplication
 public class Main {
@@ -23,13 +22,20 @@ public class Main {
 
   @GrpcService
   public static class SagaService extends SagaServiceGrpc.SagaServiceImplBase {
-    private final EventRouter router = HandPlayerRouter.createRouter();
+    private final HandPlayerSaga saga = new HandPlayerSaga();
 
     @Override
     public void handle(SagaHandleRequest request, StreamObserver<SagaResponse> responseObserver) {
-      // Sagas receive source events only - framework handles destinations and sequences
-      var commands = router.dispatch(request.getSource(), List.of());
-      responseObserver.onNext(SagaResponse.newBuilder().addAllCommands(commands).build());
+      SagaHandlerResponse response = saga.dispatch(request.getSource(), List.of());
+
+      SagaResponse.Builder builder =
+          SagaResponse.newBuilder().addAllCommands(response.getCommands());
+
+      if (response.hasEvents()) {
+        builder.addAllEvents(response.getEvents());
+      }
+
+      responseObserver.onNext(builder.build());
       responseObserver.onCompleted();
     }
   }

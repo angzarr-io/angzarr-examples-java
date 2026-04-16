@@ -69,14 +69,14 @@ public class OutputProjector extends Projector {
     }
 
     @Projects(PlayerRegistered.class)
-    public Projection projectRegistered(PlayerRegistered event) {
+    public Projection projectPlayerRegistered(PlayerRegistered event) {
         writeLog(String.format("PLAYER registered: %s (%s)",
             event.getDisplayName(), event.getEmail()));
         return Projection.upsert("log", "registered");
     }
 
     @Projects(FundsDeposited.class)
-    public Projection projectDeposited(FundsDeposited event) {
+    public Projection projectFundsDeposited(FundsDeposited event) {
         long amount = event.hasAmount() ? event.getAmount().getAmount() : 0;
         long newBalance = event.hasNewBalance() ? event.getNewBalance().getAmount() : 0;
         writeLog(String.format("PLAYER deposited %d, balance: %d", amount, newBalance));

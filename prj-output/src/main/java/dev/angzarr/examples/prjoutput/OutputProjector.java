@@ -1,157 +1,145 @@
 package dev.angzarr.examples.prjoutput;
 
-import com.google.protobuf.Any;
-import com.google.protobuf.InvalidProtocolBufferException;
-import dev.angzarr.*;
+import dev.angzarr.client.Projection;
+import dev.angzarr.client.Projector;
+import dev.angzarr.client.annotations.Projects;
 import dev.angzarr.examples.*;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+
+import java.io.*;
 import java.time.Instant;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
- * Projector: Output
+ * Projector: Output (OO Pattern)
  *
- * <p>Subscribes to events from player, table, and hand domains and writes formatted game logs.
+ * <p>Subscribes to player, table, and hand domain events.
+ * Writes formatted game logs to a file.
+ *
+ * <p>Uses Projector base class with {@code @Projects} annotated methods.
  */
-// docs:start:projector_functional
-public class OutputProjector {
+// docs:start:projector_oo
+public class OutputProjector extends Projector {
 
-  private static final Map<String, Class<?>> EVENT_TYPES = new HashMap<>();
+    private static final String LOG_FILE = System.getenv().getOrDefault(
+        "HAND_LOG_FILE", "hand_log.txt"
+    );
 
-  static {
-    // Player events
-    EVENT_TYPES.put("PlayerRegistered", PlayerRegistered.class);
-    EVENT_TYPES.put("FundsDeposited", FundsDeposited.class);
-    EVENT_TYPES.put("FundsWithdrawn", FundsWithdrawn.class);
-    EVENT_TYPES.put("FundsReserved", FundsReserved.class);
-    EVENT_TYPES.put("FundsReleased", FundsReleased.class);
-    // Table events
-    EVENT_TYPES.put("TableCreated", TableCreated.class);
-    EVENT_TYPES.put("PlayerJoined", PlayerJoined.class);
-    EVENT_TYPES.put("PlayerLeft", PlayerLeft.class);
-    EVENT_TYPES.put("HandStarted", HandStarted.class);
-    EVENT_TYPES.put("HandEnded", HandEnded.class);
-    // Hand events
-    EVENT_TYPES.put("CardsDealt", CardsDealt.class);
-    EVENT_TYPES.put("BlindPosted", BlindPosted.class);
-    EVENT_TYPES.put("ActionTaken", ActionTaken.class);
-    EVENT_TYPES.put("CommunityCardsDealt", CommunityCardsDealt.class);
-    EVENT_TYPES.put("PotAwarded", PotAwarded.class);
-    EVENT_TYPES.put("HandComplete", HandComplete.class);
-  }
+    private static PrintWriter logWriter;
 
-  private final TextRenderer renderer;
-  private final Consumer<String> outputFn;
-  private final boolean showTimestamps;
-  private final DateTimeFormatter timeFormatter;
-
-  public OutputProjector(Consumer<String> outputFn, boolean showTimestamps) {
-    this.renderer = new TextRenderer();
-    this.outputFn = outputFn;
-    this.showTimestamps = showTimestamps;
-    this.timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss").withZone(ZoneOffset.UTC);
-  }
-
-  /** Get list of domains this projector subscribes to. */
-  public List<String> getInputDomains() {
-    return List.of("player", "table", "hand");
-  }
-
-  /** Set display name for a player root. */
-  public void setPlayerName(byte[] playerRoot, String name) {
-    renderer.setPlayerName(playerRoot, name);
-  }
-
-  /** Handle an event book and return a projection. */
-  public Projection handle(EventBook eventBook) {
-    handleEventBook(eventBook);
-
-    // Return a projection with the sequence number
-    int seq = 0;
-    if (eventBook.getPagesCount() > 0) {
-      EventPage lastPage = eventBook.getPages(eventBook.getPagesCount() - 1);
-      seq = lastPage.getHeader().getSequence();
+    public OutputProjector() {
+        super("output", List.of("player", "table", "hand"));
     }
 
-    return Projection.newBuilder()
-        .setCover(eventBook.getCover())
-        .setProjector("output")
-        .setSequence(seq)
-        .build();
-  }
-
-  /** Handle all events in an event book. */
-  public void handleEventBook(EventBook eventBook) {
-    for (EventPage page : eventBook.getPagesList()) {
-      handleEvent(page);
-    }
-  }
-
-  /** Handle a single event page from any domain. */
-  public void handleEvent(EventPage eventPage) {
-    Any eventAny = eventPage.getEvent();
-    String typeUrl = eventAny.getTypeUrl();
-
-    // Extract event type from type_url
-    String eventType = extractEventType(typeUrl);
-
-    if (!EVENT_TYPES.containsKey(eventType)) {
-      outputFn.accept("[Unknown event type: " + typeUrl + "]");
-      return;
-    }
-
-    try {
-      // Unpack the event
-      @SuppressWarnings("unchecked")
-      Class<? extends com.google.protobuf.Message> eventClass =
-          (Class<? extends com.google.protobuf.Message>) EVENT_TYPES.get(eventType);
-      Object event = eventAny.unpack(eventClass);
-
-      // Render and output
-      String text = renderer.render(eventType, event);
-      if (text != null && !text.isEmpty()) {
-        if (showTimestamps && eventPage.hasCreatedAt()) {
-          Instant ts =
-              Instant.ofEpochSecond(
-                  eventPage.getCreatedAt().getSeconds(), eventPage.getCreatedAt().getNanos());
-          text = "[" + timeFormatter.format(ts) + "] " + text;
+    private static synchronized PrintWriter getLogWriter() {
+        if (logWriter == null) {
+            try {
+                logWriter = new PrintWriter(
+                    new BufferedWriter(new FileWriter(LOG_FILE, true))
+                );
+            } catch (IOException e) {
+                System.err.println("Failed to open log file: " + e.getMessage());
+            }
         }
-        outputFn.accept(text);
-      }
-    } catch (InvalidProtocolBufferException e) {
-      outputFn.accept("[Failed to unpack: " + typeUrl + "]");
+        return logWriter;
     }
-  }
 
-  private String extractEventType(String typeUrl) {
-    int dotIndex = typeUrl.lastIndexOf('.');
-    if (dotIndex >= 0) {
-      return typeUrl.substring(dotIndex + 1);
+    private void writeLog(String msg) {
+        PrintWriter writer = getLogWriter();
+        if (writer != null) {
+            String timestamp = DateTimeFormatter.ISO_INSTANT.format(Instant.now());
+            writer.println("[" + timestamp + "] " + msg);
+            writer.flush();
+        }
     }
-    return typeUrl;
-  }
 
-  /** Create a file-based projector. */
-  public static OutputProjector forFile(String path, boolean showTimestamps) throws IOException {
-    PrintWriter writer = new PrintWriter(new FileWriter(path, true));
-    return new OutputProjector(
-        line -> {
-          writer.println(line);
-          writer.flush();
-        },
-        showTimestamps);
-  }
+    private String truncateId(com.google.protobuf.ByteString playerRoot) {
+        byte[] bytes = playerRoot.toByteArray();
+        if (bytes.length >= 4) {
+            return String.format("%02x%02x%02x%02x",
+                bytes[0] & 0xFF, bytes[1] & 0xFF, bytes[2] & 0xFF, bytes[3] & 0xFF);
+        }
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            sb.append(String.format("%02x", b & 0xFF));
+        }
+        return sb.toString();
+    }
 
-  /** Create a console-based projector. */
-  public static OutputProjector forConsole(boolean showTimestamps) {
-    return new OutputProjector(System.out::println, showTimestamps);
-  }
+    @Projects(PlayerRegistered.class)
+    public Projection projectPlayerRegistered(PlayerRegistered event) {
+        writeLog(String.format("PLAYER registered: %s (%s)",
+            event.getDisplayName(), event.getEmail()));
+        return Projection.upsert("log", "registered");
+    }
+
+    @Projects(FundsDeposited.class)
+    public Projection projectFundsDeposited(FundsDeposited event) {
+        long amount = event.hasAmount() ? event.getAmount().getAmount() : 0;
+        long newBalance = event.hasNewBalance() ? event.getNewBalance().getAmount() : 0;
+        writeLog(String.format("PLAYER deposited %d, balance: %d", amount, newBalance));
+        return Projection.upsert("log", "deposited");
+    }
+
+    @Projects(TableCreated.class)
+    public Projection projectTableCreated(TableCreated event) {
+        writeLog(String.format("TABLE created: %s (%s)",
+            event.getTableName(), event.getGameVariant()));
+        return Projection.upsert("log", "table_created");
+    }
+
+    @Projects(PlayerJoined.class)
+    public Projection projectPlayerJoined(PlayerJoined event) {
+        String playerId = truncateId(event.getPlayerRoot());
+        writeLog(String.format("TABLE player %s joined with %d chips",
+            playerId, event.getStack()));
+        return Projection.upsert("log", "player_joined");
+    }
+
+    @Projects(HandStarted.class)
+    public Projection projectHandStarted(HandStarted event) {
+        writeLog(String.format("TABLE hand #%d started, %d players, dealer at position %d",
+            event.getHandNumber(), event.getActivePlayersCount(), event.getDealerPosition()));
+        return Projection.upsert("log", "hand_started");
+    }
+
+    @Projects(CardsDealt.class)
+    public Projection projectCardsDealt(CardsDealt event) {
+        writeLog(String.format("HAND cards dealt to %d players",
+            event.getPlayerCardsCount()));
+        return Projection.upsert("log", "cards_dealt");
+    }
+
+    @Projects(BlindPosted.class)
+    public Projection projectBlindPosted(BlindPosted event) {
+        String playerId = truncateId(event.getPlayerRoot());
+        writeLog(String.format("HAND player %s posted %s blind: %d",
+            playerId, event.getBlindType(), event.getAmount()));
+        return Projection.upsert("log", "blind_posted");
+    }
+
+    @Projects(ActionTaken.class)
+    public Projection projectActionTaken(ActionTaken event) {
+        String playerId = truncateId(event.getPlayerRoot());
+        writeLog(String.format("HAND player %s: %s %d",
+            playerId, event.getAction(), event.getAmount()));
+        return Projection.upsert("log", "action_taken");
+    }
+
+    @Projects(PotAwarded.class)
+    public Projection projectPotAwarded(PotAwarded event) {
+        String winners = event.getWinnersList().stream()
+            .map(w -> truncateId(w.getPlayerRoot()) + " wins " + w.getAmount())
+            .collect(Collectors.joining(", "));
+        writeLog(String.format("HAND pot awarded: %s", winners));
+        return Projection.upsert("log", "pot_awarded");
+    }
+
+    @Projects(HandComplete.class)
+    public Projection projectHandComplete(HandComplete event) {
+        writeLog(String.format("HAND #%d complete", event.getHandNumber()));
+        return Projection.upsert("log", "hand_complete");
+    }
 }
-// docs:end:projector_functional
+// docs:end:projector_oo

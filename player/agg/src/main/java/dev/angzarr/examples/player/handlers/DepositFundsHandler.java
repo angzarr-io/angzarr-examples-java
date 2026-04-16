@@ -9,9 +9,9 @@ import dev.angzarr.examples.player.state.PlayerState;
 import java.time.Instant;
 
 /** Functional handler for DepositFunds command. */
-public final class DepositHandler {
+public final class DepositFundsHandler {
 
-  private DepositHandler() {}
+  private DepositFundsHandler() {}
 
   // docs:start:deposit_guard
   static void guard(PlayerState state) {

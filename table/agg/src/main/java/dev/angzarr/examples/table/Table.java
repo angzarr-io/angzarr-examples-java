@@ -170,7 +170,7 @@ public class Table extends CommandHandler<TableState> {
   // --- Command handlers ---
 
   @Handles(CreateTable.class)
-  public TableCreated create(CreateTable cmd) {
+  public TableCreated handleCreateTable(CreateTable cmd) {
     if (exists()) {
       throw Errors.CommandRejectedError.preconditionFailed("Table already exists");
     }
@@ -198,7 +198,7 @@ public class Table extends CommandHandler<TableState> {
   }
 
   @Handles(JoinTable.class)
-  public PlayerJoined join(JoinTable cmd) {
+  public PlayerJoined handleJoinTable(JoinTable cmd) {
     if (!exists()) {
       throw Errors.CommandRejectedError.preconditionFailed("Table does not exist");
     }
@@ -239,7 +239,7 @@ public class Table extends CommandHandler<TableState> {
   }
 
   @Handles(LeaveTable.class)
-  public PlayerLeft leave(LeaveTable cmd) {
+  public PlayerLeft handleLeaveTable(LeaveTable cmd) {
     if (!exists()) {
       throw Errors.CommandRejectedError.preconditionFailed("Table does not exist");
     }
@@ -263,7 +263,7 @@ public class Table extends CommandHandler<TableState> {
   // Table receives PlayerSatOut/PlayerSatIn as facts via saga
 
   @Handles(StartHand.class)
-  public HandStarted startHand(StartHand cmd) {
+  public HandStarted handleStartHand(StartHand cmd) {
     if (!exists()) {
       throw Errors.CommandRejectedError.preconditionFailed("Table does not exist");
     }
@@ -311,7 +311,7 @@ public class Table extends CommandHandler<TableState> {
   }
 
   @Handles(EndHand.class)
-  public HandEnded endHand(EndHand cmd) {
+  public HandEnded handleEndHand(EndHand cmd) {
     if (!exists()) {
       throw Errors.CommandRejectedError.preconditionFailed("Table does not exist");
     }
@@ -336,7 +336,7 @@ public class Table extends CommandHandler<TableState> {
   }
 
   @Handles(AddChips.class)
-  public ChipsAdded addChips(AddChips cmd) {
+  public ChipsAdded handleAddChips(AddChips cmd) {
     if (!exists()) {
       throw Errors.CommandRejectedError.preconditionFailed("Table does not exist");
     }

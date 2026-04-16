@@ -9,6 +9,7 @@ import dev.angzarr.EventPage;
 import dev.angzarr.examples.FundsDeposited;
 import dev.angzarr.examples.FundsReleased;
 import dev.angzarr.examples.FundsReserved;
+import dev.angzarr.examples.FundsTransferred;
 import dev.angzarr.examples.FundsWithdrawn;
 import dev.angzarr.examples.PlayerRegistered;
 import dev.angzarr.examples.player.state.PlayerState;
@@ -92,6 +93,12 @@ public final class StateBuilder {
         }
         String tableKey = bytesToHex(event.getTableRoot().toByteArray());
         state.getTableReservations().remove(tableKey);
+
+      } else if (typeUrl.endsWith("FundsTransferred")) {
+        FundsTransferred event = eventAny.unpack(FundsTransferred.class);
+        if (event.hasNewBalance()) {
+          state.setBankroll(event.getNewBalance().getAmount());
+        }
       }
     } catch (InvalidProtocolBufferException e) {
       throw new RuntimeException("Failed to unpack event: " + typeUrl, e);

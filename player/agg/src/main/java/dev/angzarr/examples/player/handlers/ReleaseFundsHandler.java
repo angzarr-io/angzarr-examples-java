@@ -9,9 +9,9 @@ import dev.angzarr.examples.player.state.PlayerState;
 import java.time.Instant;
 
 /** Functional handler for ReleaseFunds command. */
-public final class ReleaseHandler {
+public final class ReleaseFundsHandler {
 
-  private ReleaseHandler() {}
+  private ReleaseFundsHandler() {}
 
   public static FundsReleased handle(ReleaseFunds cmd, PlayerState state) {
     // Guard

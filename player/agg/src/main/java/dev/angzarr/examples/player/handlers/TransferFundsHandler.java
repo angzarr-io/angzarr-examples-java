@@ -1,19 +1,20 @@
 package dev.angzarr.examples.player.handlers;
 
+import com.google.protobuf.ByteString;
 import com.google.protobuf.Timestamp;
 import dev.angzarr.client.Errors;
 import dev.angzarr.examples.Currency;
-import dev.angzarr.examples.FundsWithdrawn;
-import dev.angzarr.examples.WithdrawFunds;
+import dev.angzarr.examples.FundsTransferred;
+import dev.angzarr.examples.TransferFunds;
 import dev.angzarr.examples.player.state.PlayerState;
 import java.time.Instant;
 
-/** Functional handler for WithdrawFunds command. */
-public final class WithdrawHandler {
+/** Functional handler for TransferFunds command. */
+public final class TransferFundsHandler {
 
-  private WithdrawHandler() {}
+  private TransferFundsHandler() {}
 
-  public static FundsWithdrawn handle(WithdrawFunds cmd, PlayerState state) {
+  public static FundsTransferred handle(TransferFunds cmd, PlayerState state) {
     // Guard
     if (!state.exists()) {
       throw Errors.CommandRejectedError.preconditionFailed("Player does not exist");
@@ -21,19 +22,20 @@ public final class WithdrawHandler {
 
     // Validate
     long amount = cmd.hasAmount() ? cmd.getAmount().getAmount() : 0;
-    if (amount <= 0) {
-      throw Errors.CommandRejectedError.invalidArgument("amount must be positive");
-    }
-    if (amount > state.getAvailableBalance()) {
-      throw Errors.CommandRejectedError.preconditionFailed("Insufficient funds");
+    if (amount == 0) {
+      throw Errors.CommandRejectedError.invalidArgument("amount must be non-zero");
     }
 
     // Compute
-    long newBalance = state.getBankroll() - amount;
-    return FundsWithdrawn.newBuilder()
+    long newBalance = state.getBankroll() + amount;
+    return FundsTransferred.newBuilder()
+        .setFromPlayerRoot(cmd.getFromPlayerRoot())
+        .setToPlayerRoot(ByteString.copyFromUtf8(state.getPlayerId()))
         .setAmount(cmd.getAmount())
+        .setHandRoot(cmd.getHandRoot())
+        .setReason(cmd.getReason())
         .setNewBalance(Currency.newBuilder().setAmount(newBalance).setCurrencyCode("CHIPS"))
-        .setWithdrawnAt(now())
+        .setTransferredAt(now())
         .build();
   }
 

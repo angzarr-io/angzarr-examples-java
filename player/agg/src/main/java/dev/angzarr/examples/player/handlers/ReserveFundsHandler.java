@@ -12,9 +12,9 @@ import java.time.Instant;
 
 // docs:start:reserve_funds_imp
 /** Functional handler for ReserveFunds command. */
-public final class ReserveHandler {
+public final class ReserveFundsHandler {
 
-  private ReserveHandler() {}
+  private ReserveFundsHandler() {}
 
   public static FundsReserved handle(ReserveFunds cmd, PlayerState state) {
     // Guard

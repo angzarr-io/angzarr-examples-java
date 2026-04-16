@@ -2,8 +2,11 @@ package dev.angzarr.examples.handflow;
 
 import com.google.protobuf.Any;
 import com.google.protobuf.ByteString;
-import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.Struct;
 import dev.angzarr.*;
+import dev.angzarr.client.ProcessManager;
+import dev.angzarr.client.annotations.Handles;
+import dev.angzarr.client.annotations.Prepares;
 import dev.angzarr.examples.*;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -12,221 +15,141 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 /**
- * Process Manager: Hand Flow Orchestration
+ * Hand Flow Process Manager using OO-style annotations.
  *
- * <p>Orchestrates the flow of a poker hand by: 1. Subscribing to table and hand domain events 2.
- * Managing hand process state machines 3. Sending commands to drive hands forward
+ * <p>Orchestrates poker hand flow by tracking state and emitting commands to drive hands forward.
+ * Uses in-memory state (processes map) for demonstration.
  */
-public class HandFlowProcessManager {
+// docs:start:pm_handler_oo
+public class HandFlowProcessManager extends ProcessManager<Struct> {
 
   private final Map<String, HandProcess> processes = new HashMap<>();
-  private final Consumer<CommandBook> commandSender;
 
-  public HandFlowProcessManager(Consumer<CommandBook> commandSender) {
-    this.commandSender = commandSender;
+  public HandFlowProcessManager() {
+    super("hand-flow");
   }
 
-  /** Get list of domains this PM subscribes to. */
-  public List<String> getInputDomains() {
-    return List.of("table", "hand");
+  @Override
+  protected Struct createEmptyState() {
+    return Struct.getDefaultInstance();
   }
 
-  /** Phase 1: Declare additional destinations needed. */
-  public List<Cover> prepare(EventBook trigger, EventBook processState) {
-    List<Cover> destinations = new ArrayList<>();
-
-    // Check trigger domain for hand events
-    String triggerDomain = trigger.hasCover() ? trigger.getCover().getDomain() : "";
-
-    for (EventPage page : trigger.getPagesList()) {
-      String typeUrl = page.getEvent().getTypeUrl();
-      try {
-        if (typeUrl.endsWith("HandStarted")) {
-          HandStarted event = page.getEvent().unpack(HandStarted.class);
-          destinations.add(
-              Cover.newBuilder()
-                  .setDomain("hand")
-                  .setRoot(dev.angzarr.UUID.newBuilder().setValue(event.getHandRoot()))
-                  .build());
-        } else if ("hand".equals(triggerDomain)) {
-          // Hand domain events - use trigger's root directly for sequence lookup
-          if (trigger.hasCover() && trigger.getCover().hasRoot()) {
-            destinations.add(
-                Cover.newBuilder().setDomain("hand").setRoot(trigger.getCover().getRoot()).build());
-            break; // Only need one destination per hand
-          }
-        }
-      } catch (InvalidProtocolBufferException e) {
-        throw new RuntimeException("Failed to unpack event: " + typeUrl, e);
-      }
-    }
-
-    return destinations;
+  @Prepares(HandStarted.class)
+  public List<Cover> prepareHandStarted(HandStarted event) {
+    return List.of(
+        Cover.newBuilder()
+            .setDomain("hand")
+            .setRoot(dev.angzarr.UUID.newBuilder().setValue(event.getHandRoot()))
+            .build());
   }
 
-  /** Phase 2: Process events and produce commands. */
-  public List<CommandBook> handle(
-      EventBook trigger, EventBook processState, List<EventBook> destinations) {
-    List<CommandBook> commands = new ArrayList<>();
-
-    for (EventPage page : trigger.getPagesList()) {
-      Any eventAny = page.getEvent();
-      String typeUrl = eventAny.getTypeUrl();
-
-      try {
-        if (typeUrl.endsWith("HandStarted")) {
-          HandStarted event = eventAny.unpack(HandStarted.class);
-          CommandBook cmd = handleHandStarted(event);
-          if (cmd != null) commands.add(cmd);
-
-        } else if (typeUrl.endsWith("CardsDealt")) {
-          CardsDealt event = eventAny.unpack(CardsDealt.class);
-          CommandBook cmd = handleCardsDealt(event);
-          if (cmd != null) commands.add(cmd);
-
-        } else if (typeUrl.endsWith("BlindPosted")) {
-          BlindPosted event = eventAny.unpack(BlindPosted.class);
-          CommandBook cmd = handleBlindPosted(event);
-          if (cmd != null) commands.add(cmd);
-
-        } else if (typeUrl.endsWith("ActionTaken")) {
-          ActionTaken event = eventAny.unpack(ActionTaken.class);
-          CommandBook cmd = handleActionTaken(event);
-          if (cmd != null) commands.add(cmd);
-
-        } else if (typeUrl.endsWith("CommunityCardsDealt")) {
-          CommunityCardsDealt event = eventAny.unpack(CommunityCardsDealt.class);
-          CommandBook cmd = handleCommunityCardsDealt(event);
-          if (cmd != null) commands.add(cmd);
-
-        } else if (typeUrl.endsWith("PotAwarded")) {
-          PotAwarded event = eventAny.unpack(PotAwarded.class);
-          handlePotAwarded(event);
-        }
-      } catch (InvalidProtocolBufferException e) {
-        throw new RuntimeException("Failed to unpack event: " + typeUrl, e);
-      }
-    }
-
-    return commands;
-  }
-
-  /** Initialize process for a new hand. */
-  private CommandBook handleHandStarted(HandStarted event) {
+  @Handles(HandStarted.class)
+  public List<CommandBook> handleHandStarted(HandStarted event) {
     byte[] handRoot = event.getHandRoot().toByteArray();
     String handId = bytesToHex(handRoot) + "_" + event.getHandNumber();
 
     HandProcess process = new HandProcess();
-    process.setHandId(handId);
-    process.setHandRoot(handRoot); // Store actual hand aggregate root
-    process.setHandNumber(event.getHandNumber());
-    process.setGameVariant(event.getGameVariantValue());
-    process.setDealerPosition(event.getDealerPosition());
-    process.setSmallBlindPosition(event.getSmallBlindPosition());
-    process.setBigBlindPosition(event.getBigBlindPosition());
-    process.setSmallBlind(event.getSmallBlind());
-    process.setBigBlind(event.getBigBlind());
-    process.setPhase(HandPhase.DEALING);
+    process.handId = handId;
+    process.handRoot = handRoot;
+    process.handNumber = event.getHandNumber();
+    process.dealerPosition = event.getDealerPosition();
+    process.smallBlindPosition = event.getSmallBlindPosition();
+    process.bigBlindPosition = event.getBigBlindPosition();
+    process.smallBlind = event.getSmallBlind();
+    process.bigBlind = event.getBigBlind();
+    process.phase = HandPhase.DEALING;
 
-    // Initialize player states
     for (SeatSnapshot player : event.getActivePlayersList()) {
-      process
-          .getPlayers()
-          .put(
-              player.getPosition(),
-              new PlayerProcessState(
-                  player.getPlayerRoot().toByteArray(), player.getPosition(), player.getStack()));
-      process.getActivePositions().add(player.getPosition());
+      PlayerState ps = new PlayerState();
+      ps.playerRoot = player.getPlayerRoot().toByteArray();
+      ps.position = player.getPosition();
+      ps.stack = player.getStack();
+      process.players.put(player.getPosition(), ps);
+      process.activePositions.add(player.getPosition());
     }
-
-    Collections.sort(process.getActivePositions());
+    Collections.sort(process.activePositions);
     processes.put(handId, process);
-
-    return null; // No immediate command needed, DealCards comes from saga
+    return List.of(); // DealCards comes from saga
   }
 
-  /** Handle CardsDealt - transition to blind posting. */
-  private CommandBook handleCardsDealt(CardsDealt event) {
+  @Handles(CardsDealt.class)
+  public List<CommandBook> handleCardsDealt(CardsDealt event) {
     String handId = bytesToHex(event.getTableRoot().toByteArray()) + "_" + event.getHandNumber();
     HandProcess process = processes.get(handId);
-    if (process == null) return null;
+    if (process == null) return List.of();
 
-    process.setPhase(HandPhase.POSTING_BLINDS);
-    process.setMinRaise(process.getBigBlind());
+    process.phase = HandPhase.POSTING_BLINDS;
+    process.minRaise = process.bigBlind;
 
-    return buildPostBlindCommand(process);
+    CommandBook cmd = buildPostBlindCommand(process);
+    return cmd != null ? List.of(cmd) : List.of();
   }
 
-  /** Handle BlindPosted - continue blind posting or start betting. */
-  private CommandBook handleBlindPosted(BlindPosted event) {
+  @Handles(BlindPosted.class)
+  public List<CommandBook> handleBlindPosted(BlindPosted event) {
     HandProcess process = findProcessByPlayer(event.getPlayerRoot().toByteArray());
-    if (process == null) return null;
+    if (process == null) return List.of();
 
-    // Update player state
-    for (PlayerProcessState player : process.getPlayers().values()) {
-      if (Arrays.equals(player.getPlayerRoot(), event.getPlayerRoot().toByteArray())) {
-        player.setStack(event.getPlayerStack());
-        player.setBetThisRound(event.getAmount());
-        player.setTotalInvested(event.getAmount());
+    for (PlayerState player : process.players.values()) {
+      if (Arrays.equals(player.playerRoot, event.getPlayerRoot().toByteArray())) {
+        player.stack = event.getPlayerStack();
+        player.betThisRound = event.getAmount();
+        player.totalInvested = event.getAmount();
         break;
       }
     }
 
-    process.setPotTotal(event.getPotTotal());
+    process.potTotal = event.getPotTotal();
 
     if ("small".equals(event.getBlindType())) {
-      process.setSmallBlindPosted(true);
-      process.setCurrentBet(event.getAmount());
-      return buildPostBlindCommand(process);
+      process.smallBlindPosted = true;
+      process.currentBet = event.getAmount();
+      CommandBook cmd = buildPostBlindCommand(process);
+      return cmd != null ? List.of(cmd) : List.of();
     } else if ("big".equals(event.getBlindType())) {
-      process.setBigBlindPosted(true);
-      process.setCurrentBet(event.getAmount());
-      return startBetting(process);
+      process.bigBlindPosted = true;
+      process.currentBet = event.getAmount();
+      startBetting(process);
+      return List.of();
     }
-
-    return null;
+    return List.of();
   }
 
-  /** Handle ActionTaken - advance to next player or phase. */
-  private CommandBook handleActionTaken(ActionTaken event) {
+  @Handles(ActionTaken.class)
+  public List<CommandBook> handleActionTaken(ActionTaken event) {
     HandProcess process = findProcessByPlayer(event.getPlayerRoot().toByteArray());
-    if (process == null) return null;
+    if (process == null) return List.of();
 
-    // Update player state
-    for (PlayerProcessState player : process.getPlayers().values()) {
-      if (Arrays.equals(player.getPlayerRoot(), event.getPlayerRoot().toByteArray())) {
-        player.setStack(event.getPlayerStack());
-        player.setHasActed(true);
-
+    for (PlayerState player : process.players.values()) {
+      if (Arrays.equals(player.playerRoot, event.getPlayerRoot().toByteArray())) {
+        player.stack = event.getPlayerStack();
+        player.hasActed = true;
         if (event.getAction() == ActionType.FOLD) {
-          player.setHasFolded(true);
+          player.hasFolded = true;
         } else if (event.getAction() == ActionType.ALL_IN) {
-          player.setAllIn(true);
-          player.setBetThisRound(player.getBetThisRound() + event.getAmount());
-          player.setTotalInvested(player.getTotalInvested() + event.getAmount());
+          player.allIn = true;
+          player.betThisRound += event.getAmount();
+          player.totalInvested += event.getAmount();
         } else if (event.getAction() == ActionType.CALL
             || event.getAction() == ActionType.BET
             || event.getAction() == ActionType.RAISE) {
-          player.setBetThisRound(player.getBetThisRound() + event.getAmount());
-          player.setTotalInvested(player.getTotalInvested() + event.getAmount());
+          player.betThisRound += event.getAmount();
+          player.totalInvested += event.getAmount();
         }
 
-        if (event.getAction() == ActionType.BET
-            || event.getAction() == ActionType.RAISE
-            || event.getAction() == ActionType.ALL_IN) {
-          if (player.getBetThisRound() > process.getCurrentBet()) {
-            long raiseAmount = player.getBetThisRound() - process.getCurrentBet();
-            process.setCurrentBet(player.getBetThisRound());
-            process.setMinRaise(Math.max(process.getMinRaise(), raiseAmount));
-            process.setLastAggressor(player.getPosition());
-            // Reset has_acted for other active players
-            for (PlayerProcessState p : process.getPlayers().values()) {
-              if (p.getPosition() != player.getPosition() && !p.hasFolded() && !p.isAllIn()) {
-                p.setHasActed(false);
-              }
+        if ((event.getAction() == ActionType.BET
+                || event.getAction() == ActionType.RAISE
+                || event.getAction() == ActionType.ALL_IN)
+            && player.betThisRound > process.currentBet) {
+          long raiseAmount = player.betThisRound - process.currentBet;
+          process.currentBet = player.betThisRound;
+          process.minRaise = Math.max(process.minRaise, raiseAmount);
+          process.lastAggressor = player.position;
+          for (PlayerState p : process.players.values()) {
+            if (p.position != player.position && !p.hasFolded && !p.allIn) {
+              p.hasActed = false;
             }
           }
         }
@@ -234,65 +157,63 @@ public class HandFlowProcessManager {
       }
     }
 
-    process.setPotTotal(event.getPotTotal());
+    process.potTotal = event.getPotTotal();
 
-    // Check if betting round is complete
     if (isBettingComplete(process)) {
-      return endBettingRound(process);
+      CommandBook cmd = endBettingRound(process);
+      return cmd != null ? List.of(cmd) : List.of();
     } else {
-      // Betting continues - no command needed, player action requested externally
       advanceAction(process);
-      return null;
+      return List.of();
     }
   }
 
-  /** Handle CommunityCardsDealt - start new betting round. */
-  private CommandBook handleCommunityCardsDealt(CommunityCardsDealt event) {
-    // Find process - need to track by community card events
-    // For simplicity, assume single active process
+  @Handles(CommunityCardsDealt.class)
+  public List<CommandBook> handleCommunityCardsDealt(CommunityCardsDealt event) {
     for (HandProcess process : processes.values()) {
-      if (process.getPhase() == HandPhase.DEALING_COMMUNITY) {
-        process.setCommunityCardCount(event.getAllCommunityCardsCount());
-        process.setBettingPhase(event.getPhaseValue());
-        return startBetting(process);
+      if (process.phase == HandPhase.DEALING_COMMUNITY) {
+        process.communityCardCount = event.getAllCommunityCardsCount();
+        process.bettingPhase = event.getPhaseValue();
+        startBetting(process);
+        return List.of();
       }
     }
-    return null;
+    return List.of();
   }
 
-  /** Handle PotAwarded - hand is complete. */
-  private void handlePotAwarded(PotAwarded event) {
+  @Handles(PotAwarded.class)
+  public List<CommandBook> handlePotAwarded(PotAwarded event) {
     for (HandProcess process : processes.values()) {
-      if (process.getPhase() != HandPhase.COMPLETE) {
-        process.setPhase(HandPhase.COMPLETE);
+      if (process.phase != HandPhase.COMPLETE) {
+        process.phase = HandPhase.COMPLETE;
       }
     }
+    return List.of();
   }
 
   // --- Helper methods ---
 
   private CommandBook buildPostBlindCommand(HandProcess process) {
-    PlayerProcessState player;
+    PlayerState player;
     String blindType;
     long amount;
 
-    if (!process.isSmallBlindPosted()) {
-      player = process.getPlayers().get(process.getSmallBlindPosition());
+    if (!process.smallBlindPosted) {
+      player = process.players.get(process.smallBlindPosition);
       blindType = "small";
-      amount = process.getSmallBlind();
-    } else if (!process.isBigBlindPosted()) {
-      player = process.getPlayers().get(process.getBigBlindPosition());
+      amount = process.smallBlind;
+    } else if (!process.bigBlindPosted) {
+      player = process.players.get(process.bigBlindPosition);
       blindType = "big";
-      amount = process.getBigBlind();
+      amount = process.bigBlind;
     } else {
       return null;
     }
-
     if (player == null) return null;
 
     PostBlind cmd =
         PostBlind.newBuilder()
-            .setPlayerRoot(ByteString.copyFrom(player.getPlayerRoot()))
+            .setPlayerRoot(ByteString.copyFrom(player.playerRoot))
             .setBlindType(blindType)
             .setAmount(amount)
             .build();
@@ -302,42 +223,34 @@ public class HandFlowProcessManager {
             Cover.newBuilder()
                 .setDomain("hand")
                 .setRoot(
-                    dev.angzarr
-                        .UUID
-                        .newBuilder()
-                        .setValue(ByteString.copyFrom(process.getHandRoot()))))
+                    dev.angzarr.UUID.newBuilder().setValue(ByteString.copyFrom(process.handRoot))))
         .addPages(CommandPage.newBuilder().setCommand(Any.pack(cmd, "type.googleapis.com/")))
         .build();
   }
 
-  private CommandBook startBetting(HandProcess process) {
-    process.setPhase(HandPhase.BETTING);
-
-    // Reset betting state for new round
-    for (PlayerProcessState player : process.getPlayers().values()) {
-      player.setBetThisRound(0);
-      player.setHasActed(false);
+  private void startBetting(HandProcess process) {
+    process.phase = HandPhase.BETTING;
+    for (PlayerState player : process.players.values()) {
+      player.betThisRound = 0;
+      player.hasActed = false;
     }
-    process.setCurrentBet(0);
+    process.currentBet = 0;
 
-    // Determine first to act
-    if (process.getBettingPhase() == BettingPhase.PREFLOP_VALUE) {
-      process.setActionOn(findNextActive(process, process.getBigBlindPosition()));
+    if (process.bettingPhase == BettingPhase.PREFLOP_VALUE) {
+      process.actionOn = findNextActive(process, process.bigBlindPosition);
     } else {
-      process.setActionOn(findNextActive(process, process.getDealerPosition()));
+      process.actionOn = findNextActive(process, process.dealerPosition);
     }
-
-    process.setActionStartedAt(Instant.now());
-    return null; // Player action requests handled externally
+    process.actionStartedAt = Instant.now();
   }
 
   private void advanceAction(HandProcess process) {
-    process.setActionOn(findNextActive(process, process.getActionOn()));
-    process.setActionStartedAt(Instant.now());
+    process.actionOn = findNextActive(process, process.actionOn);
+    process.actionStartedAt = Instant.now();
   }
 
   private int findNextActive(HandProcess process, int afterPosition) {
-    List<Integer> positions = process.getActivePositions();
+    List<Integer> positions = process.activePositions;
     int n = positions.size();
     if (n == 0) return -1;
 
@@ -352,153 +265,122 @@ public class HandFlowProcessManager {
     for (int i = 0; i < n; i++) {
       int idx = (startIdx + i) % n;
       int pos = positions.get(idx);
-      PlayerProcessState player = process.getPlayers().get(pos);
-      if (player != null && !player.hasFolded() && !player.isAllIn()) {
+      PlayerState player = process.players.get(pos);
+      if (player != null && !player.hasFolded && !player.allIn) {
         return pos;
       }
     }
-
     return -1;
   }
 
   private boolean isBettingComplete(HandProcess process) {
-    List<PlayerProcessState> activePlayers = new ArrayList<>();
-    for (PlayerProcessState p : process.getPlayers().values()) {
-      if (!p.hasFolded() && !p.isAllIn()) {
+    List<PlayerState> activePlayers = new ArrayList<>();
+    for (PlayerState p : process.players.values()) {
+      if (!p.hasFolded && !p.allIn) {
         activePlayers.add(p);
       }
     }
-
     if (activePlayers.size() <= 1) return true;
 
-    for (PlayerProcessState player : activePlayers) {
-      if (!player.hasActed()) return false;
-      if (player.getBetThisRound() < process.getCurrentBet() && !player.isAllIn()) {
-        return false;
-      }
+    for (PlayerState player : activePlayers) {
+      if (!player.hasActed) return false;
+      if (player.betThisRound < process.currentBet && !player.allIn) return false;
     }
-
     return true;
   }
 
   private CommandBook endBettingRound(HandProcess process) {
-    // Count players in hand
-    List<PlayerProcessState> playersInHand = new ArrayList<>();
-    List<PlayerProcessState> activePlayers = new ArrayList<>();
-    for (PlayerProcessState p : process.getPlayers().values()) {
-      if (!p.hasFolded()) {
+    List<PlayerState> playersInHand = new ArrayList<>();
+    List<PlayerState> activePlayers = new ArrayList<>();
+    for (PlayerState p : process.players.values()) {
+      if (!p.hasFolded) {
         playersInHand.add(p);
-        if (!p.isAllIn()) {
-          activePlayers.add(p);
-        }
+        if (!p.allIn) activePlayers.add(p);
       }
     }
 
-    // If only one player left, award pot
     if (playersInHand.size() == 1) {
       return awardPotToLastPlayer(process, playersInHand.get(0));
     }
-
-    // Advance to next phase
-    return advancePhase(process, activePlayers.size());
+    return advancePhase(process);
   }
 
-  private CommandBook advancePhase(HandProcess process, int activeCount) {
-    int currentPhase = process.getBettingPhase();
-
-    if (currentPhase == BettingPhase.PREFLOP_VALUE) {
-      process.setPhase(HandPhase.DEALING_COMMUNITY);
-      return buildDealCommunityCommand(process, 3); // Flop
-    } else if (currentPhase == BettingPhase.FLOP_VALUE) {
-      process.setPhase(HandPhase.DEALING_COMMUNITY);
-      return buildDealCommunityCommand(process, 1); // Turn
-    } else if (currentPhase == BettingPhase.TURN_VALUE) {
-      process.setPhase(HandPhase.DEALING_COMMUNITY);
-      return buildDealCommunityCommand(process, 1); // River
-    } else if (currentPhase == BettingPhase.RIVER_VALUE) {
+  private CommandBook advancePhase(HandProcess process) {
+    if (process.bettingPhase == BettingPhase.PREFLOP_VALUE) {
+      process.phase = HandPhase.DEALING_COMMUNITY;
+      return buildDealCommunityCommand(process, 3);
+    } else if (process.bettingPhase == BettingPhase.FLOP_VALUE) {
+      process.phase = HandPhase.DEALING_COMMUNITY;
+      return buildDealCommunityCommand(process, 1);
+    } else if (process.bettingPhase == BettingPhase.TURN_VALUE) {
+      process.phase = HandPhase.DEALING_COMMUNITY;
+      return buildDealCommunityCommand(process, 1);
+    } else if (process.bettingPhase == BettingPhase.RIVER_VALUE) {
       return autoAwardPot(process);
     }
-
     return null;
   }
 
   private CommandBook buildDealCommunityCommand(HandProcess process, int count) {
     DealCommunityCards cmd = DealCommunityCards.newBuilder().setCount(count).build();
-
     return CommandBook.newBuilder()
         .setCover(
             Cover.newBuilder()
                 .setDomain("hand")
                 .setRoot(
-                    dev.angzarr
-                        .UUID
-                        .newBuilder()
-                        .setValue(ByteString.copyFrom(process.getHandRoot()))))
+                    dev.angzarr.UUID.newBuilder().setValue(ByteString.copyFrom(process.handRoot))))
         .addPages(CommandPage.newBuilder().setCommand(Any.pack(cmd, "type.googleapis.com/")))
         .build();
   }
 
-  private CommandBook awardPotToLastPlayer(HandProcess process, PlayerProcessState winner) {
-    process.setPhase(HandPhase.COMPLETE);
-
+  private CommandBook awardPotToLastPlayer(HandProcess process, PlayerState winner) {
+    process.phase = HandPhase.COMPLETE;
     AwardPot cmd =
         AwardPot.newBuilder()
             .addAwards(
                 PotAward.newBuilder()
-                    .setPlayerRoot(ByteString.copyFrom(winner.getPlayerRoot()))
-                    .setAmount(process.getPotTotal())
+                    .setPlayerRoot(ByteString.copyFrom(winner.playerRoot))
+                    .setAmount(process.potTotal)
                     .setPotType("main"))
             .build();
-
     return CommandBook.newBuilder()
         .setCover(
             Cover.newBuilder()
                 .setDomain("hand")
                 .setRoot(
-                    dev.angzarr
-                        .UUID
-                        .newBuilder()
-                        .setValue(ByteString.copyFrom(process.getHandRoot()))))
+                    dev.angzarr.UUID.newBuilder().setValue(ByteString.copyFrom(process.handRoot))))
         .addPages(CommandPage.newBuilder().setCommand(Any.pack(cmd, "type.googleapis.com/")))
         .build();
   }
 
   private CommandBook autoAwardPot(HandProcess process) {
-    List<PlayerProcessState> playersInHand = new ArrayList<>();
-    for (PlayerProcessState p : process.getPlayers().values()) {
-      if (!p.hasFolded()) {
-        playersInHand.add(p);
-      }
+    List<PlayerState> playersInHand = new ArrayList<>();
+    for (PlayerState p : process.players.values()) {
+      if (!p.hasFolded) playersInHand.add(p);
     }
-
     if (playersInHand.isEmpty()) return null;
 
-    // Split pot evenly (simplified - real implementation evaluates hands)
-    long split = process.getPotTotal() / playersInHand.size();
-    long remainder = process.getPotTotal() % playersInHand.size();
+    long split = process.potTotal / playersInHand.size();
+    long remainder = process.potTotal % playersInHand.size();
 
     AwardPot.Builder cmdBuilder = AwardPot.newBuilder();
     for (int i = 0; i < playersInHand.size(); i++) {
-      PlayerProcessState player = playersInHand.get(i);
+      PlayerState player = playersInHand.get(i);
       long amount = split + (i < remainder ? 1 : 0);
       cmdBuilder.addAwards(
           PotAward.newBuilder()
-              .setPlayerRoot(ByteString.copyFrom(player.getPlayerRoot()))
+              .setPlayerRoot(ByteString.copyFrom(player.playerRoot))
               .setAmount(amount)
               .setPotType("main"));
     }
-
-    process.setPhase(HandPhase.COMPLETE);
+    process.phase = HandPhase.COMPLETE;
 
     return CommandBook.newBuilder()
         .setCover(
             Cover.newBuilder()
                 .setDomain("hand")
                 .setRoot(
-                    dev.angzarr
-                        .UUID
-                        .newBuilder()
-                        .setValue(ByteString.copyFrom(process.getHandRoot()))))
+                    dev.angzarr.UUID.newBuilder().setValue(ByteString.copyFrom(process.handRoot))))
         .addPages(
             CommandPage.newBuilder()
                 .setCommand(Any.pack(cmdBuilder.build(), "type.googleapis.com/")))
@@ -507,24 +389,13 @@ public class HandFlowProcessManager {
 
   private HandProcess findProcessByPlayer(byte[] playerRoot) {
     for (HandProcess process : processes.values()) {
-      for (PlayerProcessState player : process.getPlayers().values()) {
-        if (Arrays.equals(player.getPlayerRoot(), playerRoot)) {
+      for (PlayerState player : process.players.values()) {
+        if (Arrays.equals(player.playerRoot, playerRoot)) {
           return process;
         }
       }
     }
     return null;
-  }
-
-  private static byte[] hexToBytes(String hex) {
-    int len = hex.length();
-    byte[] data = new byte[len / 2];
-    for (int i = 0; i < len; i += 2) {
-      data[i / 2] =
-          (byte)
-              ((Character.digit(hex.charAt(i), 16) << 4) + Character.digit(hex.charAt(i + 1), 16));
-    }
-    return data;
   }
 
   private static String bytesToHex(byte[] bytes) {
@@ -534,4 +405,52 @@ public class HandFlowProcessManager {
     }
     return sb.toString();
   }
+
+  // --- Inner classes for state tracking ---
+
+  // docs:start:pm_state_oo
+  enum HandPhase {
+    DEALING,
+    POSTING_BLINDS,
+    BETTING,
+    DEALING_COMMUNITY,
+    COMPLETE
+  }
+
+  static class HandProcess {
+    String handId;
+    byte[] handRoot;
+    long handNumber;
+    int dealerPosition;
+    int smallBlindPosition;
+    int bigBlindPosition;
+    long smallBlind;
+    long bigBlind;
+    HandPhase phase = HandPhase.DEALING;
+    Map<Integer, PlayerState> players = new HashMap<>();
+    List<Integer> activePositions = new ArrayList<>();
+    boolean smallBlindPosted;
+    boolean bigBlindPosted;
+    long currentBet;
+    long minRaise;
+    long potTotal;
+    int actionOn;
+    int lastAggressor;
+    Instant actionStartedAt;
+    int communityCardCount;
+    int bettingPhase;
+  }
+
+  static class PlayerState {
+    byte[] playerRoot;
+    int position;
+    long stack;
+    long betThisRound;
+    long totalInvested;
+    boolean hasActed;
+    boolean hasFolded;
+    boolean allIn;
+  }
+  // docs:end:pm_state_oo
 }
+// docs:end:pm_handler_oo

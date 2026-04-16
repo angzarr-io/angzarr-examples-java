@@ -1,171 +1,199 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="dev.angzarr.examples.AcceptanceTest" tests="165" skipped="0" failures="0" errors="0" timestamp="2026-04-10T14:54:39" hostname="DESKTOP-GJ1OCQP" time="1.991">
+<testsuite name="dev.angzarr.examples.AcceptanceTest" tests="193" skipped="0" failures="0" errors="0" timestamp="2026-04-16T04:02:50" hostname="DESKTOP-GJ1OCQP" time="2.06">
   <properties/>
-  <testcase name="Hand aggregate logic - Deal Texas Hold'em hand to 2 players" classname="dev.angzarr.examples.AcceptanceTest" time="0.842"/>
-  <testcase name="Hand aggregate logic - Deal Omaha hand to 3 players" classname="dev.angzarr.examples.AcceptanceTest" time="0.018"/>
-  <testcase name="Hand aggregate logic - Deal Five Card Draw hand to 4 players" classname="dev.angzarr.examples.AcceptanceTest" time="0.016"/>
-  <testcase name="Hand aggregate logic - Deterministic shuffle with seed" classname="dev.angzarr.examples.AcceptanceTest" time="0.017"/>
-  <testcase name="Hand aggregate logic - Cannot deal cards twice" classname="dev.angzarr.examples.AcceptanceTest" time="0.022"/>
-  <testcase name="Hand aggregate logic - Cannot deal with fewer than 2 players" classname="dev.angzarr.examples.AcceptanceTest" time="0.009"/>
-  <testcase name="Hand aggregate logic - Post small blind" classname="dev.angzarr.examples.AcceptanceTest" time="0.017"/>
-  <testcase name="Hand aggregate logic - Post big blind" classname="dev.angzarr.examples.AcceptanceTest" time="0.012"/>
+  <testcase name="Hand aggregate logic - Deal Texas Hold'em hand to 2 players" classname="dev.angzarr.examples.AcceptanceTest" time="0.867"/>
+  <testcase name="Hand aggregate logic - Deal Omaha hand to 3 players" classname="dev.angzarr.examples.AcceptanceTest" time="0.014"/>
+  <testcase name="Hand aggregate logic - Deal Five Card Draw hand to 4 players" classname="dev.angzarr.examples.AcceptanceTest" time="0.015"/>
+  <testcase name="Hand aggregate logic - Deterministic shuffle with seed" classname="dev.angzarr.examples.AcceptanceTest" time="0.013"/>
+  <testcase name="Hand aggregate logic - Cannot deal cards twice" classname="dev.angzarr.examples.AcceptanceTest" time="0.019"/>
+  <testcase name="Hand aggregate logic - Cannot deal with fewer than 2 players" classname="dev.angzarr.examples.AcceptanceTest" time="0.008"/>
+  <testcase name="Hand aggregate logic - Post small blind" classname="dev.angzarr.examples.AcceptanceTest" time="0.014"/>
+  <testcase name="Hand aggregate logic - Post big blind" classname="dev.angzarr.examples.AcceptanceTest" time="0.013"/>
   <testcase name="Hand aggregate logic - Post all-in blind when short-stacked" classname="dev.angzarr.examples.AcceptanceTest" time="0.009"/>
-  <testcase name="Hand aggregate logic - Player folds" classname="dev.angzarr.examples.AcceptanceTest" time="0.016"/>
-  <testcase name="Hand aggregate logic - Player checks when no bet" classname="dev.angzarr.examples.AcceptanceTest" time="0.013"/>
-  <testcase name="Hand aggregate logic - Player calls the big blind" classname="dev.angzarr.examples.AcceptanceTest" time="0.011"/>
-  <testcase name="Hand aggregate logic - Player bets" classname="dev.angzarr.examples.AcceptanceTest" time="0.009"/>
-  <testcase name="Hand aggregate logic - Player raises" classname="dev.angzarr.examples.AcceptanceTest" time="0.008"/>
-  <testcase name="Hand aggregate logic - Player goes all-in" classname="dev.angzarr.examples.AcceptanceTest" time="0.008"/>
-  <testcase name="Hand aggregate logic - Cannot check when facing a bet" classname="dev.angzarr.examples.AcceptanceTest" time="0.01"/>
+  <testcase name="Hand aggregate logic - Player folds" classname="dev.angzarr.examples.AcceptanceTest" time="0.013"/>
+  <testcase name="Hand aggregate logic - Player checks when no bet" classname="dev.angzarr.examples.AcceptanceTest" time="0.014"/>
+  <testcase name="Hand aggregate logic - Player calls the big blind" classname="dev.angzarr.examples.AcceptanceTest" time="0.014"/>
+  <testcase name="Hand aggregate logic - Player bets" classname="dev.angzarr.examples.AcceptanceTest" time="0.01"/>
+  <testcase name="Hand aggregate logic - Player raises" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
+  <testcase name="Hand aggregate logic - Player goes all-in" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
+  <testcase name="Hand aggregate logic - Cannot check when facing a bet" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
   <testcase name="Hand aggregate logic - Cannot bet less than minimum" classname="dev.angzarr.examples.AcceptanceTest" time="0.008"/>
-  <testcase name="Hand aggregate logic - Deal the flop" classname="dev.angzarr.examples.AcceptanceTest" time="0.01"/>
-  <testcase name="Hand aggregate logic - Deal the turn" classname="dev.angzarr.examples.AcceptanceTest" time="0.009"/>
+  <testcase name="Hand aggregate logic - Deal the flop" classname="dev.angzarr.examples.AcceptanceTest" time="0.009"/>
+  <testcase name="Hand aggregate logic - Deal the turn" classname="dev.angzarr.examples.AcceptanceTest" time="0.008"/>
   <testcase name="Hand aggregate logic - Deal the river" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
   <testcase name="Hand aggregate logic - Cannot deal community cards in Five Card Draw" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
-  <testcase name="Hand aggregate logic - Player discards and draws cards" classname="dev.angzarr.examples.AcceptanceTest" time="0.012"/>
+  <testcase name="Hand aggregate logic - Player discards and draws cards" classname="dev.angzarr.examples.AcceptanceTest" time="0.01"/>
   <testcase name="Hand aggregate logic - Player stands pat (no discard)" classname="dev.angzarr.examples.AcceptanceTest" time="0.009"/>
   <testcase name="Hand aggregate logic - Cannot draw in Texas Hold'em" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
-  <testcase name="Hand aggregate logic - Player reveals cards at showdown" classname="dev.angzarr.examples.AcceptanceTest" time="0.014"/>
-  <testcase name="Hand aggregate logic - Player mucks cards" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
-  <testcase name="Hand aggregate logic - Award pot to single winner" classname="dev.angzarr.examples.AcceptanceTest" time="0.01"/>
-  <testcase name="Hand aggregate logic - Award pot generates HandComplete" classname="dev.angzarr.examples.AcceptanceTest" time="0.008"/>
-  <testcase name="Hand aggregate logic - Royal flush beats straight flush" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
-  <testcase name="Hand aggregate logic - Full house beats flush" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
-  <testcase name="Hand aggregate logic - High card comparison with kickers" classname="dev.angzarr.examples.AcceptanceTest" time="0.008"/>
+  <testcase name="Hand aggregate logic - Player reveals cards at showdown" classname="dev.angzarr.examples.AcceptanceTest" time="0.013"/>
+  <testcase name="Hand aggregate logic - Player mucks cards" classname="dev.angzarr.examples.AcceptanceTest" time="0.008"/>
+  <testcase name="Hand aggregate logic - Award pot to single winner" classname="dev.angzarr.examples.AcceptanceTest" time="0.014"/>
+  <testcase name="Hand aggregate logic - Award pot generates HandComplete" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
+  <testcase name="Hand aggregate logic - Royal flush beats straight flush" classname="dev.angzarr.examples.AcceptanceTest" time="0.008"/>
+  <testcase name="Hand aggregate logic - Full house beats flush" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
+  <testcase name="Hand aggregate logic - High card comparison with kickers" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
   <testcase name="Hand aggregate logic - Handler detects straight" classname="dev.angzarr.examples.AcceptanceTest" time="0.008"/>
-  <testcase name="Hand aggregate logic - Handler detects wheel straight (A-2-3-4-5)" classname="dev.angzarr.examples.AcceptanceTest" time="0.008"/>
-  <testcase name="Hand aggregate logic - Handler detects straight flush" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
-  <testcase name="Hand aggregate logic - Handler detects royal flush" classname="dev.angzarr.examples.AcceptanceTest" time="0.008"/>
-  <testcase name="Hand aggregate logic - Handler detects four of a kind" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
+  <testcase name="Hand aggregate logic - Handler detects wheel straight (A-2-3-4-5)" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
+  <testcase name="Hand aggregate logic - Handler detects straight flush" classname="dev.angzarr.examples.AcceptanceTest" time="0.008"/>
+  <testcase name="Hand aggregate logic - Handler detects royal flush" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
+  <testcase name="Hand aggregate logic - Handler detects four of a kind" classname="dev.angzarr.examples.AcceptanceTest" time="0.009"/>
   <testcase name="Hand aggregate logic - Handler detects full house" classname="dev.angzarr.examples.AcceptanceTest" time="0.008"/>
-  <testcase name="Hand aggregate logic - Handler detects flush" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
+  <testcase name="Hand aggregate logic - Handler detects flush" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
   <testcase name="Hand aggregate logic - Handler detects three of a kind" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
   <testcase name="Hand aggregate logic - Handler detects two pair" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
-  <testcase name="Hand aggregate logic - Handler detects pair" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
-  <testcase name="Hand aggregate logic - Handler detects high card" classname="dev.angzarr.examples.AcceptanceTest" time="0.008"/>
-  <testcase name="Hand aggregate logic - Cannot raise less than minimum raise amount" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
-  <testcase name="Hand aggregate logic - Split pot when hands are identical" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
-  <testcase name="Hand aggregate logic - Kicker determines winner with matching pairs" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
-  <testcase name="Hand aggregate logic - Rebuild state after dealing" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
+  <testcase name="Hand aggregate logic - Handler detects pair" classname="dev.angzarr.examples.AcceptanceTest" time="0.008"/>
+  <testcase name="Hand aggregate logic - Handler detects high card" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
+  <testcase name="Hand aggregate logic - Cannot raise less than minimum raise amount" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
+  <testcase name="Hand aggregate logic - Split pot when hands are identical" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
+  <testcase name="Hand aggregate logic - Kicker determines winner with matching pairs" classname="dev.angzarr.examples.AcceptanceTest" time="0.008"/>
+  <testcase name="Hand aggregate logic - Rebuild state after dealing" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
   <testcase name="Hand aggregate logic - Rebuild state with community cards" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
-  <testcase name="Hand aggregate logic - Rebuild state tracks folded players" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
-  <testcase name="Process Manager orchestration logic - BuyInOrchestrator emits SeatPlayer when validation passes" classname="dev.angzarr.examples.AcceptanceTest" time="0.008"/>
-  <testcase name="Process Manager orchestration logic - BuyInOrchestrator rejects when buy-in too low" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
-  <testcase name="Process Manager orchestration logic - BuyInOrchestrator rejects when buy-in too high" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
-  <testcase name="Process Manager orchestration logic - BuyInOrchestrator rejects when seat is occupied" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
+  <testcase name="Hand aggregate logic - Rebuild state tracks folded players" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
+  <testcase name="Process Manager orchestration logic - BuyInOrchestrator emits SeatPlayer when validation passes" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
+  <testcase name="Process Manager orchestration logic - BuyInOrchestrator rejects when buy-in too low" classname="dev.angzarr.examples.AcceptanceTest" time="0.009"/>
+  <testcase name="Process Manager orchestration logic - BuyInOrchestrator rejects when buy-in too high" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
+  <testcase name="Process Manager orchestration logic - BuyInOrchestrator rejects when seat is occupied" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
   <testcase name="Process Manager orchestration logic - BuyInOrchestrator rejects when table is full" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
-  <testcase name="Process Manager orchestration logic - BuyInOrchestrator confirms buy-in on PlayerSeated" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
-  <testcase name="Process Manager orchestration logic - BuyInOrchestrator releases funds on SeatingRejected" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Process Manager orchestration logic - BuyInOrchestrator confirms buy-in on PlayerSeated" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
+  <testcase name="Process Manager orchestration logic - BuyInOrchestrator releases funds on SeatingRejected" classname="dev.angzarr.examples.AcceptanceTest" time="0.008"/>
   <testcase name="Process Manager orchestration logic - RegistrationOrchestrator emits EnrollPlayer when validation passes" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
-  <testcase name="Process Manager orchestration logic - RegistrationOrchestrator rejects when tournament is full" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Process Manager orchestration logic - RegistrationOrchestrator rejects when tournament is full" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
   <testcase name="Process Manager orchestration logic - RegistrationOrchestrator rejects when registration is closed" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
   <testcase name="Process Manager orchestration logic - RegistrationOrchestrator confirms on TournamentPlayerEnrolled" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
   <testcase name="Process Manager orchestration logic - RegistrationOrchestrator releases fee on TournamentEnrollmentRejected" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
-  <testcase name="Process Manager orchestration logic - RebuyOrchestrator emits ProcessRebuy when all validations pass" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
-  <testcase name="Process Manager orchestration logic - RebuyOrchestrator rejects when rebuy window is closed" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
-  <testcase name="Process Manager orchestration logic - RebuyOrchestrator rejects when player not seated" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
-  <testcase name="Process Manager orchestration logic - RebuyOrchestrator adds chips on RebuyProcessed" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
-  <testcase name="Process Manager orchestration logic - RebuyOrchestrator confirms fee after RebuyChipsAdded" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
-  <testcase name="Process Manager orchestration logic - RebuyOrchestrator releases fee on RebuyDenied" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
-  <testcase name="Player aggregate logic - Register a new human player" classname="dev.angzarr.examples.AcceptanceTest" time="0.014"/>
-  <testcase name="Player aggregate logic - Cannot register player twice" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
-  <testcase name="Player aggregate logic - Register an AI player" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
-  <testcase name="Player aggregate logic - Deposit funds to bankroll" classname="dev.angzarr.examples.AcceptanceTest" time="0.011"/>
-  <testcase name="Player aggregate logic - Multiple deposits accumulate" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
-  <testcase name="Player aggregate logic - Cannot deposit to non-existent player" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
-  <testcase name="Player aggregate logic - Cannot deposit zero or negative" classname="dev.angzarr.examples.AcceptanceTest" time="0.008"/>
-  <testcase name="Player aggregate logic - Withdraw funds from bankroll" classname="dev.angzarr.examples.AcceptanceTest" time="0.013"/>
+  <testcase name="Process Manager orchestration logic - RebuyOrchestrator emits ProcessRebuy when all validations pass" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
+  <testcase name="Process Manager orchestration logic - RebuyOrchestrator rejects when rebuy window is closed" classname="dev.angzarr.examples.AcceptanceTest" time="0.003"/>
+  <testcase name="Process Manager orchestration logic - RebuyOrchestrator rejects when player not seated" classname="dev.angzarr.examples.AcceptanceTest" time="0.003"/>
+  <testcase name="Process Manager orchestration logic - RebuyOrchestrator adds chips on RebuyProcessed" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
+  <testcase name="Process Manager orchestration logic - RebuyOrchestrator confirms fee after RebuyChipsAdded" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Process Manager orchestration logic - RebuyOrchestrator releases fee on RebuyDenied" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Player aggregate logic - Register a new human player" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
+  <testcase name="Player aggregate logic - Cannot register player twice" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Player aggregate logic - Register an AI player" classname="dev.angzarr.examples.AcceptanceTest" time="0.003"/>
+  <testcase name="Player aggregate logic - Deposit funds to bankroll" classname="dev.angzarr.examples.AcceptanceTest" time="0.009"/>
+  <testcase name="Player aggregate logic - Multiple deposits accumulate" classname="dev.angzarr.examples.AcceptanceTest" time="0.009"/>
+  <testcase name="Player aggregate logic - Cannot deposit to non-existent player" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Player aggregate logic - Cannot deposit zero or negative" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Player aggregate logic - Withdraw funds from bankroll" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
   <testcase name="Player aggregate logic - Cannot withdraw more than available" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
-  <testcase name="Player aggregate logic - Cannot withdraw with funds reserved" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
+  <testcase name="Player aggregate logic - Cannot withdraw with funds reserved" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
   <testcase name="Player aggregate logic - Reserve funds for table buy-in" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
-  <testcase name="Player aggregate logic - Cannot reserve more than available" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
-  <testcase name="Player aggregate logic - Cannot reserve for same table twice" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
-  <testcase name="Player aggregate logic - Release reserved funds back to bankroll" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
-  <testcase name="Player aggregate logic - Cannot release non-existent reservation" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
-  <testcase name="Player aggregate logic - Rebuild state with deposits and reservations" classname="dev.angzarr.examples.AcceptanceTest" time="0.008"/>
+  <testcase name="Player aggregate logic - Cannot reserve more than available" classname="dev.angzarr.examples.AcceptanceTest" time="0.003"/>
+  <testcase name="Player aggregate logic - Cannot reserve for same table twice" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Player aggregate logic - Release reserved funds back to bankroll" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
+  <testcase name="Player aggregate logic - Cannot release non-existent reservation" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Player aggregate logic - Rebuild state with deposits and reservations" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
   <testcase name="Player aggregate logic - Funds released when table join is rejected" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
-  <testcase name="Process manager logic - Process manager initializes hand from HandStarted" classname="dev.angzarr.examples.AcceptanceTest" time="0.014"/>
-  <testcase name="Process manager logic - Process manager transitions to blind posting after cards dealt" classname="dev.angzarr.examples.AcceptanceTest" time="0.008"/>
+  <testcase name="Process manager logic - Process manager initializes hand from HandStarted" classname="dev.angzarr.examples.AcceptanceTest" time="0.012"/>
+  <testcase name="Process manager logic - Process manager transitions to blind posting after cards dealt" classname="dev.angzarr.examples.AcceptanceTest" time="0.009"/>
   <testcase name="Process manager logic - Process manager posts big blind after small blind" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
-  <testcase name="Process manager logic - Process manager starts betting after big blind posted" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
-  <testcase name="Process manager logic - Process manager advances action after player acts" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
+  <testcase name="Process manager logic - Process manager starts betting after big blind posted" classname="dev.angzarr.examples.AcceptanceTest" time="0.003"/>
+  <testcase name="Process manager logic - Process manager advances action after player acts" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
   <testcase name="Process manager logic - Process manager resets has_acted after raise" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
   <testcase name="Process manager logic - Process manager detects betting complete" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
-  <testcase name="Process manager logic - Process manager deals flop after preflop betting" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Process manager logic - Process manager deals flop after preflop betting" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
   <testcase name="Process manager logic - Process manager deals turn after flop betting" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
-  <testcase name="Process manager logic - Process manager deals river after turn betting" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
+  <testcase name="Process manager logic - Process manager deals river after turn betting" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
   <testcase name="Process manager logic - Process manager starts showdown after river betting" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
-  <testcase name="Process manager logic - Process manager awards pot to last player standing" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
+  <testcase name="Process manager logic - Process manager awards pot to last player standing" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
   <testcase name="Process manager logic - Process manager handles all-in correctly" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
-  <testcase name="Process manager logic - Process manager auto-folds on timeout when facing bet" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
-  <testcase name="Process manager logic - Process manager auto-checks on timeout when no bet" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Process manager logic - Process manager auto-folds on timeout when facing bet" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Process manager logic - Process manager auto-checks on timeout when no bet" classname="dev.angzarr.examples.AcceptanceTest" time="0.003"/>
   <testcase name="Process manager logic - Process manager handles Five Card Draw phase transition" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
-  <testcase name="Process manager logic - Process manager starts final betting after draw" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
-  <testcase name="Process manager logic - Process manager resets betting state for new round" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
-  <testcase name="Process manager logic - Process manager tracks pot total correctly" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
-  <testcase name="Process manager logic - Process manager tracks player stacks correctly" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
-  <testcase name="Process manager logic - Process manager completes hand on PotAwarded" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
-  <testcase name="Projector logic - Render PlayerRegistered event" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
-  <testcase name="Projector logic - Render FundsDeposited event" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
-  <testcase name="Projector logic - Render FundsWithdrawn event" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
-  <testcase name="Projector logic - Render FundsReserved event" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Process manager logic - Process manager starts final betting after draw" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Process manager logic - Process manager resets betting state for new round" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
+  <testcase name="Process manager logic - Process manager tracks pot total correctly" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
+  <testcase name="Process manager logic - Process manager tracks player stacks correctly" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
+  <testcase name="Process manager logic - Process manager completes hand on PotAwarded" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
+  <testcase name="Projector logic - Render PlayerRegistered event" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
+  <testcase name="Projector logic - Render FundsDeposited event" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
+  <testcase name="Projector logic - Render FundsWithdrawn event" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
+  <testcase name="Projector logic - Render FundsReserved event" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
   <testcase name="Projector logic - Render TableCreated event" classname="dev.angzarr.examples.AcceptanceTest" time="0.01"/>
-  <testcase name="Projector logic - Render PlayerJoined event" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
+  <testcase name="Projector logic - Render PlayerJoined event" classname="dev.angzarr.examples.AcceptanceTest" time="0.01"/>
   <testcase name="Projector logic - Render PlayerLeft event" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
   <testcase name="Projector logic - Render HandStarted event" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
-  <testcase name="Projector logic - Render HandEnded event with results" classname="dev.angzarr.examples.AcceptanceTest" time="0.012"/>
-  <testcase name="Projector logic - Render CardsDealt event" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
-  <testcase name="Projector logic - Render BlindPosted event" classname="dev.angzarr.examples.AcceptanceTest" time="0.008"/>
+  <testcase name="Projector logic - Render HandEnded event with results" classname="dev.angzarr.examples.AcceptanceTest" time="0.023"/>
+  <testcase name="Projector logic - Render CardsDealt event" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
+  <testcase name="Projector logic - Render BlindPosted event" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
   <testcase name="Projector logic - Render ActionTaken with fold" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
-  <testcase name="Projector logic - Render ActionTaken with call" classname="dev.angzarr.examples.AcceptanceTest" time="0.009"/>
-  <testcase name="Projector logic - Render ActionTaken with raise" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
-  <testcase name="Projector logic - Render ActionTaken with all-in" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
-  <testcase name="Projector logic - Render CommunityCardsDealt for flop" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
+  <testcase name="Projector logic - Render ActionTaken with call" classname="dev.angzarr.examples.AcceptanceTest" time="0.008"/>
+  <testcase name="Projector logic - Render ActionTaken with raise" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
+  <testcase name="Projector logic - Render ActionTaken with all-in" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
+  <testcase name="Projector logic - Render CommunityCardsDealt for flop" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
   <testcase name="Projector logic - Render CommunityCardsDealt for turn" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
-  <testcase name="Projector logic - Render ShowdownStarted event" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
-  <testcase name="Projector logic - Render CardsRevealed event" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
-  <testcase name="Projector logic - Render CardsMucked event" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
-  <testcase name="Projector logic - Render PotAwarded event" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
-  <testcase name="Projector logic - Render HandComplete event" classname="dev.angzarr.examples.AcceptanceTest" time="0.008"/>
-  <testcase name="Projector logic - Render PlayerTimedOut event" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
-  <testcase name="Projector logic - Format card with all suits" classname="dev.angzarr.examples.AcceptanceTest" time="0.01"/>
-  <testcase name="Projector logic - Format card with all ranks" classname="dev.angzarr.examples.AcceptanceTest" time="0.008"/>
-  <testcase name="Projector logic - Use registered player names" classname="dev.angzarr.examples.AcceptanceTest" time="0.009"/>
-  <testcase name="Projector logic - Fallback to truncated player ID" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
-  <testcase name="Projector logic - Include timestamps when enabled" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
-  <testcase name="Projector logic - Exclude timestamps when disabled" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
-  <testcase name="Projector logic - Handle multiple events in event book" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
-  <testcase name="Projector logic - Handle unknown event type gracefully" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
-  <testcase name="Saga logic - Table sync saga routes HandStarted to DealCards" classname="dev.angzarr.examples.AcceptanceTest" time="0.01"/>
-  <testcase name="Saga logic - Table sync saga routes HandComplete to EndHand" classname="dev.angzarr.examples.AcceptanceTest" time="0.009"/>
-  <testcase name="Saga logic - Hand results saga routes HandEnded to ReleaseFunds" classname="dev.angzarr.examples.AcceptanceTest" time="0.011"/>
-  <testcase name="Saga logic - Hand results saga routes PotAwarded to DepositFunds" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
-  <testcase name="Saga logic - Saga router dispatches to matching sagas only" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
+  <testcase name="Projector logic - Render ShowdownStarted event" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
+  <testcase name="Projector logic - Render CardsRevealed event" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
+  <testcase name="Projector logic - Render CardsMucked event" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
+  <testcase name="Projector logic - Render PotAwarded event" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
+  <testcase name="Projector logic - Render HandComplete event" classname="dev.angzarr.examples.AcceptanceTest" time="0.009"/>
+  <testcase name="Projector logic - Render PlayerTimedOut event" classname="dev.angzarr.examples.AcceptanceTest" time="0.009"/>
+  <testcase name="Projector logic - Format card with all suits" classname="dev.angzarr.examples.AcceptanceTest" time="0.011"/>
+  <testcase name="Projector logic - Format card with all ranks" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Projector logic - Use registered player names" classname="dev.angzarr.examples.AcceptanceTest" time="0.003"/>
+  <testcase name="Projector logic - Fallback to truncated player ID" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Projector logic - Include timestamps when enabled" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Projector logic - Exclude timestamps when disabled" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Projector logic - Handle multiple events in event book" classname="dev.angzarr.examples.AcceptanceTest" time="0.003"/>
+  <testcase name="Projector logic - Handle unknown event type gracefully" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
+  <testcase name="Saga logic - Table sync saga routes HandStarted to DealCards" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
+  <testcase name="Saga logic - Table sync saga routes HandComplete to EndHand" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
+  <testcase name="Saga logic - Hand results saga routes HandEnded to ReleaseFunds" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
+  <testcase name="Saga logic - Hand results saga routes PotAwarded to DepositFunds" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Saga logic - Saga router dispatches to matching sagas only" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
   <testcase name="Saga logic - Saga router handles multiple events in event book" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
   <testcase name="Saga logic - Saga router continues after saga failure" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
-  <testcase name="Saga logic - Saga handles empty player list gracefully" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
+  <testcase name="Saga logic - Saga handles empty player list gracefully" classname="dev.angzarr.examples.AcceptanceTest" time="0.003"/>
   <testcase name="Saga logic - Hand results saga skips players with zero change" classname="dev.angzarr.examples.AcceptanceTest" time="0.003"/>
-  <testcase name="Table aggregate logic - Create a Texas Hold'em table" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
-  <testcase name="Table aggregate logic - Create a Five Card Draw table" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
+  <testcase name="Table aggregate logic - Create a Texas Hold'em table" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
+  <testcase name="Table aggregate logic - Create a Five Card Draw table" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
   <testcase name="Table aggregate logic - Cannot create table twice" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
   <testcase name="Table aggregate logic - Player joins table at preferred seat" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
-  <testcase name="Table aggregate logic - Player joins table at any seat" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
-  <testcase name="Table aggregate logic - Cannot join occupied seat" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
-  <testcase name="Table aggregate logic - Cannot join table twice" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
-  <testcase name="Table aggregate logic - Cannot join with insufficient buy-in" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Table aggregate logic - Player joins table at any seat" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
+  <testcase name="Table aggregate logic - Cannot join occupied seat" classname="dev.angzarr.examples.AcceptanceTest" time="0.003"/>
+  <testcase name="Table aggregate logic - Cannot join table twice" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Table aggregate logic - Cannot join with insufficient buy-in" classname="dev.angzarr.examples.AcceptanceTest" time="0.003"/>
   <testcase name="Table aggregate logic - Cannot join full table" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
   <testcase name="Table aggregate logic - Player leaves table" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
-  <testcase name="Table aggregate logic - Cannot leave during hand" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
-  <testcase name="Table aggregate logic - Cannot leave table not joined" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
-  <testcase name="Table aggregate logic - Start a new hand" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
-  <testcase name="Table aggregate logic - Dealer button advances each hand" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
+  <testcase name="Table aggregate logic - Cannot leave during hand" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
+  <testcase name="Table aggregate logic - Cannot leave table not joined" classname="dev.angzarr.examples.AcceptanceTest" time="0.003"/>
+  <testcase name="Table aggregate logic - Start a new hand" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
+  <testcase name="Table aggregate logic - Dealer button advances each hand" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
   <testcase name="Table aggregate logic - Cannot start hand with fewer than 2 players" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
-  <testcase name="Table aggregate logic - Cannot start hand while one is in progress" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
-  <testcase name="Table aggregate logic - End hand and update stacks" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Table aggregate logic - Cannot start hand while one is in progress" classname="dev.angzarr.examples.AcceptanceTest" time="0.003"/>
+  <testcase name="Table aggregate logic - End hand and update stacks" classname="dev.angzarr.examples.AcceptanceTest" time="0.003"/>
   <testcase name="Table aggregate logic - Cannot end hand not in progress" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
   <testcase name="Table aggregate logic - End hand updates player stacks with wins and losses" classname="dev.angzarr.examples.AcceptanceTest" time="0.003"/>
   <testcase name="Table aggregate logic - Rebuild state with multiple players" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
   <testcase name="Table aggregate logic - Rebuild state during hand" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Tournament aggregate logic - Create a new tournament" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
+  <testcase name="Tournament aggregate logic - Cannot create tournament twice" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Tournament aggregate logic - Cannot create tournament with invalid buy-in" classname="dev.angzarr.examples.AcceptanceTest" time="0.003"/>
+  <testcase name="Tournament aggregate logic - Cannot create tournament with invalid starting stack" classname="dev.angzarr.examples.AcceptanceTest" time="0.003"/>
+  <testcase name="Tournament aggregate logic - Cannot create tournament with max_players less than 2" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Tournament aggregate logic - Open registration for tournament" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
+  <testcase name="Tournament aggregate logic - Cannot open registration twice" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Tournament aggregate logic - Cannot open registration for running tournament" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
+  <testcase name="Tournament aggregate logic - Close registration" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
+  <testcase name="Tournament aggregate logic - Cannot close registration that is not open" classname="dev.angzarr.examples.AcceptanceTest" time="0.003"/>
+  <testcase name="Tournament aggregate logic - Enroll player in tournament" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Tournament aggregate logic - Second player gets registration number 2" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Tournament aggregate logic - Cannot enroll when registration closed" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
+  <testcase name="Tournament aggregate logic - Cannot enroll when tournament full" classname="dev.angzarr.examples.AcceptanceTest" time="0.003"/>
+  <testcase name="Tournament aggregate logic - Cannot enroll same player twice" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Tournament aggregate logic - Process rebuy for eligible player" classname="dev.angzarr.examples.AcceptanceTest" time="0.007"/>
+  <testcase name="Tournament aggregate logic - Deny rebuy when window closed" classname="dev.angzarr.examples.AcceptanceTest" time="0.005"/>
+  <testcase name="Tournament aggregate logic - Deny rebuy when max reached" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Tournament aggregate logic - Deny rebuy for unregistered player" classname="dev.angzarr.examples.AcceptanceTest" time="0.003"/>
+  <testcase name="Tournament aggregate logic - Advance blind level" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Tournament aggregate logic - Cannot advance blind level when not running" classname="dev.angzarr.examples.AcceptanceTest" time="0.003"/>
+  <testcase name="Tournament aggregate logic - Eliminate a player" classname="dev.angzarr.examples.AcceptanceTest" time="0.006"/>
+  <testcase name="Tournament aggregate logic - Cannot eliminate unregistered player" classname="dev.angzarr.examples.AcceptanceTest" time="0.003"/>
+  <testcase name="Tournament aggregate logic - Cannot eliminate when not running" classname="dev.angzarr.examples.AcceptanceTest" time="0.003"/>
+  <testcase name="Tournament aggregate logic - Pause a running tournament" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Tournament aggregate logic - Resume a paused tournament" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
+  <testcase name="Tournament aggregate logic - Cannot pause when not running" classname="dev.angzarr.examples.AcceptanceTest" time="0.003"/>
+  <testcase name="Tournament aggregate logic - Rebuild tournament state with registrations and eliminations" classname="dev.angzarr.examples.AcceptanceTest" time="0.004"/>
   <system-out><![CDATA[
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -175,9 +203,9 @@
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::                (v3.2.0)
 
-2026-04-10T09:54:39.813-05:00  INFO 2747705 --- [    Test worker] d.a.e.steps.CucumberSpringConfiguration  : Starting CucumberSpringConfiguration using Java 21.0.10 with PID 2747705 (started by babbitt in /home/babbitt/workspace/angzarr/examples-java/main/tests)
-2026-04-10T09:54:39.814-05:00  INFO 2747705 --- [    Test worker] d.a.e.steps.CucumberSpringConfiguration  : No active profile set, falling back to 1 default profile: "default"
-2026-04-10T09:54:39.866-05:00  INFO 2747705 --- [    Test worker] d.a.e.steps.CucumberSpringConfiguration  : Started CucumberSpringConfiguration in 0.176 seconds (process running for 0.82)
+2026-04-15T23:02:51.180-05:00  INFO 1107617 --- [    Test worker] d.a.e.steps.CucumberSpringConfiguration  : Starting CucumberSpringConfiguration using Java 21.0.10 with PID 1107617 (started by babbitt in /home/babbitt/workspace/angzarr/examples-java/main/tests)
+2026-04-15T23:02:51.181-05:00  INFO 1107617 --- [    Test worker] d.a.e.steps.CucumberSpringConfiguration  : No active profile set, falling back to 1 default profile: "default"
+2026-04-15T23:02:51.232-05:00  INFO 1107617 --- [    Test worker] d.a.e.steps.CucumberSpringConfiguration  : Started CucumberSpringConfiguration in 0.173 seconds (process running for 0.797)
 
 Scenario: Deal Texas Hold'em hand to 2 players                     ?[90m# features/unit/hand.feature:42?[0m
   ?[32mGiven ?[0m?[32mno prior events for the hand aggregate?[0m                     ?[90m# dev.angzarr.examples.steps.HandSteps.noPriorEventsForHand()?[0m
@@ -1462,6 +1490,203 @@ Scenario: Rebuild state during hand                        ?[90m# features/unit/
   ?[32mWhen ?[0m?[32mI rebuild the table state?[0m                           ?[90m# dev.angzarr.examples.steps.TableSteps.rebuildTableState()?[0m
   ?[32mThen ?[0m?[32mthe table state has status ?[0m?[32m?[1m"in_hand"?[0m                ?[90m# dev.angzarr.examples.steps.TableSteps.tableStateHasStatus(java.lang.String)?[0m
   ?[32mAnd ?[0m?[32mthe table state has hand_count ?[0m?[32m?[1m1?[0m                     ?[90m# dev.angzarr.examples.steps.TableSteps.tableStateHasHandCount(int)?[0m
+
+Scenario: Create a new tournament                                                                          ?[90m# features/unit/tournament.feature:24?[0m
+  ?[32mGiven ?[0m?[32mno prior events for the tournament aggregate?[0m                                                       ?[90m# dev.angzarr.examples.steps.TournamentSteps.noPriorEvents()?[0m
+  ?[32mWhen ?[0m?[32mI handle a CreateTournament command with name ?[0m?[32m?[1m"Sunday Million"?[0m?[32m buy-in ?[0m?[32m?[1m1000?[0m?[32m and starting-stack ?[0m?[32m?[1m10000?[0m ?[90m# dev.angzarr.examples.steps.TournamentSteps.handleCreateTournament(java.lang.String,int,int)?[0m
+  ?[32mThen ?[0m?[32mthe result is a examples.TournamentCreated event?[0m                                                    ?[90m# dev.angzarr.examples.steps.TournamentSteps.resultIsTournamentCreated()?[0m
+  ?[32mAnd ?[0m?[32mthe tournament event has name ?[0m?[32m?[1m"Sunday Million"?[0m                                                       ?[90m# dev.angzarr.examples.steps.TournamentSteps.eventHasName(java.lang.String)?[0m
+  ?[32mAnd ?[0m?[32mthe tournament event has buy_in ?[0m?[32m?[1m1000?[0m                                                                 ?[90m# dev.angzarr.examples.steps.TournamentSteps.eventHasBuyIn(int)?[0m
+  ?[32mAnd ?[0m?[32mthe tournament event has starting_stack ?[0m?[32m?[1m10000?[0m                                                        ?[90m# dev.angzarr.examples.steps.TournamentSteps.eventHasStartingStack(int)?[0m
+
+Scenario: Cannot create tournament twice                                                                   ?[90m# features/unit/tournament.feature:32?[0m
+  ?[32mGiven ?[0m?[32ma TournamentCreated event for ?[0m?[32m?[1m"Sunday Million"?[0m                                                     ?[90m# dev.angzarr.examples.steps.TournamentSteps.tournamentCreated(java.lang.String)?[0m
+  ?[32mWhen ?[0m?[32mI handle a CreateTournament command with name ?[0m?[32m?[1m"Sunday Million 2"?[0m?[32m buy-in ?[0m?[32m?[1m500?[0m?[32m and starting-stack ?[0m?[32m?[1m5000?[0m ?[90m# dev.angzarr.examples.steps.TournamentSteps.handleCreateTournament(java.lang.String,int,int)?[0m
+  ?[32mThen ?[0m?[32mthe command fails with status ?[0m?[32m?[1m"FAILED_PRECONDITION"?[0m                                                 ?[90m# dev.angzarr.examples.steps.CommonSteps.commandFailsWithStatus(java.lang.String)?[0m
+  ?[32mAnd ?[0m?[32mthe error message contains ?[0m?[32m?[1m"already exists"?[0m                                                          ?[90m# dev.angzarr.examples.steps.CommonSteps.errorMessageContains(java.lang.String)?[0m
+
+Scenario: Cannot create tournament with invalid buy-in                                            ?[90m# features/unit/tournament.feature:38?[0m
+  ?[32mGiven ?[0m?[32mno prior events for the tournament aggregate?[0m                                              ?[90m# dev.angzarr.examples.steps.TournamentSteps.noPriorEvents()?[0m
+  ?[32mWhen ?[0m?[32mI handle a CreateTournament command with name ?[0m?[32m?[1m"Free Roll"?[0m?[32m buy-in ?[0m?[32m?[1m0?[0m?[32m and starting-stack ?[0m?[32m?[1m5000?[0m ?[90m# dev.angzarr.examples.steps.TournamentSteps.handleCreateTournament(java.lang.String,int,int)?[0m
+  ?[32mThen ?[0m?[32mthe command fails with status ?[0m?[32m?[1m"INVALID_ARGUMENT"?[0m                                           ?[90m# dev.angzarr.examples.steps.CommonSteps.commandFailsWithStatus(java.lang.String)?[0m
+  ?[32mAnd ?[0m?[32mthe error message contains ?[0m?[32m?[1m"positive"?[0m                                                       ?[90m# dev.angzarr.examples.steps.CommonSteps.errorMessageContains(java.lang.String)?[0m
+
+Scenario: Cannot create tournament with invalid starting stack                              ?[90m# features/unit/tournament.feature:44?[0m
+  ?[32mGiven ?[0m?[32mno prior events for the tournament aggregate?[0m                                        ?[90m# dev.angzarr.examples.steps.TournamentSteps.noPriorEvents()?[0m
+  ?[32mWhen ?[0m?[32mI handle a CreateTournament command with name ?[0m?[32m?[1m"Micro"?[0m?[32m buy-in ?[0m?[32m?[1m10?[0m?[32m and starting-stack ?[0m?[32m?[1m0?[0m ?[90m# dev.angzarr.examples.steps.TournamentSteps.handleCreateTournament(java.lang.String,int,int)?[0m
+  ?[32mThen ?[0m?[32mthe command fails with status ?[0m?[32m?[1m"INVALID_ARGUMENT"?[0m                                     ?[90m# dev.angzarr.examples.steps.CommonSteps.commandFailsWithStatus(java.lang.String)?[0m
+  ?[32mAnd ?[0m?[32mthe error message contains ?[0m?[32m?[1m"positive"?[0m                                                 ?[90m# dev.angzarr.examples.steps.CommonSteps.errorMessageContains(java.lang.String)?[0m
+
+Scenario: Cannot create tournament with max_players less than 2                                              ?[90m# features/unit/tournament.feature:50?[0m
+  ?[32mGiven ?[0m?[32mno prior events for the tournament aggregate?[0m                                                         ?[90m# dev.angzarr.examples.steps.TournamentSteps.noPriorEvents()?[0m
+  ?[32mWhen ?[0m?[32mI handle a CreateTournament command with name ?[0m?[32m?[1m"Solo"?[0m?[32m buy-in ?[0m?[32m?[1m100?[0m?[32m starting-stack ?[0m?[32m?[1m5000?[0m?[32m and max-players ?[0m?[32m?[1m1?[0m ?[90m# dev.angzarr.examples.steps.TournamentSteps.handleCreateTournamentMaxPlayers(java.lang.String,int,int,int)?[0m
+  ?[32mThen ?[0m?[32mthe command fails with status ?[0m?[32m?[1m"INVALID_ARGUMENT"?[0m                                                      ?[90m# dev.angzarr.examples.steps.CommonSteps.commandFailsWithStatus(java.lang.String)?[0m
+  ?[32mAnd ?[0m?[32mthe error message contains ?[0m?[32m?[1m"max_players"?[0m                                                               ?[90m# dev.angzarr.examples.steps.CommonSteps.errorMessageContains(java.lang.String)?[0m
+
+Scenario: Open registration for tournament               ?[90m# features/unit/tournament.feature:60?[0m
+  ?[32mGiven ?[0m?[32ma TournamentCreated event for ?[0m?[32m?[1m"Sunday Million"?[0m   ?[90m# dev.angzarr.examples.steps.TournamentSteps.tournamentCreated(java.lang.String)?[0m
+  ?[32mWhen ?[0m?[32mI handle an OpenRegistration command?[0m              ?[90m# dev.angzarr.examples.steps.TournamentSteps.handleOpenRegistration()?[0m
+  ?[32mThen ?[0m?[32mthe result is a examples.RegistrationOpened event?[0m ?[90m# dev.angzarr.examples.steps.TournamentSteps.resultIsRegistrationOpened()?[0m
+
+Scenario: Cannot open registration twice                   ?[90m# features/unit/tournament.feature:65?[0m
+  ?[32mGiven ?[0m?[32ma TournamentCreated event for ?[0m?[32m?[1m"Sunday Million"?[0m     ?[90m# dev.angzarr.examples.steps.TournamentSteps.tournamentCreated(java.lang.String)?[0m
+  ?[32mAnd ?[0m?[32ma RegistrationOpened event?[0m                           ?[90m# dev.angzarr.examples.steps.TournamentSteps.registrationOpened()?[0m
+  ?[32mWhen ?[0m?[32mI handle an OpenRegistration command?[0m                ?[90m# dev.angzarr.examples.steps.TournamentSteps.handleOpenRegistration()?[0m
+  ?[32mThen ?[0m?[32mthe command fails with status ?[0m?[32m?[1m"FAILED_PRECONDITION"?[0m ?[90m# dev.angzarr.examples.steps.CommonSteps.commandFailsWithStatus(java.lang.String)?[0m
+  ?[32mAnd ?[0m?[32mthe error message contains ?[0m?[32m?[1m"already open"?[0m            ?[90m# dev.angzarr.examples.steps.CommonSteps.errorMessageContains(java.lang.String)?[0m
+
+Scenario: Cannot open registration for running tournament  ?[90m# features/unit/tournament.feature:72?[0m
+  ?[32mGiven ?[0m?[32ma TournamentCreated event for ?[0m?[32m?[1m"Sunday Million"?[0m     ?[90m# dev.angzarr.examples.steps.TournamentSteps.tournamentCreated(java.lang.String)?[0m
+  ?[32mAnd ?[0m?[32ma RegistrationOpened event?[0m                           ?[90m# dev.angzarr.examples.steps.TournamentSteps.registrationOpened()?[0m
+  ?[32mAnd ?[0m?[32ma RegistrationClosed event?[0m                           ?[90m# dev.angzarr.examples.steps.TournamentSteps.registrationClosed()?[0m
+  ?[32mAnd ?[0m?[32ma TournamentStarted event?[0m                            ?[90m# dev.angzarr.examples.steps.TournamentSteps.tournamentStarted()?[0m
+  ?[32mWhen ?[0m?[32mI handle an OpenRegistration command?[0m                ?[90m# dev.angzarr.examples.steps.TournamentSteps.handleOpenRegistration()?[0m
+  ?[32mThen ?[0m?[32mthe command fails with status ?[0m?[32m?[1m"FAILED_PRECONDITION"?[0m ?[90m# dev.angzarr.examples.steps.CommonSteps.commandFailsWithStatus(java.lang.String)?[0m
+
+Scenario: Close registration                             ?[90m# features/unit/tournament.feature:80?[0m
+  ?[32mGiven ?[0m?[32ma TournamentCreated event for ?[0m?[32m?[1m"Sunday Million"?[0m   ?[90m# dev.angzarr.examples.steps.TournamentSteps.tournamentCreated(java.lang.String)?[0m
+  ?[32mAnd ?[0m?[32ma RegistrationOpened event?[0m                         ?[90m# dev.angzarr.examples.steps.TournamentSteps.registrationOpened()?[0m
+  ?[32mAnd ?[0m?[32m?[0m?[32m?[1m3?[0m?[32m players enrolled?[0m                                 ?[90m# dev.angzarr.examples.steps.TournamentSteps.nPlayersEnrolled(int)?[0m
+  ?[32mWhen ?[0m?[32mI handle a CloseRegistration command?[0m              ?[90m# dev.angzarr.examples.steps.TournamentSteps.handleCloseRegistration()?[0m
+  ?[32mThen ?[0m?[32mthe result is a examples.RegistrationClosed event?[0m ?[90m# dev.angzarr.examples.steps.TournamentSteps.resultIsRegistrationClosed()?[0m
+  ?[32mAnd ?[0m?[32mthe tournament event has total_registrations ?[0m?[32m?[1m3?[0m     ?[90m# dev.angzarr.examples.steps.TournamentSteps.eventHasTotalRegistrations(int)?[0m
+
+Scenario: Cannot close registration that is not open       ?[90m# features/unit/tournament.feature:88?[0m
+  ?[32mGiven ?[0m?[32ma TournamentCreated event for ?[0m?[32m?[1m"Sunday Million"?[0m     ?[90m# dev.angzarr.examples.steps.TournamentSteps.tournamentCreated(java.lang.String)?[0m
+  ?[32mWhen ?[0m?[32mI handle a CloseRegistration command?[0m                ?[90m# dev.angzarr.examples.steps.TournamentSteps.handleCloseRegistration()?[0m
+  ?[32mThen ?[0m?[32mthe command fails with status ?[0m?[32m?[1m"FAILED_PRECONDITION"?[0m ?[90m# dev.angzarr.examples.steps.CommonSteps.commandFailsWithStatus(java.lang.String)?[0m
+  ?[32mAnd ?[0m?[32mthe error message contains ?[0m?[32m?[1m"not open"?[0m                ?[90m# dev.angzarr.examples.steps.CommonSteps.errorMessageContains(java.lang.String)?[0m
+
+Scenario: Enroll player in tournament                                       ?[90m# features/unit/tournament.feature:98?[0m
+  ?[32mGiven ?[0m?[32ma TournamentCreated event for ?[0m?[32m?[1m"Sunday Million"?[0m?[32m with max-players ?[0m?[32m?[1m100?[0m ?[90m# dev.angzarr.examples.steps.TournamentSteps.tournamentCreatedMaxPlayers(java.lang.String,int)?[0m
+  ?[32mAnd ?[0m?[32ma RegistrationOpened event?[0m                                            ?[90m# dev.angzarr.examples.steps.TournamentSteps.registrationOpened()?[0m
+  ?[32mWhen ?[0m?[32mI handle an EnrollPlayer command for player ?[0m?[32m?[1m"player-1"?[0m               ?[90m# dev.angzarr.examples.steps.TournamentSteps.handleEnrollPlayer(java.lang.String)?[0m
+  ?[32mThen ?[0m?[32mthe result is a examples.TournamentPlayerEnrolled event?[0m              ?[90m# dev.angzarr.examples.steps.TournamentSteps.resultIsPlayerEnrolled()?[0m
+  ?[32mAnd ?[0m?[32mthe tournament event has fee_paid ?[0m?[32m?[1m1000?[0m                                ?[90m# dev.angzarr.examples.steps.TournamentSteps.eventHasFeePaid(int)?[0m
+  ?[32mAnd ?[0m?[32mthe tournament event has starting_stack ?[0m?[32m?[1m10000?[0m                         ?[90m# dev.angzarr.examples.steps.TournamentSteps.eventHasStartingStack(int)?[0m
+  ?[32mAnd ?[0m?[32mthe tournament event has registration_number ?[0m?[32m?[1m1?[0m                        ?[90m# dev.angzarr.examples.steps.TournamentSteps.eventHasRegistrationNumber(int)?[0m
+
+Scenario: Second player gets registration number 2                          ?[90m# features/unit/tournament.feature:107?[0m
+  ?[32mGiven ?[0m?[32ma TournamentCreated event for ?[0m?[32m?[1m"Sunday Million"?[0m?[32m with max-players ?[0m?[32m?[1m100?[0m ?[90m# dev.angzarr.examples.steps.TournamentSteps.tournamentCreatedMaxPlayers(java.lang.String,int)?[0m
+  ?[32mAnd ?[0m?[32ma RegistrationOpened event?[0m                                            ?[90m# dev.angzarr.examples.steps.TournamentSteps.registrationOpened()?[0m
+  ?[32mAnd ?[0m?[32m?[0m?[32m?[1m1?[0m?[32m player enrolled?[0m                                                     ?[90m# dev.angzarr.examples.steps.TournamentSteps.nPlayersEnrolled(int)?[0m
+  ?[32mWhen ?[0m?[32mI handle an EnrollPlayer command for player ?[0m?[32m?[1m"player-2"?[0m               ?[90m# dev.angzarr.examples.steps.TournamentSteps.handleEnrollPlayer(java.lang.String)?[0m
+  ?[32mThen ?[0m?[32mthe result is a examples.TournamentPlayerEnrolled event?[0m              ?[90m# dev.angzarr.examples.steps.TournamentSteps.resultIsPlayerEnrolled()?[0m
+  ?[32mAnd ?[0m?[32mthe tournament event has registration_number ?[0m?[32m?[1m2?[0m                        ?[90m# dev.angzarr.examples.steps.TournamentSteps.eventHasRegistrationNumber(int)?[0m
+
+Scenario: Cannot enroll when registration closed                   ?[90m# features/unit/tournament.feature:115?[0m
+  ?[32mGiven ?[0m?[32ma TournamentCreated event for ?[0m?[32m?[1m"Sunday Million"?[0m             ?[90m# dev.angzarr.examples.steps.TournamentSteps.tournamentCreated(java.lang.String)?[0m
+  ?[32mWhen ?[0m?[32mI handle an EnrollPlayer command for player ?[0m?[32m?[1m"player-1"?[0m      ?[90m# dev.angzarr.examples.steps.TournamentSteps.handleEnrollPlayer(java.lang.String)?[0m
+  ?[32mThen ?[0m?[32mthe result is a examples.TournamentEnrollmentRejected event?[0m ?[90m# dev.angzarr.examples.steps.TournamentSteps.resultIsEnrollmentRejected()?[0m
+  ?[32mAnd ?[0m?[32mthe tournament event has reason ?[0m?[32m?[1m"closed"?[0m                     ?[90m# dev.angzarr.examples.steps.TournamentSteps.eventHasReason(java.lang.String)?[0m
+
+Scenario: Cannot enroll when tournament full                        ?[90m# features/unit/tournament.feature:121?[0m
+  ?[32mGiven ?[0m?[32ma TournamentCreated event for ?[0m?[32m?[1m"Heads Up"?[0m?[32m with max-players ?[0m?[32m?[1m2?[0m ?[90m# dev.angzarr.examples.steps.TournamentSteps.tournamentCreatedMaxPlayers(java.lang.String,int)?[0m
+  ?[32mAnd ?[0m?[32ma RegistrationOpened event?[0m                                    ?[90m# dev.angzarr.examples.steps.TournamentSteps.registrationOpened()?[0m
+  ?[32mAnd ?[0m?[32m?[0m?[32m?[1m2?[0m?[32m players enrolled?[0m                                            ?[90m# dev.angzarr.examples.steps.TournamentSteps.nPlayersEnrolled(int)?[0m
+  ?[32mWhen ?[0m?[32mI handle an EnrollPlayer command for player ?[0m?[32m?[1m"player-3"?[0m       ?[90m# dev.angzarr.examples.steps.TournamentSteps.handleEnrollPlayer(java.lang.String)?[0m
+  ?[32mThen ?[0m?[32mthe result is a examples.TournamentEnrollmentRejected event?[0m  ?[90m# dev.angzarr.examples.steps.TournamentSteps.resultIsEnrollmentRejected()?[0m
+  ?[32mAnd ?[0m?[32mthe tournament event has reason ?[0m?[32m?[1m"full"?[0m                        ?[90m# dev.angzarr.examples.steps.TournamentSteps.eventHasReason(java.lang.String)?[0m
+
+Scenario: Cannot enroll same player twice                                   ?[90m# features/unit/tournament.feature:129?[0m
+  ?[32mGiven ?[0m?[32ma TournamentCreated event for ?[0m?[32m?[1m"Sunday Million"?[0m?[32m with max-players ?[0m?[32m?[1m100?[0m ?[90m# dev.angzarr.examples.steps.TournamentSteps.tournamentCreatedMaxPlayers(java.lang.String,int)?[0m
+  ?[32mAnd ?[0m?[32ma RegistrationOpened event?[0m                                            ?[90m# dev.angzarr.examples.steps.TournamentSteps.registrationOpened()?[0m
+  ?[32mAnd ?[0m?[32mplayer ?[0m?[32m?[1m"player-1"?[0m?[32m enrolled?[0m                                            ?[90m# dev.angzarr.examples.steps.TournamentSteps.playerEnrolled(java.lang.String)?[0m
+  ?[32mWhen ?[0m?[32mI handle an EnrollPlayer command for player ?[0m?[32m?[1m"player-1"?[0m               ?[90m# dev.angzarr.examples.steps.TournamentSteps.handleEnrollPlayer(java.lang.String)?[0m
+  ?[32mThen ?[0m?[32mthe result is a examples.TournamentEnrollmentRejected event?[0m          ?[90m# dev.angzarr.examples.steps.TournamentSteps.resultIsEnrollmentRejected()?[0m
+  ?[32mAnd ?[0m?[32mthe tournament event has reason ?[0m?[32m?[1m"already_registered"?[0m                  ?[90m# dev.angzarr.examples.steps.TournamentSteps.eventHasReason(java.lang.String)?[0m
+
+Scenario: Process rebuy for eligible player                           ?[90m# features/unit/tournament.feature:141?[0m
+  ?[32mGiven ?[0m?[32ma running tournament with rebuys enabled max ?[0m?[32m?[1m3?[0m?[32m cutoff level ?[0m?[32m?[1m4?[0m ?[90m# dev.angzarr.examples.steps.TournamentSteps.runningTournamentWithRebuys(int,int)?[0m
+  ?[32mAnd ?[0m?[32mthe current blind level is ?[0m?[32m?[1m2?[0m                                    ?[90m# dev.angzarr.examples.steps.TournamentSteps.currentBlindLevel(int)?[0m
+  ?[32mAnd ?[0m?[32mplayer ?[0m?[32m?[1m"player-1"?[0m?[32m enrolled with ?[0m?[32m?[1m0?[0m?[32m rebuys used?[0m                   ?[90m# dev.angzarr.examples.steps.TournamentSteps.playerEnrolledWithRebuys(java.lang.String,int)?[0m
+  ?[32mWhen ?[0m?[32mI handle a ProcessRebuy command for player ?[0m?[32m?[1m"player-1"?[0m          ?[90m# dev.angzarr.examples.steps.TournamentSteps.handleProcessRebuy(java.lang.String)?[0m
+  ?[32mThen ?[0m?[32mthe result is a examples.RebuyProcessed event?[0m                  ?[90m# dev.angzarr.examples.steps.TournamentSteps.resultIsRebuyProcessed()?[0m
+  ?[32mAnd ?[0m?[32mthe tournament event has rebuy_count ?[0m?[32m?[1m1?[0m                          ?[90m# dev.angzarr.examples.steps.TournamentSteps.eventHasRebuyCount(int)?[0m
+
+Scenario: Deny rebuy when window closed                               ?[90m# features/unit/tournament.feature:149?[0m
+  ?[32mGiven ?[0m?[32ma running tournament with rebuys enabled max ?[0m?[32m?[1m3?[0m?[32m cutoff level ?[0m?[32m?[1m4?[0m ?[90m# dev.angzarr.examples.steps.TournamentSteps.runningTournamentWithRebuys(int,int)?[0m
+  ?[32mAnd ?[0m?[32mthe current blind level is ?[0m?[32m?[1m5?[0m                                    ?[90m# dev.angzarr.examples.steps.TournamentSteps.currentBlindLevel(int)?[0m
+  ?[32mAnd ?[0m?[32mplayer ?[0m?[32m?[1m"player-1"?[0m?[32m enrolled with ?[0m?[32m?[1m0?[0m?[32m rebuys used?[0m                   ?[90m# dev.angzarr.examples.steps.TournamentSteps.playerEnrolledWithRebuys(java.lang.String,int)?[0m
+  ?[32mWhen ?[0m?[32mI handle a ProcessRebuy command for player ?[0m?[32m?[1m"player-1"?[0m          ?[90m# dev.angzarr.examples.steps.TournamentSteps.handleProcessRebuy(java.lang.String)?[0m
+  ?[32mThen ?[0m?[32mthe result is a examples.RebuyDenied event?[0m                     ?[90m# dev.angzarr.examples.steps.TournamentSteps.resultIsRebuyDenied()?[0m
+  ?[32mAnd ?[0m?[32mthe tournament event has reason ?[0m?[32m?[1m"window_closed"?[0m                 ?[90m# dev.angzarr.examples.steps.TournamentSteps.eventHasReason(java.lang.String)?[0m
+
+Scenario: Deny rebuy when max reached                                 ?[90m# features/unit/tournament.feature:157?[0m
+  ?[32mGiven ?[0m?[32ma running tournament with rebuys enabled max ?[0m?[32m?[1m3?[0m?[32m cutoff level ?[0m?[32m?[1m4?[0m ?[90m# dev.angzarr.examples.steps.TournamentSteps.runningTournamentWithRebuys(int,int)?[0m
+  ?[32mAnd ?[0m?[32mthe current blind level is ?[0m?[32m?[1m2?[0m                                    ?[90m# dev.angzarr.examples.steps.TournamentSteps.currentBlindLevel(int)?[0m
+  ?[32mAnd ?[0m?[32mplayer ?[0m?[32m?[1m"player-1"?[0m?[32m enrolled with ?[0m?[32m?[1m3?[0m?[32m rebuys used?[0m                   ?[90m# dev.angzarr.examples.steps.TournamentSteps.playerEnrolledWithRebuys(java.lang.String,int)?[0m
+  ?[32mWhen ?[0m?[32mI handle a ProcessRebuy command for player ?[0m?[32m?[1m"player-1"?[0m          ?[90m# dev.angzarr.examples.steps.TournamentSteps.handleProcessRebuy(java.lang.String)?[0m
+  ?[32mThen ?[0m?[32mthe result is a examples.RebuyDenied event?[0m                     ?[90m# dev.angzarr.examples.steps.TournamentSteps.resultIsRebuyDenied()?[0m
+  ?[32mAnd ?[0m?[32mthe tournament event has reason ?[0m?[32m?[1m"max_reached"?[0m                   ?[90m# dev.angzarr.examples.steps.TournamentSteps.eventHasReason(java.lang.String)?[0m
+
+Scenario: Deny rebuy for unregistered player                          ?[90m# features/unit/tournament.feature:165?[0m
+  ?[32mGiven ?[0m?[32ma running tournament with rebuys enabled max ?[0m?[32m?[1m3?[0m?[32m cutoff level ?[0m?[32m?[1m4?[0m ?[90m# dev.angzarr.examples.steps.TournamentSteps.runningTournamentWithRebuys(int,int)?[0m
+  ?[32mWhen ?[0m?[32mI handle a ProcessRebuy command for player ?[0m?[32m?[1m"unknown-player"?[0m    ?[90m# dev.angzarr.examples.steps.TournamentSteps.handleProcessRebuy(java.lang.String)?[0m
+  ?[32mThen ?[0m?[32mthe command fails with status ?[0m?[32m?[1m"FAILED_PRECONDITION"?[0m            ?[90m# dev.angzarr.examples.steps.CommonSteps.commandFailsWithStatus(java.lang.String)?[0m
+  ?[32mAnd ?[0m?[32mthe error message contains ?[0m?[32m?[1m"not registered"?[0m                     ?[90m# dev.angzarr.examples.steps.CommonSteps.errorMessageContains(java.lang.String)?[0m
+
+Scenario: Advance blind level                             ?[90m# features/unit/tournament.feature:175?[0m
+  ?[32mGiven ?[0m?[32ma running tournament with ?[0m?[32m?[1m3?[0m?[32m-level blind structure?[0m ?[90m# dev.angzarr.examples.steps.TournamentSteps.runningTournamentWithBlindStructure(int)?[0m
+  ?[32mAnd ?[0m?[32mthe current blind level is ?[0m?[32m?[1m1?[0m                        ?[90m# dev.angzarr.examples.steps.TournamentSteps.currentBlindLevel(int)?[0m
+  ?[32mWhen ?[0m?[32mI handle an AdvanceBlindLevel command?[0m              ?[90m# dev.angzarr.examples.steps.TournamentSteps.handleAdvanceBlindLevel()?[0m
+  ?[32mThen ?[0m?[32mthe result is a examples.BlindLevelAdvanced event?[0m  ?[90m# dev.angzarr.examples.steps.TournamentSteps.resultIsBlindLevelAdvanced()?[0m
+  ?[32mAnd ?[0m?[32mthe tournament event has level ?[0m?[32m?[1m2?[0m                    ?[90m# dev.angzarr.examples.steps.TournamentSteps.eventHasLevel(int)?[0m
+
+Scenario: Cannot advance blind level when not running      ?[90m# features/unit/tournament.feature:182?[0m
+  ?[32mGiven ?[0m?[32ma TournamentCreated event for ?[0m?[32m?[1m"Sunday Million"?[0m     ?[90m# dev.angzarr.examples.steps.TournamentSteps.tournamentCreated(java.lang.String)?[0m
+  ?[32mWhen ?[0m?[32mI handle an AdvanceBlindLevel command?[0m               ?[90m# dev.angzarr.examples.steps.TournamentSteps.handleAdvanceBlindLevel()?[0m
+  ?[32mThen ?[0m?[32mthe command fails with status ?[0m?[32m?[1m"FAILED_PRECONDITION"?[0m ?[90m# dev.angzarr.examples.steps.CommonSteps.commandFailsWithStatus(java.lang.String)?[0m
+  ?[32mAnd ?[0m?[32mthe error message contains ?[0m?[32m?[1m"not running"?[0m             ?[90m# dev.angzarr.examples.steps.CommonSteps.errorMessageContains(java.lang.String)?[0m
+
+Scenario: Eliminate a player                                     ?[90m# features/unit/tournament.feature:192?[0m
+  ?[32mGiven ?[0m?[32ma running tournament with ?[0m?[32m?[1m5?[0m?[32m players remaining?[0m            ?[90m# dev.angzarr.examples.steps.TournamentSteps.runningTournamentWithPlayers(int)?[0m
+  ?[32mWhen ?[0m?[32mI handle an EliminatePlayer command for player ?[0m?[32m?[1m"player-1"?[0m ?[90m# dev.angzarr.examples.steps.TournamentSteps.handleEliminatePlayer(java.lang.String)?[0m
+  ?[32mThen ?[0m?[32mthe result is a examples.PlayerEliminated event?[0m           ?[90m# dev.angzarr.examples.steps.TournamentSteps.resultIsPlayerEliminated()?[0m
+  ?[32mAnd ?[0m?[32mthe tournament event has finish_position ?[0m?[32m?[1m5?[0m                 ?[90m# dev.angzarr.examples.steps.TournamentSteps.eventHasFinishPosition(int)?[0m
+
+Scenario: Cannot eliminate unregistered player                  ?[90m# features/unit/tournament.feature:198?[0m
+  ?[32mGiven ?[0m?[32ma running tournament with ?[0m?[32m?[1m5?[0m?[32m players remaining?[0m           ?[90m# dev.angzarr.examples.steps.TournamentSteps.runningTournamentWithPlayers(int)?[0m
+  ?[32mWhen ?[0m?[32mI handle an EliminatePlayer command for player ?[0m?[32m?[1m"unknown"?[0m ?[90m# dev.angzarr.examples.steps.TournamentSteps.handleEliminatePlayer(java.lang.String)?[0m
+  ?[32mThen ?[0m?[32mthe command fails with status ?[0m?[32m?[1m"FAILED_PRECONDITION"?[0m      ?[90m# dev.angzarr.examples.steps.CommonSteps.commandFailsWithStatus(java.lang.String)?[0m
+  ?[32mAnd ?[0m?[32mthe error message contains ?[0m?[32m?[1m"not registered"?[0m               ?[90m# dev.angzarr.examples.steps.CommonSteps.errorMessageContains(java.lang.String)?[0m
+
+Scenario: Cannot eliminate when not running                      ?[90m# features/unit/tournament.feature:204?[0m
+  ?[32mGiven ?[0m?[32ma TournamentCreated event for ?[0m?[32m?[1m"Sunday Million"?[0m           ?[90m# dev.angzarr.examples.steps.TournamentSteps.tournamentCreated(java.lang.String)?[0m
+  ?[32mWhen ?[0m?[32mI handle an EliminatePlayer command for player ?[0m?[32m?[1m"player-1"?[0m ?[90m# dev.angzarr.examples.steps.TournamentSteps.handleEliminatePlayer(java.lang.String)?[0m
+  ?[32mThen ?[0m?[32mthe command fails with status ?[0m?[32m?[1m"FAILED_PRECONDITION"?[0m       ?[90m# dev.angzarr.examples.steps.CommonSteps.commandFailsWithStatus(java.lang.String)?[0m
+  ?[32mAnd ?[0m?[32mthe error message contains ?[0m?[32m?[1m"not running"?[0m                   ?[90m# dev.angzarr.examples.steps.CommonSteps.errorMessageContains(java.lang.String)?[0m
+
+Scenario: Pause a running tournament                                 ?[90m# features/unit/tournament.feature:214?[0m
+  ?[32mGiven ?[0m?[32ma running tournament?[0m                                         ?[90m# dev.angzarr.examples.steps.TournamentSteps.runningTournament()?[0m
+  ?[32mWhen ?[0m?[32mI handle a PauseTournament command with reason ?[0m?[32m?[1m"Dinner break"?[0m ?[90m# dev.angzarr.examples.steps.TournamentSteps.handlePauseTournament(java.lang.String)?[0m
+  ?[32mThen ?[0m?[32mthe result is a examples.TournamentPaused event?[0m               ?[90m# dev.angzarr.examples.steps.TournamentSteps.resultIsTournamentPaused()?[0m
+  ?[32mAnd ?[0m?[32mthe tournament event has reason ?[0m?[32m?[1m"Dinner break"?[0m                 ?[90m# dev.angzarr.examples.steps.TournamentSteps.eventHasReason(java.lang.String)?[0m
+
+Scenario: Resume a paused tournament                    ?[90m# features/unit/tournament.feature:220?[0m
+  ?[32mGiven ?[0m?[32ma running tournament?[0m                            ?[90m# dev.angzarr.examples.steps.TournamentSteps.runningTournament()?[0m
+  ?[32mAnd ?[0m?[32ma TournamentPaused event?[0m                          ?[90m# dev.angzarr.examples.steps.TournamentSteps.tournamentPaused()?[0m
+  ?[32mWhen ?[0m?[32mI handle a ResumeTournament command?[0m              ?[90m# dev.angzarr.examples.steps.TournamentSteps.handleResumeTournament()?[0m
+  ?[32mThen ?[0m?[32mthe result is a examples.TournamentResumed event?[0m ?[90m# dev.angzarr.examples.steps.TournamentSteps.resultIsTournamentResumed()?[0m
+
+Scenario: Cannot pause when not running                       ?[90m# features/unit/tournament.feature:226?[0m
+  ?[32mGiven ?[0m?[32ma TournamentCreated event for ?[0m?[32m?[1m"Sunday Million"?[0m        ?[90m# dev.angzarr.examples.steps.TournamentSteps.tournamentCreated(java.lang.String)?[0m
+  ?[32mWhen ?[0m?[32mI handle a PauseTournament command with reason ?[0m?[32m?[1m"break"?[0m ?[90m# dev.angzarr.examples.steps.TournamentSteps.handlePauseTournament(java.lang.String)?[0m
+  ?[32mThen ?[0m?[32mthe command fails with status ?[0m?[32m?[1m"FAILED_PRECONDITION"?[0m    ?[90m# dev.angzarr.examples.steps.CommonSteps.commandFailsWithStatus(java.lang.String)?[0m
+  ?[32mAnd ?[0m?[32mthe error message contains ?[0m?[32m?[1m"not running"?[0m                ?[90m# dev.angzarr.examples.steps.CommonSteps.errorMessageContains(java.lang.String)?[0m
+
+Scenario: Rebuild tournament state with registrations and eliminations      ?[90m# features/unit/tournament.feature:236?[0m
+  ?[32mGiven ?[0m?[32ma TournamentCreated event for ?[0m?[32m?[1m"Sunday Million"?[0m?[32m with max-players ?[0m?[32m?[1m100?[0m ?[90m# dev.angzarr.examples.steps.TournamentSteps.tournamentCreatedMaxPlayers(java.lang.String,int)?[0m
+  ?[32mAnd ?[0m?[32ma RegistrationOpened event?[0m                                            ?[90m# dev.angzarr.examples.steps.TournamentSteps.registrationOpened()?[0m
+  ?[32mAnd ?[0m?[32m?[0m?[32m?[1m5?[0m?[32m players enrolled?[0m                                                    ?[90m# dev.angzarr.examples.steps.TournamentSteps.nPlayersEnrolled(int)?[0m
+  ?[32mAnd ?[0m?[32ma RegistrationClosed event?[0m                                            ?[90m# dev.angzarr.examples.steps.TournamentSteps.registrationClosed()?[0m
+  ?[32mAnd ?[0m?[32ma TournamentStarted event?[0m                                             ?[90m# dev.angzarr.examples.steps.TournamentSteps.tournamentStarted()?[0m
+  ?[32mAnd ?[0m?[32mplayer at position ?[0m?[32m?[1m1?[0m?[32m eliminated?[0m                                       ?[90m# dev.angzarr.examples.steps.TournamentSteps.playerAtPositionEliminated(int)?[0m
+  ?[32mWhen ?[0m?[32mI rebuild the tournament state?[0m                                       ?[90m# dev.angzarr.examples.steps.TournamentSteps.rebuildTournamentState()?[0m
+  ?[32mThen ?[0m?[32mthe tournament state has status ?[0m?[32m?[1m"RUNNING"?[0m                            ?[90m# dev.angzarr.examples.steps.TournamentSteps.stateHasStatus(java.lang.String)?[0m
+  ?[32mAnd ?[0m?[32mthe tournament state has ?[0m?[32m?[1m4?[0m?[32m registered players?[0m                         ?[90m# dev.angzarr.examples.steps.TournamentSteps.stateHasRegisteredPlayers(int)?[0m
+  ?[32mAnd ?[0m?[32mthe tournament state has ?[0m?[32m?[1m4?[0m?[32m players remaining?[0m                          ?[90m# dev.angzarr.examples.steps.TournamentSteps.stateHasPlayersRemaining(int)?[0m
+  ?[32mAnd ?[0m?[32mthe tournament state has prize pool ?[0m?[32m?[1m5000?[0m                              ?[90m# dev.angzarr.examples.steps.TournamentSteps.stateHasPrizePool(int)?[0m
 ]]></system-out>
   <system-err><![CDATA[WARNING: A Java agent has been loaded dynamically (/home/babbitt/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.14.9/dfb8707031008535048bad2b69735f46d0b6c5e5/byte-buddy-agent-1.14.9.jar)
 WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning

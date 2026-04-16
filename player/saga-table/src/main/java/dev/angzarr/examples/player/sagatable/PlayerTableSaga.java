@@ -59,7 +59,7 @@ public class PlayerTableSaga extends Saga {
 
   /** Execute phase: translate PlayerSittingOut -> PlayerSatOut fact for table. */
   @Handles(PlayerSittingOut.class)
-  public void handleSittingOut(PlayerSittingOut event) {
+  public void handlePlayerSittingOut(PlayerSittingOut event) {
     // Create PlayerSatOut fact for the table
     PlayerSatOut satOut =
         PlayerSatOut.newBuilder()
@@ -81,7 +81,7 @@ public class PlayerTableSaga extends Saga {
 
   /** Execute phase: translate PlayerReturningToPlay -> PlayerSatIn fact for table. */
   @Handles(PlayerReturningToPlay.class)
-  public void handleReturningToPlay(PlayerReturningToPlay event) {
+  public void handlePlayerReturningToPlay(PlayerReturningToPlay event) {
     // Create PlayerSatIn fact for the table
     PlayerSatIn satIn =
         PlayerSatIn.newBuilder()

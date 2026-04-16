@@ -9,9 +9,9 @@ import dev.angzarr.examples.FundsDeposited;
 import dev.angzarr.examples.player.state.PlayerState;
 import org.junit.jupiter.api.Test;
 
-/** Unit tests for DepositHandler. */
+/** Unit tests for DepositFundsHandler. */
 // docs:start:unit_test_deposit
-class DepositHandlerTest {
+class DepositFundsHandlerTest {
 
   @Test
   void testDepositIncreasesBankroll() {
@@ -23,7 +23,7 @@ class DepositHandlerTest {
             .setAmount(Currency.newBuilder().setAmount(500).setCurrencyCode("CHIPS"))
             .build();
 
-    FundsDeposited event = DepositHandler.compute(cmd, state, 500);
+    FundsDeposited event = DepositFundsHandler.compute(cmd, state, 500);
 
     assertEquals(1500, event.getNewBalance().getAmount());
   }
@@ -36,7 +36,7 @@ class DepositHandlerTest {
         assertThrows(
             Errors.CommandRejectedError.class,
             () -> {
-              DepositHandler.guard(state);
+              DepositFundsHandler.guard(state);
             });
 
     assertTrue(exception.getMessage().contains("does not exist"));
@@ -53,7 +53,7 @@ class DepositHandlerTest {
         assertThrows(
             Errors.CommandRejectedError.class,
             () -> {
-              DepositHandler.validate(cmd);
+              DepositFundsHandler.validate(cmd);
             });
 
     assertTrue(exception.getMessage().contains("positive"));

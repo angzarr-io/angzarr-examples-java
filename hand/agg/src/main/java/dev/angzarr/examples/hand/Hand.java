@@ -242,7 +242,7 @@ public class Hand extends CommandHandler<HandState> {
   // --- Command handlers ---
 
   @Handles(DealCards.class)
-  public CardsDealt dealCards(DealCards cmd) {
+  public CardsDealt handleDealCards(DealCards cmd) {
     if (exists()) {
       throw Errors.CommandRejectedError.preconditionFailed("Cards already dealt");
     }
@@ -281,7 +281,7 @@ public class Hand extends CommandHandler<HandState> {
   }
 
   @Handles(PostBlind.class)
-  public BlindPosted postBlind(PostBlind cmd) {
+  public BlindPosted handlePostBlind(PostBlind cmd) {
     if (!exists()) {
       throw Errors.CommandRejectedError.preconditionFailed("Hand does not exist");
     }
@@ -305,7 +305,7 @@ public class Hand extends CommandHandler<HandState> {
   }
 
   @Handles(PlayerAction.class)
-  public ActionTaken playerAction(PlayerAction cmd) {
+  public ActionTaken handlePlayerAction(PlayerAction cmd) {
     if (!exists()) {
       throw Errors.CommandRejectedError.preconditionFailed("Hand does not exist");
     }
@@ -387,7 +387,7 @@ public class Hand extends CommandHandler<HandState> {
   }
 
   @Handles(DealCommunityCards.class)
-  public CommunityCardsDealt dealCommunityCards(DealCommunityCards cmd) {
+  public CommunityCardsDealt handleDealCommunityCards(DealCommunityCards cmd) {
     if (!exists()) {
       throw Errors.CommandRejectedError.preconditionFailed("Hand does not exist");
     }
@@ -419,7 +419,7 @@ public class Hand extends CommandHandler<HandState> {
   }
 
   @Handles(AwardPot.class)
-  public PotAwarded awardPot(AwardPot cmd) {
+  public PotAwarded handleAwardPot(AwardPot cmd) {
     if (!exists()) {
       throw Errors.CommandRejectedError.preconditionFailed("Hand does not exist");
     }
@@ -438,7 +438,7 @@ public class Hand extends CommandHandler<HandState> {
   }
 
   @Handles(RequestDraw.class)
-  public DrawCompleted requestDraw(RequestDraw cmd) {
+  public DrawCompleted handleRequestDraw(RequestDraw cmd) {
     if (!exists()) {
       throw Errors.CommandRejectedError.preconditionFailed("Hand does not exist");
     }
@@ -487,7 +487,7 @@ public class Hand extends CommandHandler<HandState> {
   }
 
   @Handles(RevealCards.class)
-  public com.google.protobuf.Message revealCards(RevealCards cmd) {
+  public com.google.protobuf.Message handleRevealCards(RevealCards cmd) {
     if (!exists()) {
       throw Errors.CommandRejectedError.preconditionFailed("Hand does not exist");
     }

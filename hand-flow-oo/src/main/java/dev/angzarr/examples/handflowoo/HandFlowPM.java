@@ -170,7 +170,7 @@ public class HandFlowPM extends ProcessManager<Struct> {
   }
 
   @Handles(CommunityCardsDealt.class)
-  public List<CommandBook> handleCommunityDealt(CommunityCardsDealt event) {
+  public List<CommandBook> handleCommunityCardsDealt(CommunityCardsDealt event) {
     for (HandProcess process : processes.values()) {
       if (process.phase == HandPhase.DEALING_COMMUNITY) {
         process.communityCardCount = event.getAllCommunityCardsCount();

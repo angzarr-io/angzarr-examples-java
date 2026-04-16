@@ -24,9 +24,9 @@ import java.time.Instant;
  * mocking infrastructure. You can test guard, validate, and compute logic independently by passing
  * state objects and asserting on results.
  */
-public final class RegisterHandler {
+public final class RegisterPlayerHandler {
 
-  private RegisterHandler() {}
+  private RegisterPlayerHandler() {}
 
   /**
    * Handle RegisterPlayer command.

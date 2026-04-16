@@ -24,7 +24,7 @@ public class PlayerCloudEventsProjector extends CloudEventsProjector {
     }
 
     @Publishes("PlayerRegistered")
-    public CloudEvent onPlayerRegistered(PlayerRegistered event) {
+    public CloudEvent publishPlayerRegistered(PlayerRegistered event) {
         // Filter sensitive fields, return public version
         var publicEvent = PublicPlayerRegistered.newBuilder()
             .setDisplayName(event.getDisplayName())
@@ -37,7 +37,7 @@ public class PlayerCloudEventsProjector extends CloudEventsProjector {
     }
 
     @Publishes("FundsDeposited")
-    public CloudEvent onFundsDeposited(FundsDeposited event) {
+    public CloudEvent publishFundsDeposited(FundsDeposited event) {
         var publicEvent = PublicFundsDeposited.newBuilder()
             .setAmount(event.getAmount())
             .build();

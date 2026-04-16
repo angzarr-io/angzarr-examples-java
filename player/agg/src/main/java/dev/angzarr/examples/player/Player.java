@@ -87,6 +87,13 @@ public class Player extends CommandHandler<PlayerState> {
     state.getTableReservations().remove(tableKey);
   }
 
+  @Applies(FundsTransferred.class)
+  public void applyFundsTransferred(PlayerState state, FundsTransferred event) {
+    if (event.hasNewBalance()) {
+      state.setBankroll(event.getNewBalance().getAmount());
+    }
+  }
+
   // --- State accessors ---
 
   public boolean exists() {
@@ -121,27 +128,32 @@ public class Player extends CommandHandler<PlayerState> {
 
   @Handles(RegisterPlayer.class)
   public PlayerRegistered register(RegisterPlayer cmd) {
-    return RegisterHandler.handle(cmd, getState());
+    return RegisterPlayerHandler.handle(cmd, getState());
   }
 
   @Handles(DepositFunds.class)
   public FundsDeposited deposit(DepositFunds cmd) {
-    return DepositHandler.handle(cmd, getState());
+    return DepositFundsHandler.handle(cmd, getState());
   }
 
   @Handles(WithdrawFunds.class)
   public FundsWithdrawn withdraw(WithdrawFunds cmd) {
-    return WithdrawHandler.handle(cmd, getState());
+    return WithdrawFundsHandler.handle(cmd, getState());
   }
 
   @Handles(ReserveFunds.class)
   public FundsReserved reserve(ReserveFunds cmd) {
-    return ReserveHandler.handle(cmd, getState());
+    return ReserveFundsHandler.handle(cmd, getState());
   }
 
   @Handles(ReleaseFunds.class)
   public FundsReleased release(ReleaseFunds cmd) {
-    return ReleaseHandler.handle(cmd, getState());
+    return ReleaseFundsHandler.handle(cmd, getState());
+  }
+
+  @Handles(TransferFunds.class)
+  public FundsTransferred transfer(TransferFunds cmd) {
+    return TransferFundsHandler.handle(cmd, getState());
   }
 
   // --- Helper methods ---

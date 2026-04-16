@@ -21,8 +21,6 @@ include("table-agg")
 project(":table-agg").projectDir = file("table/agg")
 include("table-saga-hand")
 project(":table-saga-hand").projectDir = file("table/saga-hand")
-include("table-saga-hand-oo")
-project(":table-saga-hand-oo").projectDir = file("table/saga-hand-oo")
 include("table-saga-player")
 project(":table-saga-player").projectDir = file("table/saga-player")
 
@@ -36,7 +34,6 @@ project(":hand-saga-player").projectDir = file("hand/saga-player")
 
 // Process Manager
 include("hand-flow")
-include("hand-flow-oo")
 
 // Tournament domain
 include("tournament-agg")
