@@ -115,16 +115,6 @@ public class TableState {
     this.handCount = handCount;
   }
 
-  /** Alias for {@link #getHandCount()} — matches the legacy OO Table.getHandNumber() helper. */
-  public long getHandNumber() {
-    return handCount;
-  }
-
-  /** Return the seat at {@code position}, or {@code null} if unoccupied. */
-  public SeatState getPlayerAtSeat(int position) {
-    return seats.get(position);
-  }
-
   public byte[] getCurrentHandRoot() {
     return currentHandRoot;
   }

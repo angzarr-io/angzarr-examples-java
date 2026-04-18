@@ -4,12 +4,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.protobuf.Any;
 import com.google.protobuf.ByteString;
+import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
+import dev.angzarr.BusinessResponse;
+import dev.angzarr.CommandBook;
+import dev.angzarr.CommandPage;
+import dev.angzarr.ContextualCommand;
 import dev.angzarr.Cover;
 import dev.angzarr.EventBook;
 import dev.angzarr.EventPage;
 import dev.angzarr.PageHeader;
 import dev.angzarr.client.Errors;
+import dev.angzarr.client.router.CommandHandlerRouter;
+import dev.angzarr.client.router.DispatchException;
+import dev.angzarr.client.router.Router;
 import dev.angzarr.examples.Currency;
 import dev.angzarr.examples.DepositFunds;
 import dev.angzarr.examples.FundsDeposited;
@@ -24,7 +32,6 @@ import dev.angzarr.examples.ReserveFunds;
 import dev.angzarr.examples.WithdrawFunds;
 import dev.angzarr.examples.player.Player;
 import dev.angzarr.examples.player.state.PlayerState;
-import dev.angzarr.examples.testing.AggregateTestKit;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -36,17 +43,39 @@ import java.util.List;
 /** Cucumber step definitions for Player aggregate tests. */
 public class PlayerSteps {
 
-  private AggregateTestKit<Player, PlayerState> player;
+  private static final String TYPE_URL_PREFIX = "type.googleapis.com/";
+
+  private CommandHandlerRouter<PlayerState> router;
   private List<EventPage> eventPages;
   private Message resultEvent;
   private Errors.CommandRejectedError rejectedError;
 
   @Before
   public void setup() {
-    player = new AggregateTestKit<>(Player.class, Player::new);
+    router = buildRouter();
     eventPages = new ArrayList<>();
     resultEvent = null;
     rejectedError = null;
+  }
+
+  private static CommandHandlerRouter<PlayerState> buildRouter() {
+    @SuppressWarnings("unchecked")
+    CommandHandlerRouter<PlayerState> r =
+        (CommandHandlerRouter<PlayerState>)
+            Router.newBuilder("player-test").withHandler(Player.class, Player::new).build();
+    return r;
+  }
+
+  private PlayerState state() {
+    return router.rebuildStateFor(Player.class, currentEventBook());
+  }
+
+  private EventBook currentEventBook() {
+    return EventBook.newBuilder()
+        .setCover(Cover.newBuilder().setDomain("player"))
+        .addAllPages(eventPages)
+        .setNextSequence(eventPages.size())
+        .build();
   }
 
   // --- Given steps ---
@@ -54,42 +83,35 @@ public class PlayerSteps {
   @Given("no prior events for the player aggregate")
   public void noPriorEvents() {
     eventPages.clear();
-    rehydratePlayer();
   }
 
   @Given("a PlayerRegistered event for {string}")
   public void playerRegisteredEventFor(String name) {
-    PlayerRegistered event =
+    addEvent(
         PlayerRegistered.newBuilder()
             .setDisplayName(name)
             .setEmail(name.toLowerCase() + "@example.com")
             .setPlayerType(PlayerType.HUMAN)
-            .build();
-    addEvent(event);
-    rehydratePlayer();
+            .build());
   }
 
   @Given("a FundsDeposited event with amount {int}")
   public void fundsDepositedEventWithAmount(int amount) {
-    // Calculate new balance based on current state
-    long currentBankroll = player.state().getBankroll();
-    FundsDeposited event =
+    long currentBankroll = state().getBankroll();
+    addEvent(
         FundsDeposited.newBuilder()
             .setAmount(Currency.newBuilder().setAmount(amount).setCurrencyCode("CHIPS"))
             .setNewBalance(
                 Currency.newBuilder().setAmount(currentBankroll + amount).setCurrencyCode("CHIPS"))
-            .build();
-    addEvent(event);
-    rehydratePlayer();
+            .build());
   }
 
   @Given("a FundsReserved event with amount {int} for table {string}")
   public void fundsReservedEventWithAmountForTable(int amount, String tableId) {
-    long currentReserved = player.state().getReservedFunds();
-    long newReserved = currentReserved + amount;
-    long newAvailable = player.state().getBankroll() - newReserved;
-
-    FundsReserved event =
+    PlayerState s = state();
+    long newReserved = s.getReservedFunds() + amount;
+    long newAvailable = s.getBankroll() - newReserved;
+    addEvent(
         FundsReserved.newBuilder()
             .setAmount(Currency.newBuilder().setAmount(amount).setCurrencyCode("CHIPS"))
             .setTableRoot(ByteString.copyFrom(tableId.getBytes(StandardCharsets.UTF_8)))
@@ -97,75 +119,67 @@ public class PlayerSteps {
                 Currency.newBuilder().setAmount(newReserved).setCurrencyCode("CHIPS"))
             .setNewAvailableBalance(
                 Currency.newBuilder().setAmount(newAvailable).setCurrencyCode("CHIPS"))
-            .build();
-    addEvent(event);
-    rehydratePlayer();
+            .build());
   }
 
   // --- When steps ---
 
   @When("I handle a RegisterPlayer command with name {string} and email {string}")
   public void handleRegisterPlayerCommand(String name, String email) {
-    RegisterPlayer cmd =
+    dispatch(
         RegisterPlayer.newBuilder()
             .setDisplayName(name)
             .setEmail(email)
             .setPlayerType(PlayerType.HUMAN)
-            .build();
-    handleCommand(cmd);
+            .build());
   }
 
   @When("I handle a RegisterPlayer command with name {string} and email {string} as AI")
   public void handleRegisterPlayerCommandAsAI(String name, String email) {
-    RegisterPlayer cmd =
+    dispatch(
         RegisterPlayer.newBuilder()
             .setDisplayName(name)
             .setEmail(email)
             .setPlayerType(PlayerType.AI)
-            .build();
-    handleCommand(cmd);
+            .build());
   }
 
   @When("I handle a DepositFunds command with amount {int}")
   public void handleDepositFundsCommand(int amount) {
-    DepositFunds cmd =
+    dispatch(
         DepositFunds.newBuilder()
             .setAmount(Currency.newBuilder().setAmount(amount).setCurrencyCode("CHIPS"))
-            .build();
-    handleCommand(cmd);
+            .build());
   }
 
   @When("I handle a WithdrawFunds command with amount {int}")
   public void handleWithdrawFundsCommand(int amount) {
-    WithdrawFunds cmd =
+    dispatch(
         WithdrawFunds.newBuilder()
             .setAmount(Currency.newBuilder().setAmount(amount).setCurrencyCode("CHIPS"))
-            .build();
-    handleCommand(cmd);
+            .build());
   }
 
   @When("I handle a ReserveFunds command with amount {int} for table {string}")
   public void handleReserveFundsCommand(int amount, String tableId) {
-    ReserveFunds cmd =
+    dispatch(
         ReserveFunds.newBuilder()
             .setAmount(Currency.newBuilder().setAmount(amount).setCurrencyCode("CHIPS"))
             .setTableRoot(ByteString.copyFrom(tableId.getBytes(StandardCharsets.UTF_8)))
-            .build();
-    handleCommand(cmd);
+            .build());
   }
 
   @When("I handle a ReleaseFunds command for table {string}")
   public void handleReleaseFundsCommand(String tableId) {
-    ReleaseFunds cmd =
+    dispatch(
         ReleaseFunds.newBuilder()
             .setTableRoot(ByteString.copyFrom(tableId.getBytes(StandardCharsets.UTF_8)))
-            .build();
-    handleCommand(cmd);
+            .build());
   }
 
   @When("I rebuild the player state")
   public void rebuildPlayerState() {
-    rehydratePlayer();
+    // No-op: state() always materializes fresh from the router.
   }
 
   // --- Then steps ---
@@ -200,119 +214,138 @@ public class PlayerSteps {
     assertThat(resultEvent).isInstanceOf(FundsReleased.class);
   }
 
-  // Note: "the command fails with status" and "the error message contains"
-  // are defined in CommonSteps.java and shared across all step classes
-
   @Then("the player event has display_name {string}")
   public void playerEventHasDisplayName(String name) {
     assertThat(resultEvent).isInstanceOf(PlayerRegistered.class);
-    PlayerRegistered event = (PlayerRegistered) resultEvent;
-    assertThat(event.getDisplayName()).isEqualTo(name);
+    assertThat(((PlayerRegistered) resultEvent).getDisplayName()).isEqualTo(name);
   }
 
   @Then("the player event has player_type {string}")
   public void playerEventHasPlayerType(String type) {
     assertThat(resultEvent).isInstanceOf(PlayerRegistered.class);
-    PlayerRegistered event = (PlayerRegistered) resultEvent;
-    PlayerType expectedType = PlayerType.valueOf(type);
-    assertThat(event.getPlayerType()).isEqualTo(expectedType);
+    assertThat(((PlayerRegistered) resultEvent).getPlayerType())
+        .isEqualTo(PlayerType.valueOf(type));
   }
 
   @Then("the player event has amount {int}")
   public void playerEventHasAmount(int amount) {
-    long actualAmount = getEventAmount();
-    assertThat(actualAmount).isEqualTo(amount);
+    assertThat(getEventAmount()).isEqualTo(amount);
   }
 
   @Then("the player event has new_balance {int}")
   public void playerEventHasNewBalance(int balance) {
-    long actualBalance = getEventNewBalance();
-    assertThat(actualBalance).isEqualTo(balance);
+    assertThat(getEventNewBalance()).isEqualTo(balance);
   }
 
   @Then("the player event has new_available_balance {int}")
   public void playerEventHasNewAvailableBalance(int balance) {
-    long actualBalance = getEventNewAvailableBalance();
-    assertThat(actualBalance).isEqualTo(balance);
+    assertThat(getEventNewAvailableBalance()).isEqualTo(balance);
   }
 
   @Then("the player state has bankroll {int}")
   public void playerStateHasBankroll(int bankroll) {
-    assertThat(player.state().getBankroll()).isEqualTo(bankroll);
+    assertThat(state().getBankroll()).isEqualTo(bankroll);
   }
 
   @Then("the player state has reserved_funds {int}")
   public void playerStateHasReservedFunds(int reserved) {
-    assertThat(player.state().getReservedFunds()).isEqualTo(reserved);
+    assertThat(state().getReservedFunds()).isEqualTo(reserved);
   }
 
   @Then("the player state has available_balance {int}")
   public void playerStateHasAvailableBalance(int available) {
-    assertThat(player.state().getAvailableBalance()).isEqualTo(available);
+    assertThat(state().getAvailableBalance()).isEqualTo(available);
   }
 
-  // --- Helper methods ---
+  // --- Router plumbing ---
 
   private void addEvent(Message event) {
-    Any eventAny = Any.pack(event, "type.googleapis.com/");
-    EventPage page =
+    Any any = Any.pack(event, TYPE_URL_PREFIX);
+    eventPages.add(
         EventPage.newBuilder()
-            .setHeader(PageHeader.newBuilder().setSequence(eventPages.size()).build())
-            .setEvent(eventAny)
-            .build();
-    eventPages.add(page);
+            .setHeader(PageHeader.newBuilder().setSequence(eventPages.size()))
+            .setEvent(any)
+            .build());
   }
 
-  private void rehydratePlayer() {
-    EventBook eventBook =
-        EventBook.newBuilder()
-            .setCover(Cover.newBuilder().setDomain("player"))
-            .addAllPages(eventPages)
-            .setNextSequence(eventPages.size())
+  private void dispatch(Message command) {
+    ContextualCommand ctx =
+        ContextualCommand.newBuilder()
+            .setCommand(
+                CommandBook.newBuilder()
+                    .setCover(Cover.newBuilder().setDomain("player"))
+                    .addPages(
+                        CommandPage.newBuilder().setCommand(Any.pack(command, TYPE_URL_PREFIX))))
+            .setEvents(currentEventBook())
             .build();
-    player.rehydrate(eventBook);
-  }
-
-  private void handleCommand(Message command) {
     try {
-      resultEvent = player.handleCommand(command);
+      BusinessResponse response = router.dispatch(ctx);
+      EventBook emitted = response.getEvents();
+      if (emitted.getPagesCount() == 0) {
+        resultEvent = null;
+      } else {
+        for (EventPage page : emitted.getPagesList()) {
+          eventPages.add(
+              EventPage.newBuilder()
+                  .setHeader(PageHeader.newBuilder().setSequence(eventPages.size()))
+                  .setEvent(page.getEvent())
+                  .build());
+        }
+        resultEvent = decodeEvent(emitted.getPages(0).getEvent());
+      }
       rejectedError = null;
       CommonSteps.setLastRejectedError(null);
-    } catch (Errors.CommandRejectedError e) {
+    } catch (DispatchException de) {
       resultEvent = null;
-      rejectedError = e;
-      CommonSteps.setLastRejectedError(e);
+      rejectedError = unwrapRejection(de);
+      CommonSteps.setLastRejectedError(rejectedError);
+    }
+  }
+
+  private static Errors.CommandRejectedError unwrapRejection(DispatchException de) {
+    for (Throwable t = de; t != null; t = t.getCause()) {
+      if (t instanceof Errors.CommandRejectedError cre) {
+        return cre;
+      }
+    }
+    return new Errors.CommandRejectedError(de.getMessage(), de.code());
+  }
+
+  private static Message decodeEvent(Any any) {
+    String typeUrl = any.getTypeUrl();
+    String simpleName = typeUrl.substring(typeUrl.lastIndexOf('.') + 1);
+    try {
+      return switch (simpleName) {
+        case "PlayerRegistered" -> PlayerRegistered.parseFrom(any.getValue());
+        case "FundsDeposited" -> FundsDeposited.parseFrom(any.getValue());
+        case "FundsWithdrawn" -> FundsWithdrawn.parseFrom(any.getValue());
+        case "FundsReserved" -> FundsReserved.parseFrom(any.getValue());
+        case "FundsReleased" -> FundsReleased.parseFrom(any.getValue());
+        case "FundsTransferred" -> dev.angzarr.examples.FundsTransferred.parseFrom(any.getValue());
+        default -> throw new IllegalStateException("unknown player event type: " + typeUrl);
+      };
+    } catch (InvalidProtocolBufferException e) {
+      throw new IllegalStateException("cannot decode " + typeUrl, e);
     }
   }
 
   private long getEventAmount() {
-    if (resultEvent instanceof FundsDeposited) {
-      return ((FundsDeposited) resultEvent).getAmount().getAmount();
-    } else if (resultEvent instanceof FundsWithdrawn) {
-      return ((FundsWithdrawn) resultEvent).getAmount().getAmount();
-    } else if (resultEvent instanceof FundsReserved) {
-      return ((FundsReserved) resultEvent).getAmount().getAmount();
-    } else if (resultEvent instanceof FundsReleased) {
-      return ((FundsReleased) resultEvent).getAmount().getAmount();
-    }
+    if (resultEvent instanceof FundsDeposited e) return e.getAmount().getAmount();
+    if (resultEvent instanceof FundsWithdrawn e) return e.getAmount().getAmount();
+    if (resultEvent instanceof FundsReserved e) return e.getAmount().getAmount();
+    if (resultEvent instanceof FundsReleased e) return e.getAmount().getAmount();
     throw new IllegalStateException("Event does not have amount: " + resultEvent.getClass());
   }
 
   private long getEventNewBalance() {
-    if (resultEvent instanceof FundsDeposited) {
-      return ((FundsDeposited) resultEvent).getNewBalance().getAmount();
-    } else if (resultEvent instanceof FundsWithdrawn) {
-      return ((FundsWithdrawn) resultEvent).getNewBalance().getAmount();
-    }
+    if (resultEvent instanceof FundsDeposited e) return e.getNewBalance().getAmount();
+    if (resultEvent instanceof FundsWithdrawn e) return e.getNewBalance().getAmount();
     throw new IllegalStateException("Event does not have new_balance: " + resultEvent.getClass());
   }
 
   private long getEventNewAvailableBalance() {
-    if (resultEvent instanceof FundsReserved) {
-      return ((FundsReserved) resultEvent).getNewAvailableBalance().getAmount();
-    } else if (resultEvent instanceof FundsReleased) {
-      return ((FundsReleased) resultEvent).getNewAvailableBalance().getAmount();
-    }
+    if (resultEvent instanceof FundsReserved e) return e.getNewAvailableBalance().getAmount();
+    if (resultEvent instanceof FundsReleased e) return e.getNewAvailableBalance().getAmount();
     throw new IllegalStateException(
         "Event does not have new_available_balance: " + resultEvent.getClass());
   }

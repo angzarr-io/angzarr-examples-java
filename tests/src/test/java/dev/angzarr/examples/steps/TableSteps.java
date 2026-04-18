@@ -6,16 +6,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.protobuf.Any;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Message;
+import dev.angzarr.BusinessResponse;
+import dev.angzarr.CommandBook;
+import dev.angzarr.CommandPage;
+import dev.angzarr.ContextualCommand;
 import dev.angzarr.Cover;
 import dev.angzarr.EventBook;
 import dev.angzarr.EventPage;
 import dev.angzarr.PageHeader;
 import dev.angzarr.client.Errors;
+import dev.angzarr.client.router.CommandHandlerRouter;
+import dev.angzarr.client.router.DispatchException;
+import dev.angzarr.client.router.Router;
 import dev.angzarr.client.util.ByteUtils;
 import dev.angzarr.examples.*;
 import dev.angzarr.examples.table.Table;
+import dev.angzarr.examples.table.state.SeatState;
 import dev.angzarr.examples.table.state.TableState;
-import dev.angzarr.examples.testing.AggregateTestKit;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
@@ -29,17 +36,35 @@ import java.util.Map;
 /** Cucumber step definitions for Table aggregate tests. */
 public class TableSteps {
 
-  private AggregateTestKit<Table, TableState> table;
+  private static final String TYPE_URL_PREFIX = "type.googleapis.com/";
+
+  private CommandHandlerRouter<TableState> router;
   private List<EventPage> eventPages;
   private Message resultEvent;
   private Errors.CommandRejectedError rejectedError;
 
   @Before
   public void setup() {
-    table = new AggregateTestKit<>(Table.class, Table::new);
+    @SuppressWarnings("unchecked")
+    CommandHandlerRouter<TableState> r =
+        (CommandHandlerRouter<TableState>)
+            Router.newBuilder("table-test").withHandler(Table.class, Table::new).build();
+    router = r;
     eventPages = new ArrayList<>();
     resultEvent = null;
     rejectedError = null;
+  }
+
+  private TableState state() {
+    return router.rebuildStateFor(Table.class, currentEventBook());
+  }
+
+  private EventBook currentEventBook() {
+    return EventBook.newBuilder()
+        .setCover(Cover.newBuilder().setDomain("table"))
+        .addAllPages(eventPages)
+        .setNextSequence(eventPages.size())
+        .build();
   }
 
   // --- Given steps ---
@@ -340,12 +365,12 @@ public class TableSteps {
 
   @Then("the table state has {int} players")
   public void tableStateHasPlayers(int count) {
-    assertThat(table.state().getPlayerCount()).isEqualTo(count);
+    assertThat(state().getPlayerCount()).isEqualTo(count);
   }
 
   @Then("the table state has seat {int} occupied by {string}")
   public void tableStateHasSeatOccupiedBy(int seat, String playerId) {
-    var seatState = table.state().getPlayerAtSeat(seat);
+    SeatState seatState = state().getSeats().get(seat);
     assertThat(seatState).isNotNull();
     var expectedHex = bytesToHex(playerId.getBytes(java.nio.charset.StandardCharsets.UTF_8));
     var actualHex = bytesToHex(seatState.getPlayerRoot());
@@ -354,12 +379,12 @@ public class TableSteps {
 
   @Then("the table state has status {string}")
   public void tableStateHasStatus(String status) {
-    assertThat(table.state().getStatus()).isEqualTo(status);
+    assertThat(state().getStatus()).isEqualTo(status);
   }
 
   @Then("the table state has hand_count {int}")
   public void tableStateHasHandCount(int count) {
-    assertThat(table.state().getHandNumber()).isEqualTo(count);
+    assertThat(state().getHandCount()).isEqualTo(count);
   }
 
   // Note: "the command fails with status" and "the error message contains"
@@ -377,25 +402,66 @@ public class TableSteps {
     eventPages.add(page);
   }
 
-  private void rehydrateTable() {
-    EventBook eventBook =
-        EventBook.newBuilder()
-            .setCover(Cover.newBuilder().setDomain("table"))
-            .addAllPages(eventPages)
-            .setNextSequence(eventPages.size())
-            .build();
-    table.rehydrate(eventBook);
-  }
+  /** No-op: {@link #state()} materializes fresh state from the router each call. */
+  private void rehydrateTable() {}
 
   private void handleCommand(Message command) {
+    ContextualCommand ctx =
+        ContextualCommand.newBuilder()
+            .setCommand(
+                CommandBook.newBuilder()
+                    .setCover(Cover.newBuilder().setDomain("table"))
+                    .addPages(
+                        CommandPage.newBuilder().setCommand(Any.pack(command, TYPE_URL_PREFIX))))
+            .setEvents(currentEventBook())
+            .build();
     try {
-      resultEvent = table.handleCommand(command);
+      BusinessResponse response = router.dispatch(ctx);
+      EventBook emitted = response.getEvents();
+      resultEvent =
+          emitted.getPagesCount() == 0 ? null : decodeEmittedEvent(emitted.getPages(0).getEvent());
+      for (EventPage page : emitted.getPagesList()) {
+        eventPages.add(
+            EventPage.newBuilder()
+                .setHeader(PageHeader.newBuilder().setSequence(eventPages.size()))
+                .setEvent(page.getEvent())
+                .build());
+      }
       rejectedError = null;
       CommonSteps.setLastRejectedError(null);
-    } catch (Errors.CommandRejectedError e) {
+    } catch (DispatchException de) {
       resultEvent = null;
-      rejectedError = e;
-      CommonSteps.setLastRejectedError(e);
+      rejectedError = unwrapRejection(de);
+      CommonSteps.setLastRejectedError(rejectedError);
+    }
+  }
+
+  private static Errors.CommandRejectedError unwrapRejection(DispatchException de) {
+    for (Throwable t = de; t != null; t = t.getCause()) {
+      if (t instanceof Errors.CommandRejectedError cre) {
+        return cre;
+      }
+    }
+    return new Errors.CommandRejectedError(de.getMessage(), de.code());
+  }
+
+  private static Message decodeEmittedEvent(Any any) {
+    String typeUrl = any.getTypeUrl();
+    String simpleName = typeUrl.substring(typeUrl.lastIndexOf('.') + 1);
+    try {
+      return switch (simpleName) {
+        case "TableCreated" -> TableCreated.parseFrom(any.getValue());
+        case "PlayerJoined" -> PlayerJoined.parseFrom(any.getValue());
+        case "PlayerLeft" -> PlayerLeft.parseFrom(any.getValue());
+        case "PlayerSatOut" -> PlayerSatOut.parseFrom(any.getValue());
+        case "PlayerSatIn" -> PlayerSatIn.parseFrom(any.getValue());
+        case "HandStarted" -> HandStarted.parseFrom(any.getValue());
+        case "HandEnded" -> HandEnded.parseFrom(any.getValue());
+        case "ChipsAdded" -> ChipsAdded.parseFrom(any.getValue());
+        default -> throw new IllegalStateException("unknown table event type: " + typeUrl);
+      };
+    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+      throw new IllegalStateException("cannot decode " + typeUrl, e);
     }
   }
 }

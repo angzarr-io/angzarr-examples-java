@@ -5,15 +5,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.google.protobuf.Any;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Message;
+import dev.angzarr.BusinessResponse;
+import dev.angzarr.CommandBook;
+import dev.angzarr.CommandPage;
+import dev.angzarr.ContextualCommand;
 import dev.angzarr.Cover;
 import dev.angzarr.EventBook;
 import dev.angzarr.EventPage;
 import dev.angzarr.PageHeader;
 import dev.angzarr.client.Errors;
+import dev.angzarr.client.router.CommandHandlerRouter;
+import dev.angzarr.client.router.DispatchException;
+import dev.angzarr.client.router.Router;
 import dev.angzarr.examples.*;
 import dev.angzarr.examples.hand.Hand;
 import dev.angzarr.examples.hand.state.HandState;
-import dev.angzarr.examples.testing.AggregateTestKit;
+import dev.angzarr.examples.hand.state.PlayerHandState;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -26,17 +33,53 @@ import java.util.Map;
 /** Cucumber step definitions for Hand aggregate tests. */
 public class HandSteps {
 
-  private AggregateTestKit<Hand, HandState> hand;
+  private static final String TYPE_URL_PREFIX = "type.googleapis.com/";
+
+  private CommandHandlerRouter<HandState> router;
   private List<EventPage> eventPages;
   private Message resultEvent;
   private Errors.CommandRejectedError rejectedError;
 
   @Before
   public void setup() {
-    hand = new AggregateTestKit<>(Hand.class, Hand::new);
+    @SuppressWarnings("unchecked")
+    CommandHandlerRouter<HandState> r =
+        (CommandHandlerRouter<HandState>)
+            Router.newBuilder("hand-test").withHandler(Hand.class, Hand::new).build();
+    router = r;
     eventPages = new ArrayList<>();
     resultEvent = null;
     rejectedError = null;
+  }
+
+  /** Current aggregate state materialized by replaying the accumulated event pages. */
+  private HandState state() {
+    return router.rebuildStateFor(Hand.class, currentEventBook());
+  }
+
+  private EventBook currentEventBook() {
+    return EventBook.newBuilder()
+        .setCover(Cover.newBuilder().setDomain("hand"))
+        .addAllPages(eventPages)
+        .setNextSequence(eventPages.size())
+        .build();
+  }
+
+  private static String phaseName(int phaseValue) {
+    if (phaseValue == BettingPhase.PREFLOP_VALUE) return "PREFLOP";
+    if (phaseValue == BettingPhase.FLOP_VALUE) return "FLOP";
+    if (phaseValue == BettingPhase.TURN_VALUE) return "TURN";
+    if (phaseValue == BettingPhase.RIVER_VALUE) return "RIVER";
+    if (phaseValue == BettingPhase.SHOWDOWN_VALUE) return "SHOWDOWN";
+    return "UNKNOWN";
+  }
+
+  private static PlayerHandState playerByStringId(HandState s, String playerId) {
+    PlayerHandState p = s.getPlayers().get(playerId);
+    if (p == null) {
+      p = s.getPlayer(playerId.getBytes(StandardCharsets.UTF_8));
+    }
+    return p;
   }
 
   // --- Given steps ---
@@ -459,7 +502,7 @@ public class HandSteps {
             .setAction(actionType)
             .setAmount(amount)
             .setPlayerStack(500 - amount)
-            .setPotTotal(hand.state().getPotTotal() + amount)
+            .setPotTotal(state().getPotTotal() + amount)
             .build();
     addEvent(event);
     rehydrateHand();
@@ -473,7 +516,7 @@ public class HandSteps {
             .setBlindType(amount <= 5 ? "small" : "big")
             .setAmount(amount)
             .setPlayerStack(500 - amount)
-            .setPotTotal(hand.state().getPotTotal() + amount)
+            .setPotTotal(state().getPotTotal() + amount)
             .build();
     addEvent(event);
     rehydrateHand();
@@ -711,17 +754,17 @@ public class HandSteps {
 
   @Then("the hand state has pot_total {int}")
   public void handStateHasPotTotal(int potTotal) {
-    assertThat(hand.state().getPotTotal()).isEqualTo(potTotal);
+    assertThat(state().getPotTotal()).isEqualTo(potTotal);
   }
 
   @Then("the hand state has {int} active_players")
   public void handStateHasActivePlayers(int count) {
-    assertThat(hand.state().getActivePlayerCount()).isEqualTo(count);
+    assertThat(state().getActivePlayerCount()).isEqualTo(count);
   }
 
   @Then("the hand state is complete")
   public void handStateIsComplete() {
-    assertThat(hand.state().isComplete()).isTrue();
+    assertThat(state().isComplete()).isTrue();
   }
 
   // Note: "the command fails with status" and "the error message contains"
@@ -729,32 +772,34 @@ public class HandSteps {
 
   @Then("the hand state has phase {string}")
   public void handStateHasPhase(String phase) {
-    assertThat(hand.state().getPhase()).isEqualTo(phase);
+    assertThat(phaseName(state().getCurrentPhase())).isEqualTo(phase);
   }
 
   @Then("the hand state has status {string}")
   public void handStateHasStatus(String status) {
-    assertThat(hand.state().getStatus()).isEqualTo(status);
+    assertThat(state().getStatus()).isEqualTo(status);
   }
 
   @Then("the hand state has {int} players")
   public void handStateHasPlayers(int count) {
-    assertThat(hand.state().getPlayerCount()).isEqualTo(count);
+    assertThat(state().getPlayers().size()).isEqualTo(count);
   }
 
   @Then("the hand state has {int} community cards")
   public void handStateHasCommunityCards(int count) {
-    assertThat(hand.state().getCommunityCardCount()).isEqualTo(count);
+    assertThat(state().getCommunityCards().size()).isEqualTo(count);
   }
 
   @Then("player {string} has_folded is true")
   public void playerHasFolded(String playerId) {
-    assertThat(hand.state().hasPlayerFolded(playerId)).isTrue();
+    PlayerHandState p = playerByStringId(state(), playerId);
+    assertThat(p).isNotNull();
+    assertThat(p.hasFolded()).isTrue();
   }
 
   @Then("active player count is {int}")
   public void activePlayerCountIs(int count) {
-    assertThat(hand.state().getActivePlayerCount()).isEqualTo(count);
+    assertThat(state().getActivePlayerCount()).isEqualTo(count);
   }
 
   @Then("each player has {int} hole cards")
@@ -854,7 +899,7 @@ public class HandSteps {
 
   @Then("all_community_cards has {int} cards")
   public void allCommunityCardsHas(int count) {
-    assertThat(hand.state().getCommunityCardCount()).isEqualTo(count);
+    assertThat(state().getCommunityCards().size()).isEqualTo(count);
   }
 
   @Then("^the result is a(?:n)? (?:examples\\.)?DrawCompleted event$")
@@ -877,7 +922,9 @@ public class HandSteps {
 
   @Then("player {string} has {int} hole cards")
   public void playerHasHoleCards(String playerId, int count) {
-    assertThat(hand.state().getPlayerHoleCardCount(playerId)).isEqualTo(count);
+    PlayerHandState p = playerByStringId(state(), playerId);
+    int holeCards = p == null ? 0 : p.getHoleCards().size();
+    assertThat(holeCards).isEqualTo(count);
   }
 
   @Then("^the result is a(?:n)? (?:examples\\.)?CardsRevealed event$")
@@ -923,12 +970,12 @@ public class HandSteps {
 
   @Then("a HandComplete event is emitted")
   public void handCompleteEventEmitted() {
-    assertThat(hand.state().isComplete()).isTrue();
+    assertThat(state().isComplete()).isTrue();
   }
 
   @Then("the hand status is {string}")
   public void handStatusIs(String status) {
-    assertThat(hand.state().getStatus()).isEqualTo(status);
+    assertThat(state().getStatus()).isEqualTo(status);
   }
 
   @Then("player {string} has ranking {string}")
@@ -960,25 +1007,69 @@ public class HandSteps {
     eventPages.add(page);
   }
 
-  private void rehydrateHand() {
-    EventBook eventBook =
-        EventBook.newBuilder()
-            .setCover(Cover.newBuilder().setDomain("hand"))
-            .addAllPages(eventPages)
-            .setNextSequence(eventPages.size())
-            .build();
-    hand.rehydrate(eventBook);
-  }
+  /** No-op: {@link #state()} always materializes fresh from the router. */
+  private void rehydrateHand() {}
 
   private void handleCommand(Message command) {
+    ContextualCommand ctx =
+        ContextualCommand.newBuilder()
+            .setCommand(
+                CommandBook.newBuilder()
+                    .setCover(Cover.newBuilder().setDomain("hand"))
+                    .addPages(
+                        CommandPage.newBuilder().setCommand(Any.pack(command, TYPE_URL_PREFIX))))
+            .setEvents(currentEventBook())
+            .build();
     try {
-      resultEvent = hand.handleCommand(command);
+      BusinessResponse response = router.dispatch(ctx);
+      EventBook emitted = response.getEvents();
+      resultEvent =
+          emitted.getPagesCount() == 0 ? null : decodeEmittedEvent(emitted.getPages(0).getEvent());
+      for (EventPage page : emitted.getPagesList()) {
+        eventPages.add(
+            EventPage.newBuilder()
+                .setHeader(PageHeader.newBuilder().setSequence(eventPages.size()))
+                .setEvent(page.getEvent())
+                .build());
+      }
       rejectedError = null;
       CommonSteps.setLastRejectedError(null);
-    } catch (Errors.CommandRejectedError e) {
+    } catch (DispatchException de) {
       resultEvent = null;
-      rejectedError = e;
-      CommonSteps.setLastRejectedError(e);
+      rejectedError = unwrapRejection(de);
+      CommonSteps.setLastRejectedError(rejectedError);
+    }
+  }
+
+  private static Errors.CommandRejectedError unwrapRejection(DispatchException de) {
+    for (Throwable t = de; t != null; t = t.getCause()) {
+      if (t instanceof Errors.CommandRejectedError cre) {
+        return cre;
+      }
+    }
+    return new Errors.CommandRejectedError(de.getMessage(), de.code());
+  }
+
+  private static Message decodeEmittedEvent(Any any) {
+    String typeUrl = any.getTypeUrl();
+    String simpleName = typeUrl.substring(typeUrl.lastIndexOf('.') + 1);
+    try {
+      return switch (simpleName) {
+        case "CardsDealt" -> CardsDealt.parseFrom(any.getValue());
+        case "BlindPosted" -> BlindPosted.parseFrom(any.getValue());
+        case "ActionTaken" -> ActionTaken.parseFrom(any.getValue());
+        case "CommunityCardsDealt" -> CommunityCardsDealt.parseFrom(any.getValue());
+        case "BettingRoundComplete" -> BettingRoundComplete.parseFrom(any.getValue());
+        case "HandComplete" -> HandComplete.parseFrom(any.getValue());
+        case "PotAwarded" -> PotAwarded.parseFrom(any.getValue());
+        case "DrawCompleted" -> DrawCompleted.parseFrom(any.getValue());
+        case "ShowdownStarted" -> ShowdownStarted.parseFrom(any.getValue());
+        case "CardsRevealed" -> CardsRevealed.parseFrom(any.getValue());
+        case "CardsMucked" -> CardsMucked.parseFrom(any.getValue());
+        default -> throw new IllegalStateException("unknown hand event type: " + typeUrl);
+      };
+    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+      throw new IllegalStateException("cannot decode " + typeUrl, e);
     }
   }
 }
