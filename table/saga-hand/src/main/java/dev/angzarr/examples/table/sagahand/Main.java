@@ -1,19 +1,13 @@
 package dev.angzarr.examples.table.sagahand;
 
-import dev.angzarr.*;
-import dev.angzarr.client.EventRouter;
-import io.grpc.stub.StreamObserver;
-import java.util.List;
+import dev.angzarr.client.router.Router;
+import dev.angzarr.client.router.SagaGrpc;
+import dev.angzarr.client.router.SagaRouter;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-/**
- * Spring Boot application for Table -> Hand saga.
- *
- * <p>Uses the functional EventRouter pattern. Sagas are stateless translators - framework handles
- * sequence stamping.
- */
+/** Spring Boot application for Table → Hand saga. */
 @SpringBootApplication
 public class Main {
 
@@ -22,15 +16,13 @@ public class Main {
   }
 
   @GrpcService
-  public static class SagaService extends SagaServiceGrpc.SagaServiceImplBase {
-    private final EventRouter router = TableHandRouter.createRouter();
-
-    @Override
-    public void handle(SagaHandleRequest request, StreamObserver<SagaResponse> responseObserver) {
-      // Sagas receive source events only - framework handles destinations and sequences
-      var commands = router.dispatch(request.getSource(), List.of());
-      responseObserver.onNext(SagaResponse.newBuilder().addAllCommands(commands).build());
-      responseObserver.onCompleted();
+  public static class TableHandSagaService extends SagaGrpc {
+    public TableHandSagaService() {
+      super(
+          (SagaRouter)
+              Router.newBuilder("saga-table-hand")
+                  .withHandler(TableHandSaga.class, TableHandSaga::new)
+                  .build());
     }
   }
 }

@@ -1,15 +1,15 @@
 package dev.angzarr.examples.prjoutput;
 
-import dev.angzarr.*;
-import io.grpc.stub.StreamObserver;
+import dev.angzarr.client.router.ProjectorGrpc;
+import dev.angzarr.client.router.ProjectorRouter;
+import dev.angzarr.client.router.Router;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * Spring Boot application for Output projector.
- *
- * <p>Subscribes to events from player, table, and hand domains and writes formatted game logs.
+ * Spring Boot application for Output projector. Subscribes to events from player, table, and hand
+ * domains and writes formatted game logs.
  */
 @SpringBootApplication
 public class Main {
@@ -19,23 +19,13 @@ public class Main {
   }
 
   @GrpcService
-  public static class ProjectorGrpcService extends ProjectorServiceGrpc.ProjectorServiceImplBase {
-
-    private final OutputProjector projector = new OutputProjector(System.out::println, true);
-
-    @Override
-    public void handle(EventBook request, StreamObserver<Projection> responseObserver) {
-      Projection result = projector.handle(request);
-      responseObserver.onNext(result);
-      responseObserver.onCompleted();
-    }
-
-    @Override
-    public void handleSpeculative(EventBook request, StreamObserver<Projection> responseObserver) {
-      // Speculative: same logic but should avoid side effects
-      Projection result = projector.handle(request);
-      responseObserver.onNext(result);
-      responseObserver.onCompleted();
+  public static class OutputProjectorService extends ProjectorGrpc {
+    public OutputProjectorService() {
+      super(
+          (ProjectorRouter)
+              Router.newBuilder("prj-output")
+                  .withHandler(OutputProjector.class, OutputProjector::new)
+                  .build());
     }
   }
 }

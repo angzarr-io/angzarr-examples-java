@@ -1,7 +1,7 @@
 package dev.angzarr.examples.hand;
 
-import dev.angzarr.client.CommandHandler;
 import dev.angzarr.client.Errors;
+import dev.angzarr.client.annotations.Aggregate;
 import dev.angzarr.client.annotations.Applies;
 import dev.angzarr.client.annotations.Handles;
 import dev.angzarr.client.util.ByteUtils;
@@ -12,33 +12,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Hand aggregate with event sourcing (OO pattern).
- *
- * <p>Manages a single hand of poker with betting rounds.
+ * Hand aggregate — Tier 5 annotation-driven. Manages a single hand of poker with betting rounds.
  */
-public class Hand extends CommandHandler<HandState> {
+@Aggregate(domain = "hand", state = HandState.class)
+public class Hand {
 
   public static final String DOMAIN = "hand";
-
-  /** Default constructor. */
-  public Hand() {
-    super();
-  }
-
-  /** Constructor with prior events for state rehydration. */
-  public Hand(dev.angzarr.EventBook eventBook) {
-    super(eventBook);
-  }
-
-  @Override
-  public String getDomain() {
-    return DOMAIN;
-  }
-
-  @Override
-  protected HandState createEmptyState() {
-    return new HandState();
-  }
 
   // --- Event appliers ---
 
@@ -177,73 +156,11 @@ public class Hand extends CommandHandler<HandState> {
     }
   }
 
-  // --- State accessors ---
-  public boolean exists() {
-    return getState().exists();
-  }
-
-  public boolean isComplete() {
-    return getState().isComplete();
-  }
-
-  public long getHandNumber() {
-    return getState().getHandNumber();
-  }
-
-  public long getPotTotal() {
-    return getState().getPotTotal();
-  }
-
-  public int getActivePlayerCount() {
-    return getState().getActivePlayerCount();
-  }
-
-  public String getStatus() {
-    return getState().getStatus();
-  }
-
-  public int getPlayerCount() {
-    return getState().getPlayers().size();
-  }
-
-  public int getCommunityCardCount() {
-    return getState().getCommunityCards().size();
-  }
-
-  public String getPhase() {
-    int phase = getState().getCurrentPhase();
-    if (phase == BettingPhase.PREFLOP_VALUE) return "PREFLOP";
-    if (phase == BettingPhase.FLOP_VALUE) return "FLOP";
-    if (phase == BettingPhase.TURN_VALUE) return "TURN";
-    if (phase == BettingPhase.RIVER_VALUE) return "RIVER";
-    if (phase == BettingPhase.SHOWDOWN_VALUE) return "SHOWDOWN";
-    return "UNKNOWN";
-  }
-
-  public boolean hasPlayerFolded(String playerId) {
-    PlayerHandState player = getState().getPlayers().get(playerId);
-    if (player == null) {
-      // Try hex-encoded lookup
-      byte[] playerBytes = playerId.getBytes(java.nio.charset.StandardCharsets.UTF_8);
-      player = getState().getPlayer(playerBytes);
-    }
-    return player != null && player.hasFolded();
-  }
-
-  public int getPlayerHoleCardCount(String playerId) {
-    PlayerHandState player = getState().getPlayers().get(playerId);
-    if (player == null) {
-      byte[] playerBytes = playerId.getBytes(java.nio.charset.StandardCharsets.UTF_8);
-      player = getState().getPlayer(playerBytes);
-    }
-    return player != null ? player.getHoleCards().size() : 0;
-  }
-
   // --- Command handlers ---
 
   @Handles(DealCards.class)
-  public CardsDealt dealCards(DealCards cmd) {
-    if (exists()) {
+  public CardsDealt handleDealCards(DealCards cmd, HandState state, long seq) {
+    if (state.exists()) {
       throw Errors.CommandRejectedError.preconditionFailed("Cards already dealt");
     }
     if (cmd.getPlayersCount() < 2) {
@@ -281,18 +198,18 @@ public class Hand extends CommandHandler<HandState> {
   }
 
   @Handles(PostBlind.class)
-  public BlindPosted postBlind(PostBlind cmd) {
-    if (!exists()) {
+  public BlindPosted handlePostBlind(PostBlind cmd, HandState state, long seq) {
+    if (!state.exists()) {
       throw Errors.CommandRejectedError.preconditionFailed("Hand does not exist");
     }
-    PlayerHandState player = getState().getPlayer(cmd.getPlayerRoot().toByteArray());
+    PlayerHandState player = state.getPlayer(cmd.getPlayerRoot().toByteArray());
     if (player == null) {
       throw Errors.CommandRejectedError.preconditionFailed("Player not in hand");
     }
 
     long amount = Math.min(cmd.getAmount(), player.getStack());
     long newStack = player.getStack() - amount;
-    long newPot = getState().getPotTotal() + amount;
+    long newPot = state.getPotTotal() + amount;
 
     return BlindPosted.newBuilder()
         .setPlayerRoot(cmd.getPlayerRoot())
@@ -305,14 +222,14 @@ public class Hand extends CommandHandler<HandState> {
   }
 
   @Handles(PlayerAction.class)
-  public ActionTaken playerAction(PlayerAction cmd) {
-    if (!exists()) {
+  public ActionTaken handlePlayerAction(PlayerAction cmd, HandState state, long seq) {
+    if (!state.exists()) {
       throw Errors.CommandRejectedError.preconditionFailed("Hand does not exist");
     }
-    if (isComplete()) {
+    if (state.isComplete()) {
       throw Errors.CommandRejectedError.preconditionFailed("Hand is complete");
     }
-    PlayerHandState player = getState().getPlayer(cmd.getPlayerRoot().toByteArray());
+    PlayerHandState player = state.getPlayer(cmd.getPlayerRoot().toByteArray());
     if (player == null) {
       throw Errors.CommandRejectedError.preconditionFailed("Player not in hand");
     }
@@ -327,18 +244,18 @@ public class Hand extends CommandHandler<HandState> {
       case FOLD:
         break;
       case CHECK:
-        if (getState().getCurrentBet() > player.getBetThisRound()) {
+        if (state.getCurrentBet() > player.getBetThisRound()) {
           throw Errors.CommandRejectedError.invalidArgument("Cannot check, must call or fold");
         }
         break;
       case CALL:
-        amount = getState().getCurrentBet() - player.getBetThisRound();
+        amount = state.getCurrentBet() - player.getBetThisRound();
         amount = Math.min(amount, player.getStack());
         break;
       case BET:
         amount = cmd.getAmount();
         // Minimum bet is the big blind
-        long minBet = getState().getMinRaise() > 0 ? getState().getMinRaise() : 10;
+        long minBet = state.getMinRaise() > 0 ? state.getMinRaise() : 10;
         if (amount < minBet && amount < player.getStack()) {
           throw Errors.CommandRejectedError.invalidArgument("Bet must be at least " + minBet);
         }
@@ -348,13 +265,13 @@ public class Hand extends CommandHandler<HandState> {
         }
         break;
       case RAISE:
-        if (getState().getCurrentBet() == 0) {
+        if (state.getCurrentBet() == 0) {
           throw Errors.CommandRejectedError.invalidArgument("Cannot raise when there is no bet");
         }
         amount = cmd.getAmount();
         // Validate minimum raise (amount is total bet level)
-        long raiseAmount = amount - getState().getCurrentBet();
-        long minRaise = getState().getMinRaise() > 0 ? getState().getMinRaise() : 10;
+        long raiseAmount = amount - state.getCurrentBet();
+        long minRaise = state.getMinRaise() > 0 ? state.getMinRaise() : 10;
         if (raiseAmount < minRaise && amount < player.getStack()) {
           throw Errors.CommandRejectedError.invalidArgument(
               "Raise must be at least " + minRaise + " above current bet");
@@ -372,8 +289,8 @@ public class Hand extends CommandHandler<HandState> {
     }
 
     long newStack = player.getStack() - amount;
-    long newPot = getState().getPotTotal() + amount;
-    long amountToCall = Math.max(getState().getCurrentBet(), player.getBetThisRound() + amount);
+    long newPot = state.getPotTotal() + amount;
+    long amountToCall = Math.max(state.getCurrentBet(), player.getBetThisRound() + amount);
 
     return ActionTaken.newBuilder()
         .setPlayerRoot(cmd.getPlayerRoot())
@@ -387,25 +304,26 @@ public class Hand extends CommandHandler<HandState> {
   }
 
   @Handles(DealCommunityCards.class)
-  public CommunityCardsDealt dealCommunityCards(DealCommunityCards cmd) {
-    if (!exists()) {
+  public CommunityCardsDealt handleDealCommunityCards(
+      DealCommunityCards cmd, HandState state, long seq) {
+    if (!state.exists()) {
       throw Errors.CommandRejectedError.preconditionFailed("Hand does not exist");
     }
-    if (getState().getGameVariant() == GameVariant.FIVE_CARD_DRAW_VALUE) {
+    if (state.getGameVariant() == GameVariant.FIVE_CARD_DRAW_VALUE) {
       throw Errors.CommandRejectedError.invalidArgument(
           "Five Card Draw does not use community cards");
     }
 
-    List<byte[]> remaining = getState().getRemainingDeck();
+    List<byte[]> remaining = state.getRemainingDeck();
     List<Card> newCards = new ArrayList<>();
     for (int i = 0; i < cmd.getCount() && i < remaining.size(); i++) {
       newCards.add(bytesToCard(remaining.get(i)));
     }
 
-    BettingPhase nextPhase = determineNextPhase();
+    BettingPhase nextPhase = determineNextPhase(state);
 
     List<Card> allCommunity = new ArrayList<>();
-    for (byte[] c : getState().getCommunityCards()) {
+    for (byte[] c : state.getCommunityCards()) {
       allCommunity.add(bytesToCard(c));
     }
     allCommunity.addAll(newCards);
@@ -419,8 +337,8 @@ public class Hand extends CommandHandler<HandState> {
   }
 
   @Handles(AwardPot.class)
-  public PotAwarded awardPot(AwardPot cmd) {
-    if (!exists()) {
+  public PotAwarded handleAwardPot(AwardPot cmd, HandState state, long seq) {
+    if (!state.exists()) {
       throw Errors.CommandRejectedError.preconditionFailed("Hand does not exist");
     }
 
@@ -438,20 +356,20 @@ public class Hand extends CommandHandler<HandState> {
   }
 
   @Handles(RequestDraw.class)
-  public DrawCompleted requestDraw(RequestDraw cmd) {
-    if (!exists()) {
+  public DrawCompleted handleRequestDraw(RequestDraw cmd, HandState state, long seq) {
+    if (!state.exists()) {
       throw Errors.CommandRejectedError.preconditionFailed("Hand does not exist");
     }
-    if (getState().getGameVariant() != GameVariant.FIVE_CARD_DRAW_VALUE) {
+    if (state.getGameVariant() != GameVariant.FIVE_CARD_DRAW_VALUE) {
       throw Errors.CommandRejectedError.invalidArgument("Draw not supported in this game variant");
     }
-    PlayerHandState player = getState().getPlayer(cmd.getPlayerRoot().toByteArray());
+    PlayerHandState player = state.getPlayer(cmd.getPlayerRoot().toByteArray());
     if (player == null) {
       throw Errors.CommandRejectedError.preconditionFailed("Player not in hand");
     }
 
     int discardCount = cmd.getCardIndicesCount();
-    List<byte[]> remaining = getState().getRemainingDeck();
+    List<byte[]> remaining = state.getRemainingDeck();
     List<Card> newCards = new ArrayList<>();
 
     // Get new cards from remaining deck
@@ -487,11 +405,11 @@ public class Hand extends CommandHandler<HandState> {
   }
 
   @Handles(RevealCards.class)
-  public com.google.protobuf.Message revealCards(RevealCards cmd) {
-    if (!exists()) {
+  public com.google.protobuf.Message handleRevealCards(RevealCards cmd, HandState state, long seq) {
+    if (!state.exists()) {
       throw Errors.CommandRejectedError.preconditionFailed("Hand does not exist");
     }
-    PlayerHandState player = getState().getPlayer(cmd.getPlayerRoot().toByteArray());
+    PlayerHandState player = state.getPlayer(cmd.getPlayerRoot().toByteArray());
     if (player == null) {
       throw Errors.CommandRejectedError.preconditionFailed("Player not in hand");
     }
@@ -508,7 +426,7 @@ public class Hand extends CommandHandler<HandState> {
 
     // Get community cards
     List<Card> communityCards = new ArrayList<>();
-    for (byte[] cardBytes : getState().getCommunityCards()) {
+    for (byte[] cardBytes : state.getCommunityCards()) {
       communityCards.add(bytesToCard(cardBytes));
     }
 
@@ -549,8 +467,8 @@ public class Hand extends CommandHandler<HandState> {
     }
   }
 
-  private BettingPhase determineNextPhase() {
-    int current = getState().getCurrentPhase();
+  private static BettingPhase determineNextPhase(HandState state) {
+    int current = state.getCurrentPhase();
     if (current == BettingPhase.PREFLOP_VALUE) return BettingPhase.FLOP;
     if (current == BettingPhase.FLOP_VALUE) return BettingPhase.TURN;
     if (current == BettingPhase.TURN_VALUE) return BettingPhase.RIVER;
@@ -765,5 +683,13 @@ public class Hand extends CommandHandler<HandState> {
     if (cards == null || cards.isEmpty()) return false;
     Suit first = cards.get(0).getSuit();
     return cards.stream().allMatch(c -> c.getSuit() == first);
+  }
+
+  private static com.google.protobuf.Timestamp now() {
+    java.time.Instant instant = java.time.Instant.now();
+    return com.google.protobuf.Timestamp.newBuilder()
+        .setSeconds(instant.getEpochSecond())
+        .setNanos(instant.getNano())
+        .build();
   }
 }

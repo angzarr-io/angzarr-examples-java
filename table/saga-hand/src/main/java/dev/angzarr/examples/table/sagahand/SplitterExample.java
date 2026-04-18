@@ -1,52 +1,51 @@
 package dev.angzarr.examples.table.sagahand;
 
 import com.google.protobuf.Any;
-import dev.angzarr.client.SagaContext;
-import dev.angzarr.proto.angzarr.CommandBook;
-import dev.angzarr.proto.angzarr.CommandPage;
-import dev.angzarr.proto.angzarr.Cover;
-import dev.angzarr.proto.angzarr.UUID;
-import dev.angzarr.proto.examples.TableSettled;
-import dev.angzarr.proto.examples.TransferFunds;
-
+import dev.angzarr.CommandBook;
+import dev.angzarr.CommandPage;
+import dev.angzarr.Cover;
+import dev.angzarr.PageHeader;
+import dev.angzarr.UUID;
+import dev.angzarr.client.Destinations;
+import dev.angzarr.client.annotations.Handles;
+import dev.angzarr.client.annotations.Saga;
+import dev.angzarr.client.router.SagaHandlerResponse;
+import dev.angzarr.examples.TableSettled;
+import dev.angzarr.examples.TransferFunds;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Saga splitter pattern example for documentation.
- *
- * Demonstrates the splitter pattern where one event triggers commands
- * to multiple different aggregates.
+ * Saga splitter pattern example — one triggering event produces commands for many aggregates.
+ * Referenced by documentation (<code>docs:start:saga_splitter</code>).
  */
-
 // docs:start:saga_splitter
+@Saga(name = "example-splitter", source = "table", target = "player")
 class SplitterExample {
 
-    List<CommandBook> handleTableSettled(TableSettled event, SagaContext ctx) {
-        // Split one event into commands for multiple player aggregates
-        List<CommandBook> commands = new ArrayList<>();
-
-        for (var payout : event.getPayoutsList()) {
-            var cmd = TransferFunds.newBuilder()
-                .setTableRoot(event.getTableRoot())
-                .setAmount(payout.getAmount())
-                .build();
-
-            long targetSeq = ctx.getSequence("player", payout.getPlayerRoot());
-
-            commands.add(CommandBook.newBuilder()
-                .setCover(Cover.newBuilder()
-                    .setDomain("player")
-                    .setRoot(UUID.newBuilder().setValue(payout.getPlayerRoot()).build())
-                    .build())
-                .addPages(CommandPage.newBuilder()
-                    .setNum((int) targetSeq)
-                    .setCommand(Any.pack(cmd))
-                    .build())
-                .build());
-        }
-
-        return commands; // One CommandBook per player
+  @Handles(TableSettled.class)
+  public SagaHandlerResponse onTableSettled(TableSettled event, Destinations destinations) {
+    List<CommandBook> commands = new ArrayList<>();
+    int playerSeq = destinations.sequenceFor("player").orElse(0);
+    for (var payout : event.getPayoutsList()) {
+      TransferFunds cmd =
+          TransferFunds.newBuilder()
+              .setTableRoot(event.getTableRoot())
+              .setAmount(payout.getAmount())
+              .build();
+      commands.add(
+          CommandBook.newBuilder()
+              .setCover(
+                  Cover.newBuilder()
+                      .setDomain("player")
+                      .setRoot(UUID.newBuilder().setValue(payout.getPlayerRoot())))
+              .addPages(
+                  CommandPage.newBuilder()
+                      .setHeader(PageHeader.newBuilder().setSequence(playerSeq))
+                      .setCommand(Any.pack(cmd, "type.googleapis.com/")))
+              .build());
     }
+    return SagaHandlerResponse.withCommands(commands);
+  }
 }
 // docs:end:saga_splitter

@@ -1,103 +1,68 @@
 package dev.angzarr.examples.player.sagatable;
 
 import com.google.protobuf.Any;
-import com.google.protobuf.ByteString;
-import dev.angzarr.*;
-import dev.angzarr.client.Saga;
+import dev.angzarr.Cover;
+import dev.angzarr.EventBook;
+import dev.angzarr.EventPage;
+import dev.angzarr.UUID;
+import dev.angzarr.client.SagaContext;
 import dev.angzarr.client.annotations.Handles;
-import dev.angzarr.client.annotations.Prepares;
+import dev.angzarr.client.annotations.Saga;
 import dev.angzarr.client.router.SagaHandlerResponse;
-import dev.angzarr.examples.*;
-import java.util.Collections;
+import dev.angzarr.examples.PlayerReturningToPlay;
+import dev.angzarr.examples.PlayerSatIn;
+import dev.angzarr.examples.PlayerSatOut;
+import dev.angzarr.examples.PlayerSittingOut;
 import java.util.List;
 
 /**
- * Saga: Player -> Table
+ * Saga: Player → Table — Tier 5 annotation-driven.
  *
- * <p>Propagates player sit-out/sit-in intent as facts to the table domain.
- *
- * <p>Flow:
+ * <p>Propagates player sit-out / sit-in intent as facts to the table domain. Emits:
  *
  * <ul>
- *   <li>PlayerSittingOut -> PlayerSatOut fact to table
- *   <li>PlayerReturningToPlay -> PlayerSatIn fact to table
+ *   <li>{@link PlayerSittingOut} ⇒ {@link PlayerSatOut} fact targeting the relevant table
+ *   <li>{@link PlayerReturningToPlay} ⇒ {@link PlayerSatIn} fact targeting the relevant table
  * </ul>
- *
- * <p>Uses annotation-based handler registration.
  */
-public class PlayerTableSaga extends Saga {
+@Saga(name = "saga-player-table", source = "player", target = "table")
+public class PlayerTableSaga {
 
-  // Store source root during dispatch for handler access
-  private ByteString currentSourceRoot = ByteString.EMPTY;
+  private static final String TYPE_URL_PREFIX = "type.googleapis.com/";
 
-  public PlayerTableSaga() {
-    super("saga-player-table", "player", "table");
-  }
-
-  @Override
-  public SagaHandlerResponse dispatch(EventBook book, List<EventBook> destinations) {
-    // Store source root for handler access
-    if (book.hasCover() && book.getCover().hasRoot()) {
-      currentSourceRoot = book.getCover().getRoot().getValue();
-    } else {
-      currentSourceRoot = ByteString.EMPTY;
-    }
-    return super.dispatch(book, destinations);
-  }
-
-  /** Prepare phase: no destinations needed (emits facts, not commands). */
-  @Prepares(PlayerSittingOut.class)
-  public List<Cover> prepareSittingOut(PlayerSittingOut event) {
-    return Collections.emptyList();
-  }
-
-  /** Prepare phase: no destinations needed (emits facts, not commands). */
-  @Prepares(PlayerReturningToPlay.class)
-  public List<Cover> prepareReturningToPlay(PlayerReturningToPlay event) {
-    return Collections.emptyList();
-  }
-
-  /** Execute phase: translate PlayerSittingOut -> PlayerSatOut fact for table. */
   @Handles(PlayerSittingOut.class)
-  public void handleSittingOut(PlayerSittingOut event) {
-    // Create PlayerSatOut fact for the table
+  public SagaHandlerResponse onPlayerSittingOut(PlayerSittingOut event, SagaContext ctx) {
     PlayerSatOut satOut =
         PlayerSatOut.newBuilder()
-            .setPlayerRoot(currentSourceRoot)
+            .setPlayerRoot(ctx.sourceRoot())
             .setSatOutAt(event.getSatOutAt())
             .build();
-
     EventBook fact =
         EventBook.newBuilder()
             .setCover(
                 Cover.newBuilder()
                     .setDomain("table")
                     .setRoot(UUID.newBuilder().setValue(event.getTableRoot())))
-            .addPages(EventPage.newBuilder().setEvent(Any.pack(satOut, "type.googleapis.com/")))
+            .addPages(EventPage.newBuilder().setEvent(Any.pack(satOut, TYPE_URL_PREFIX)))
             .build();
-
-    emitFact(fact);
+    return SagaHandlerResponse.withEvents(List.of(fact));
   }
 
-  /** Execute phase: translate PlayerReturningToPlay -> PlayerSatIn fact for table. */
   @Handles(PlayerReturningToPlay.class)
-  public void handleReturningToPlay(PlayerReturningToPlay event) {
-    // Create PlayerSatIn fact for the table
+  public SagaHandlerResponse onPlayerReturningToPlay(PlayerReturningToPlay event, SagaContext ctx) {
     PlayerSatIn satIn =
         PlayerSatIn.newBuilder()
-            .setPlayerRoot(currentSourceRoot)
+            .setPlayerRoot(ctx.sourceRoot())
             .setSatInAt(event.getSatInAt())
             .build();
-
     EventBook fact =
         EventBook.newBuilder()
             .setCover(
                 Cover.newBuilder()
                     .setDomain("table")
                     .setRoot(UUID.newBuilder().setValue(event.getTableRoot())))
-            .addPages(EventPage.newBuilder().setEvent(Any.pack(satIn, "type.googleapis.com/")))
+            .addPages(EventPage.newBuilder().setEvent(Any.pack(satIn, TYPE_URL_PREFIX)))
             .build();
-
-    emitFact(fact);
+    return SagaHandlerResponse.withEvents(List.of(fact));
   }
 }

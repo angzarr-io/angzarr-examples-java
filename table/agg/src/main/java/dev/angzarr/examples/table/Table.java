@@ -1,48 +1,47 @@
 package dev.angzarr.examples.table;
 
 import com.google.protobuf.ByteString;
-import dev.angzarr.client.CommandHandler;
+import com.google.protobuf.Timestamp;
 import dev.angzarr.client.Errors;
+import dev.angzarr.client.annotations.Aggregate;
 import dev.angzarr.client.annotations.Applies;
 import dev.angzarr.client.annotations.Handles;
 import dev.angzarr.client.util.ByteUtils;
-import dev.angzarr.examples.*;
+import dev.angzarr.examples.AddChips;
+import dev.angzarr.examples.ChipsAdded;
+import dev.angzarr.examples.CreateTable;
+import dev.angzarr.examples.EndHand;
+import dev.angzarr.examples.GameVariant;
+import dev.angzarr.examples.HandEnded;
+import dev.angzarr.examples.HandStarted;
+import dev.angzarr.examples.JoinTable;
+import dev.angzarr.examples.LeaveTable;
+import dev.angzarr.examples.PlayerJoined;
+import dev.angzarr.examples.PlayerLeft;
+import dev.angzarr.examples.PlayerSatIn;
+import dev.angzarr.examples.PlayerSatOut;
+import dev.angzarr.examples.PotResult;
+import dev.angzarr.examples.SeatSnapshot;
+import dev.angzarr.examples.StartHand;
+import dev.angzarr.examples.TableCreated;
 import dev.angzarr.examples.table.state.SeatState;
 import dev.angzarr.examples.table.state.TableState;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
- * Table aggregate with event sourcing (OO pattern).
- *
- * <p>Manages game session, seating, and hand lifecycle.
+ * Table aggregate — Tier 5 annotation-driven. Manages game session, seating, and hand lifecycle.
  */
-public class Table extends CommandHandler<TableState> {
+@Aggregate(domain = "table", state = TableState.class)
+public class Table {
 
   public static final String DOMAIN = "table";
-
-  /** Default constructor. */
-  public Table() {
-    super();
-  }
-
-  /** Constructor with prior events for state rehydration. */
-  public Table(dev.angzarr.EventBook eventBook) {
-    super(eventBook);
-  }
-
-  @Override
-  public String getDomain() {
-    return DOMAIN;
-  }
-
-  @Override
-  protected TableState createEmptyState() {
-    return new TableState();
-  }
 
   // --- Event appliers ---
 
@@ -79,7 +78,7 @@ public class Table extends CommandHandler<TableState> {
 
   @Applies(PlayerSatOut.class)
   public void applyPlayerSatOut(TableState state, PlayerSatOut event) {
-    SeatState seat = findSeatByPlayer(state, event.getPlayerRoot().toByteArray());
+    SeatState seat = state.findSeatByPlayer(event.getPlayerRoot().toByteArray());
     if (seat != null) {
       seat.setSittingOut(true);
     }
@@ -87,7 +86,7 @@ public class Table extends CommandHandler<TableState> {
 
   @Applies(PlayerSatIn.class)
   public void applyPlayerSatIn(TableState state, PlayerSatIn event) {
-    SeatState seat = findSeatByPlayer(state, event.getPlayerRoot().toByteArray());
+    SeatState seat = state.findSeatByPlayer(event.getPlayerRoot().toByteArray());
     if (seat != null) {
       seat.setSittingOut(false);
     }
@@ -105,8 +104,7 @@ public class Table extends CommandHandler<TableState> {
   public void applyHandEnded(TableState state, HandEnded event) {
     state.setStatus("waiting");
     state.setCurrentHandRoot(new byte[0]);
-    // Update stacks from results
-    for (var entry : event.getStackChangesMap().entrySet()) {
+    for (Map.Entry<String, Long> entry : event.getStackChangesMap().entrySet()) {
       String playerHex = entry.getKey();
       long delta = entry.getValue();
       for (SeatState seat : state.getSeats().values()) {
@@ -119,59 +117,17 @@ public class Table extends CommandHandler<TableState> {
 
   @Applies(ChipsAdded.class)
   public void applyChipsAdded(TableState state, ChipsAdded event) {
-    SeatState seat = findSeatByPlayer(state, event.getPlayerRoot().toByteArray());
+    SeatState seat = state.findSeatByPlayer(event.getPlayerRoot().toByteArray());
     if (seat != null) {
       seat.setStack(event.getNewStack());
     }
   }
 
-  // --- State accessors ---
-
-  public boolean exists() {
-    return getState().exists();
-  }
-
-  public String getTableId() {
-    return getState().getTableId();
-  }
-
-  public String getTableName() {
-    return getState().getTableName();
-  }
-
-  public int getPlayerCount() {
-    return getState().getPlayerCount();
-  }
-
-  public int getActivePlayerCount() {
-    return getState().getActivePlayerCount();
-  }
-
-  public boolean isInHand() {
-    return getState().isInHand();
-  }
-
-  public long getHandCount() {
-    return getState().getHandCount();
-  }
-
-  public long getHandNumber() {
-    return getState().getHandCount();
-  }
-
-  public String getStatus() {
-    return getState().getStatus();
-  }
-
-  public SeatState getPlayerAtSeat(int position) {
-    return getState().getSeats().get(position);
-  }
-
   // --- Command handlers ---
 
   @Handles(CreateTable.class)
-  public TableCreated create(CreateTable cmd) {
-    if (exists()) {
+  public TableCreated handleCreateTable(CreateTable cmd, TableState state, long seq) {
+    if (state.exists()) {
       throw Errors.CommandRejectedError.preconditionFailed("Table already exists");
     }
     if (cmd.getTableName().isEmpty()) {
@@ -198,32 +154,30 @@ public class Table extends CommandHandler<TableState> {
   }
 
   @Handles(JoinTable.class)
-  public PlayerJoined join(JoinTable cmd) {
-    if (!exists()) {
+  public PlayerJoined handleJoinTable(JoinTable cmd, TableState state, long seq) {
+    if (!state.exists()) {
       throw Errors.CommandRejectedError.preconditionFailed("Table does not exist");
     }
-    if (getPlayerCount() >= getState().getMaxPlayers()) {
+    if (state.getPlayerCount() >= state.getMaxPlayers()) {
       throw Errors.CommandRejectedError.preconditionFailed("Table is full");
     }
-    if (getState().findSeatByPlayer(cmd.getPlayerRoot().toByteArray()) != null) {
+    if (state.findSeatByPlayer(cmd.getPlayerRoot().toByteArray()) != null) {
       throw Errors.CommandRejectedError.preconditionFailed("Player already seated at this table");
     }
 
     long buyIn = cmd.getBuyInAmount();
-    if (buyIn < getState().getMinBuyIn() || buyIn > getState().getMaxBuyIn()) {
+    if (buyIn < state.getMinBuyIn() || buyIn > state.getMaxBuyIn()) {
       throw Errors.CommandRejectedError.invalidArgument(
-          "Buy-in must be at least " + getState().getMinBuyIn());
+          "Buy-in must be at least " + state.getMinBuyIn());
     }
 
     int seatPosition = cmd.getPreferredSeat();
     if (seatPosition >= 0) {
-      // Specific seat requested - fail if occupied
-      if (getState().getSeats().containsKey(seatPosition)) {
+      if (state.getSeats().containsKey(seatPosition)) {
         throw Errors.CommandRejectedError.preconditionFailed("Seat is occupied");
       }
     } else {
-      // No preference - find any available seat
-      seatPosition = getState().findAvailableSeat();
+      seatPosition = state.findAvailableSeat();
       if (seatPosition < 0) {
         throw Errors.CommandRejectedError.preconditionFailed("No available seats");
       }
@@ -239,15 +193,15 @@ public class Table extends CommandHandler<TableState> {
   }
 
   @Handles(LeaveTable.class)
-  public PlayerLeft leave(LeaveTable cmd) {
-    if (!exists()) {
+  public PlayerLeft handleLeaveTable(LeaveTable cmd, TableState state, long seq) {
+    if (!state.exists()) {
       throw Errors.CommandRejectedError.preconditionFailed("Table does not exist");
     }
-    SeatState seat = getState().findSeatByPlayer(cmd.getPlayerRoot().toByteArray());
+    SeatState seat = state.findSeatByPlayer(cmd.getPlayerRoot().toByteArray());
     if (seat == null) {
       throw Errors.CommandRejectedError.preconditionFailed("Player is not seated at this table");
     }
-    if (isInHand()) {
+    if (state.isInHand()) {
       throw Errors.CommandRejectedError.preconditionFailed("Cannot leave during a hand");
     }
 
@@ -259,30 +213,24 @@ public class Table extends CommandHandler<TableState> {
         .build();
   }
 
-  // Note: SitOut/SitIn commands are in the player domain (player owns intent)
-  // Table receives PlayerSatOut/PlayerSatIn as facts via saga
-
   @Handles(StartHand.class)
-  public HandStarted startHand(StartHand cmd) {
-    if (!exists()) {
+  public HandStarted handleStartHand(StartHand cmd, TableState state, long seq) {
+    if (!state.exists()) {
       throw Errors.CommandRejectedError.preconditionFailed("Table does not exist");
     }
-    if (isInHand()) {
+    if (state.isInHand()) {
       throw Errors.CommandRejectedError.preconditionFailed("Hand already in progress");
     }
-    if (getActivePlayerCount() < 2) {
+    if (state.getActivePlayerCount() < 2) {
       throw Errors.CommandRejectedError.preconditionFailed("Not enough players to start a hand");
     }
 
-    long handNumber = getState().getHandCount() + 1;
-    int dealerPosition = getState().advanceDealerPosition();
+    long handNumber = state.getHandCount() + 1;
+    int dealerPosition = state.advanceDealerPosition();
+    byte[] handRoot = generateHandRoot(state.getTableId(), handNumber);
 
-    // Generate hand root
-    byte[] handRoot = generateHandRoot(getState().getTableId(), handNumber);
-
-    // Build active player snapshots
     List<SeatSnapshot> activePlayers = new ArrayList<>();
-    for (SeatState seat : getState().getSeats().values()) {
+    for (SeatState seat : state.getSeats().values()) {
       if (seat.isActive()) {
         activePlayers.add(
             SeatSnapshot.newBuilder()
@@ -293,8 +241,7 @@ public class Table extends CommandHandler<TableState> {
       }
     }
 
-    // Calculate blind positions
-    int[] positions = calculateBlindPositions(dealerPosition, activePlayers.size());
+    int[] positions = calculateBlindPositions(dealerPosition, activePlayers.size(), state);
 
     return HandStarted.newBuilder()
         .setHandRoot(ByteString.copyFrom(handRoot))
@@ -303,28 +250,26 @@ public class Table extends CommandHandler<TableState> {
         .setSmallBlindPosition(positions[0])
         .setBigBlindPosition(positions[1])
         .addAllActivePlayers(activePlayers)
-        .setGameVariant(GameVariant.forNumber(getState().getGameVariant()))
-        .setSmallBlind(getState().getSmallBlind())
-        .setBigBlind(getState().getBigBlind())
+        .setGameVariant(GameVariant.forNumber(state.getGameVariant()))
+        .setSmallBlind(state.getSmallBlind())
+        .setBigBlind(state.getBigBlind())
         .setStartedAt(now())
         .build();
   }
 
   @Handles(EndHand.class)
-  public HandEnded endHand(EndHand cmd) {
-    if (!exists()) {
+  public HandEnded handleEndHand(EndHand cmd, TableState state, long seq) {
+    if (!state.exists()) {
       throw Errors.CommandRejectedError.preconditionFailed("Table does not exist");
     }
-    if (!isInHand()) {
+    if (!state.isInHand()) {
       throw Errors.CommandRejectedError.preconditionFailed("No hand in progress");
     }
 
-    // Calculate stack changes from results
-    java.util.Map<String, Long> stackChanges = new java.util.HashMap<>();
+    Map<String, Long> stackChanges = new HashMap<>();
     for (PotResult result : cmd.getResultsList()) {
       String playerHex = ByteUtils.bytesToHex(result.getWinnerRoot().toByteArray());
-      long currentChange = stackChanges.getOrDefault(playerHex, 0L);
-      stackChanges.put(playerHex, currentChange + result.getAmount());
+      stackChanges.merge(playerHex, result.getAmount(), Long::sum);
     }
 
     return HandEnded.newBuilder()
@@ -336,23 +281,23 @@ public class Table extends CommandHandler<TableState> {
   }
 
   @Handles(AddChips.class)
-  public ChipsAdded addChips(AddChips cmd) {
-    if (!exists()) {
+  public ChipsAdded handleAddChips(AddChips cmd, TableState state, long seq) {
+    if (!state.exists()) {
       throw Errors.CommandRejectedError.preconditionFailed("Table does not exist");
     }
-    SeatState seat = getState().findSeatByPlayer(cmd.getPlayerRoot().toByteArray());
+    SeatState seat = state.findSeatByPlayer(cmd.getPlayerRoot().toByteArray());
     if (seat == null) {
       throw Errors.CommandRejectedError.preconditionFailed("Player is not seated at this table");
     }
     if (cmd.getAmount() <= 0) {
       throw Errors.CommandRejectedError.invalidArgument("amount must be positive");
     }
-    if (isInHand()) {
+    if (state.isInHand()) {
       throw Errors.CommandRejectedError.preconditionFailed("Cannot add chips during hand");
     }
 
     long newStack = seat.getStack() + cmd.getAmount();
-    if (newStack > getState().getMaxBuyIn()) {
+    if (newStack > state.getMaxBuyIn()) {
       throw Errors.CommandRejectedError.preconditionFailed("Stack would exceed max buy-in");
     }
 
@@ -364,13 +309,17 @@ public class Table extends CommandHandler<TableState> {
         .build();
   }
 
-  // --- Helper methods ---
+  // --- Helpers ---
 
-  private SeatState findSeatByPlayer(TableState state, byte[] playerRoot) {
-    return state.findSeatByPlayer(playerRoot);
+  private static Timestamp now() {
+    Instant instant = Instant.now();
+    return Timestamp.newBuilder()
+        .setSeconds(instant.getEpochSecond())
+        .setNanos(instant.getNano())
+        .build();
   }
 
-  private byte[] generateHandRoot(String tableId, long handNumber) {
+  private static byte[] generateHandRoot(String tableId, long handNumber) {
     try {
       MessageDigest md = MessageDigest.getInstance("SHA-256");
       md.update(tableId.getBytes());
@@ -384,14 +333,13 @@ public class Table extends CommandHandler<TableState> {
     }
   }
 
-  private int[] calculateBlindPositions(int dealerPosition, int playerCount) {
-    // Heads-up: dealer is small blind, other is big blind
-    // 3+: left of dealer is small blind, left of SB is big blind
+  private static int[] calculateBlindPositions(
+      int dealerPosition, int playerCount, TableState state) {
     if (playerCount == 2) {
-      return new int[] {dealerPosition, (dealerPosition + 1) % getState().getMaxPlayers()};
+      return new int[] {dealerPosition, (dealerPosition + 1) % state.getMaxPlayers()};
     }
-    int sb = (dealerPosition + 1) % getState().getMaxPlayers();
-    int bb = (dealerPosition + 2) % getState().getMaxPlayers();
+    int sb = (dealerPosition + 1) % state.getMaxPlayers();
+    int bb = (dealerPosition + 2) % state.getMaxPlayers();
     return new int[] {sb, bb};
   }
 }
