@@ -1,8 +1,7 @@
 package dev.angzarr.examples.tournament;
 
 import com.google.protobuf.Message;
-import dev.angzarr.client.CommandHandler;
-import dev.angzarr.client.Errors;
+import dev.angzarr.client.annotations.Aggregate;
 import dev.angzarr.client.annotations.Applies;
 import dev.angzarr.client.annotations.Handles;
 import dev.angzarr.examples.*;
@@ -10,34 +9,13 @@ import dev.angzarr.examples.tournament.handlers.*;
 import dev.angzarr.examples.tournament.state.TournamentState;
 
 /**
- * Tournament aggregate with event sourcing (OO pattern).
- *
- * <p>Manages tournament lifecycle, registration, blind levels, eliminations, and rebuys.
- *
- * <p>This OO-style aggregate wraps the functional handlers for use with the annotation-based
- * CommandHandler framework.
+ * Tournament aggregate — Tier 5 annotation-driven. Manages tournament lifecycle, registration,
+ * blind levels, eliminations, and rebuys.
  */
-public class Tournament extends CommandHandler<TournamentState> {
+@Aggregate(domain = "tournament", state = TournamentState.class)
+public class Tournament {
 
   public static final String DOMAIN = "tournament";
-
-  public Tournament() {
-    super();
-  }
-
-  public Tournament(dev.angzarr.EventBook eventBook) {
-    super(eventBook);
-  }
-
-  @Override
-  public String getDomain() {
-    return DOMAIN;
-  }
-
-  @Override
-  protected TournamentState createEmptyState() {
-    return new TournamentState();
-  }
 
   // --- Event appliers ---
 
@@ -57,8 +35,7 @@ public class Tournament extends CommandHandler<TournamentState> {
   }
 
   @Applies(TournamentPlayerEnrolled.class)
-  public void applyTournamentPlayerEnrolled(
-      TournamentState state, TournamentPlayerEnrolled event) {
+  public void applyTournamentPlayerEnrolled(TournamentState state, TournamentPlayerEnrolled event) {
     state.applyPlayerEnrolled(event);
   }
 
@@ -111,47 +88,54 @@ public class Tournament extends CommandHandler<TournamentState> {
   // --- Command handlers ---
 
   @Handles(CreateTournament.class)
-  public TournamentCreated handleCreateTournament(CreateTournament cmd) {
-    return CreateHandler.handle(cmd, getState());
+  public TournamentCreated handleCreateTournament(
+      CreateTournament cmd, TournamentState state, long seq) {
+    return CreateHandler.handle(cmd, state);
   }
 
   @Handles(OpenRegistration.class)
-  public RegistrationOpened handleOpenRegistration(OpenRegistration cmd) {
-    return RegistrationHandler.handleOpen(cmd, getState());
+  public RegistrationOpened handleOpenRegistration(
+      OpenRegistration cmd, TournamentState state, long seq) {
+    return RegistrationHandler.handleOpen(cmd, state);
   }
 
   @Handles(CloseRegistration.class)
-  public RegistrationClosed handleCloseRegistration(CloseRegistration cmd) {
-    return RegistrationHandler.handleClose(cmd, getState());
+  public RegistrationClosed handleCloseRegistration(
+      CloseRegistration cmd, TournamentState state, long seq) {
+    return RegistrationHandler.handleClose(cmd, state);
   }
 
   @Handles(EnrollPlayer.class)
-  public Message handleEnrollPlayer(EnrollPlayer cmd) {
-    return RegistrationHandler.handleEnroll(cmd, getState());
+  public Message handleEnrollPlayer(EnrollPlayer cmd, TournamentState state, long seq) {
+    return RegistrationHandler.handleEnroll(cmd, state);
   }
 
   @Handles(AdvanceBlindLevel.class)
-  public BlindLevelAdvanced handleAdvanceBlindLevel(AdvanceBlindLevel cmd) {
-    return LifecycleHandler.handleAdvanceBlind(cmd, getState());
+  public BlindLevelAdvanced handleAdvanceBlindLevel(
+      AdvanceBlindLevel cmd, TournamentState state, long seq) {
+    return LifecycleHandler.handleAdvanceBlind(cmd, state);
   }
 
   @Handles(EliminatePlayer.class)
-  public PlayerEliminated handleEliminatePlayer(EliminatePlayer cmd) {
-    return LifecycleHandler.handleEliminate(cmd, getState());
+  public PlayerEliminated handleEliminatePlayer(
+      EliminatePlayer cmd, TournamentState state, long seq) {
+    return LifecycleHandler.handleEliminate(cmd, state);
   }
 
   @Handles(PauseTournament.class)
-  public TournamentPaused handlePauseTournament(PauseTournament cmd) {
-    return LifecycleHandler.handlePause(cmd, getState());
+  public TournamentPaused handlePauseTournament(
+      PauseTournament cmd, TournamentState state, long seq) {
+    return LifecycleHandler.handlePause(cmd, state);
   }
 
   @Handles(ResumeTournament.class)
-  public TournamentResumed handleResumeTournament(ResumeTournament cmd) {
-    return LifecycleHandler.handleResume(cmd, getState());
+  public TournamentResumed handleResumeTournament(
+      ResumeTournament cmd, TournamentState state, long seq) {
+    return LifecycleHandler.handleResume(cmd, state);
   }
 
   @Handles(ProcessRebuy.class)
-  public Message handleProcessRebuy(ProcessRebuy cmd) {
-    return RebuyHandler.handle(cmd, getState());
+  public Message handleProcessRebuy(ProcessRebuy cmd, TournamentState state, long seq) {
+    return RebuyHandler.handle(cmd, state);
   }
 }

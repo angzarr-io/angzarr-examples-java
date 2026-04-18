@@ -2,66 +2,40 @@ package dev.angzarr.examples.table.sagaplayer;
 
 import com.google.protobuf.Any;
 import com.google.protobuf.ByteString;
-import dev.angzarr.*;
-import dev.angzarr.client.Saga;
+import dev.angzarr.CommandBook;
+import dev.angzarr.CommandPage;
+import dev.angzarr.Cover;
+import dev.angzarr.PageHeader;
+import dev.angzarr.UUID;
+import dev.angzarr.client.Destinations;
 import dev.angzarr.client.annotations.Handles;
-import dev.angzarr.client.annotations.Prepares;
-import dev.angzarr.examples.*;
+import dev.angzarr.client.annotations.Saga;
+import dev.angzarr.client.router.SagaHandlerResponse;
+import dev.angzarr.examples.HandEnded;
+import dev.angzarr.examples.ReleaseFunds;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
- * Saga: Table -> Player (OO Pattern)
+ * Saga: Table → Player — Tier 5 annotation-driven.
  *
- * <p>Reacts to HandEnded events from Table domain. Sends ReleaseFunds commands to Player domain.
+ * <p>Reacts to {@link HandEnded} events from the Table domain and issues {@link ReleaseFunds}
+ * commands to the Player domain (one per player who had stack changes this hand).
  */
-public class TablePlayerSaga extends Saga {
+@Saga(name = "saga-table-player", source = "table", target = "player")
+public class TablePlayerSaga {
 
-  public TablePlayerSaga() {
-    super("saga-table-player", "table", "player");
-  }
-
-  @Prepares(HandEnded.class)
-  public List<Cover> prepareHandEnded(HandEnded event) {
-    List<Cover> covers = new ArrayList<>();
-    for (String playerHex : event.getStackChangesMap().keySet()) {
-      byte[] playerRoot = hexToBytes(playerHex);
-      covers.add(
-          Cover.newBuilder()
-              .setDomain("player")
-              .setRoot(UUID.newBuilder().setValue(ByteString.copyFrom(playerRoot)))
-              .build());
-    }
-    return covers;
-  }
+  private static final String TYPE_URL_PREFIX = "type.googleapis.com/";
 
   @Handles(HandEnded.class)
-  public List<CommandBook> handleHandEnded(HandEnded event, List<EventBook> destinations) {
-    // Build destination map for sequence lookup
-    Map<String, EventBook> destMap = new HashMap<>();
-    for (EventBook dest : destinations) {
-      if (dest.hasCover() && dest.getCover().hasRoot()) {
-        String key = bytesToHex(dest.getCover().getRoot().getValue().toByteArray());
-        destMap.put(key, dest);
-      }
-    }
-
+  public SagaHandlerResponse onHandEnded(HandEnded event, Destinations destinations) {
+    int playerSeq = destinations.sequenceFor("player").orElse(0);
     List<CommandBook> commands = new ArrayList<>();
 
     for (String playerHex : event.getStackChangesMap().keySet()) {
       byte[] playerRoot = hexToBytes(playerHex);
-
-      // Get sequence from destination state
-      int destSeq = 0;
-      if (destMap.containsKey(playerHex)) {
-        destSeq = Saga.nextSequence(destMap.get(playerHex));
-      }
-
       ReleaseFunds releaseFunds =
           ReleaseFunds.newBuilder().setTableRoot(event.getHandRoot()).build();
-
       commands.add(
           CommandBook.newBuilder()
               .setCover(
@@ -70,12 +44,12 @@ public class TablePlayerSaga extends Saga {
                       .setRoot(UUID.newBuilder().setValue(ByteString.copyFrom(playerRoot))))
               .addPages(
                   CommandPage.newBuilder()
-                      .setHeader(PageHeader.newBuilder().setSequence(destSeq).build())
-                      .setCommand(Any.pack(releaseFunds, "type.googleapis.com/")))
+                      .setHeader(PageHeader.newBuilder().setSequence(playerSeq))
+                      .setCommand(Any.pack(releaseFunds, TYPE_URL_PREFIX)))
               .build());
     }
 
-    return commands;
+    return SagaHandlerResponse.withCommands(commands);
   }
 
   private static byte[] hexToBytes(String hex) {
@@ -87,13 +61,5 @@ public class TablePlayerSaga extends Saga {
               ((Character.digit(hex.charAt(i), 16) << 4) + Character.digit(hex.charAt(i + 1), 16));
     }
     return data;
-  }
-
-  private static String bytesToHex(byte[] bytes) {
-    StringBuilder sb = new StringBuilder();
-    for (byte b : bytes) {
-      sb.append(String.format("%02x", b));
-    }
-    return sb.toString();
   }
 }

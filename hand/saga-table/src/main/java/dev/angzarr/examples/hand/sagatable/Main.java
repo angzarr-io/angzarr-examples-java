@@ -1,18 +1,13 @@
 package dev.angzarr.examples.hand.sagatable;
 
-import dev.angzarr.*;
-import dev.angzarr.client.router.SagaHandlerResponse;
-import io.grpc.stub.StreamObserver;
-import java.util.List;
+import dev.angzarr.client.router.Router;
+import dev.angzarr.client.router.SagaGrpc;
+import dev.angzarr.client.router.SagaRouter;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-/**
- * Spring Boot application for Hand -> Table saga.
- *
- * <p>Uses the OO Saga pattern with annotation-based handler registration.
- */
+/** Spring Boot application for Hand → Table saga. */
 @SpringBootApplication
 public class Main {
 
@@ -21,22 +16,13 @@ public class Main {
   }
 
   @GrpcService
-  public static class SagaService extends SagaServiceGrpc.SagaServiceImplBase {
-    private final HandTableSaga saga = new HandTableSaga();
-
-    @Override
-    public void handle(SagaHandleRequest request, StreamObserver<SagaResponse> responseObserver) {
-      SagaHandlerResponse response = saga.dispatch(request.getSource(), List.of());
-
-      SagaResponse.Builder builder =
-          SagaResponse.newBuilder().addAllCommands(response.getCommands());
-
-      if (response.hasEvents()) {
-        builder.addAllEvents(response.getEvents());
-      }
-
-      responseObserver.onNext(builder.build());
-      responseObserver.onCompleted();
+  public static class HandTableSagaService extends SagaGrpc {
+    public HandTableSagaService() {
+      super(
+          (SagaRouter)
+              Router.newBuilder("saga-hand-table")
+                  .withHandler(HandTableSaga.class, HandTableSaga::new)
+                  .build());
     }
   }
 }

@@ -1,42 +1,37 @@
-// DOC: This file is referenced in docs/docs/examples/sagas.mdx
-//      Update documentation when making changes to saga patterns.
 package dev.angzarr.examples.table.sagahand;
 
 import com.google.protobuf.Any;
-import dev.angzarr.*;
-import dev.angzarr.client.Saga;
+import dev.angzarr.CommandBook;
+import dev.angzarr.CommandPage;
+import dev.angzarr.Cover;
+import dev.angzarr.PageHeader;
+import dev.angzarr.UUID;
+import dev.angzarr.client.Destinations;
 import dev.angzarr.client.annotations.Handles;
-import dev.angzarr.client.annotations.Prepares;
-import dev.angzarr.examples.*;
+import dev.angzarr.client.annotations.Saga;
+import dev.angzarr.client.router.SagaHandlerResponse;
+import dev.angzarr.examples.DealCards;
+import dev.angzarr.examples.HandStarted;
+import dev.angzarr.examples.PlayerInHand;
+import dev.angzarr.examples.SeatSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-// docs:start:saga_oo
 /**
- * Saga: Table -> Hand (OO Pattern)
+ * Saga: Table → Hand — Tier 5 annotation-driven.
  *
- * <p>Reacts to HandStarted events from Table domain. Sends DealCards commands to Hand domain.
+ * <p>Reacts to {@link HandStarted} events from the Table domain and issues {@link DealCards}
+ * commands to the Hand domain, stamping each with the target's next expected sequence.
  */
-public class TableHandSaga extends Saga {
+@Saga(name = "saga-table-hand", source = "table", target = "hand")
+public class TableHandSaga {
 
-  public TableHandSaga() {
-    super("saga-table-hand", "table", "hand");
-  }
-
-  @Prepares(HandStarted.class)
-  public List<Cover> prepareHandStarted(HandStarted event) {
-    return List.of(
-        Cover.newBuilder()
-            .setDomain("hand")
-            .setRoot(UUID.newBuilder().setValue(event.getHandRoot()))
-            .build());
-  }
+  private static final String TYPE_URL_PREFIX = "type.googleapis.com/";
 
   @Handles(HandStarted.class)
-  public CommandBook handleHandStarted(HandStarted event, List<EventBook> destinations) {
-    int destSeq = Saga.nextSequence(destinations.isEmpty() ? null : destinations.get(0));
+  public SagaHandlerResponse onHandStarted(HandStarted event, Destinations destinations) {
+    int destSeq = destinations.sequenceFor("hand").orElse(0);
 
-    // Convert SeatSnapshot to PlayerInHand
     List<PlayerInHand> players = new ArrayList<>();
     for (SeatSnapshot seat : event.getActivePlayersList()) {
       players.add(
@@ -47,7 +42,6 @@ public class TableHandSaga extends Saga {
               .build());
     }
 
-    // Build DealCards command
     DealCards dealCards =
         DealCards.newBuilder()
             .setTableRoot(event.getHandRoot())
@@ -59,16 +53,18 @@ public class TableHandSaga extends Saga {
             .addAllPlayers(players)
             .build();
 
-    return CommandBook.newBuilder()
-        .setCover(
-            Cover.newBuilder()
-                .setDomain("hand")
-                .setRoot(UUID.newBuilder().setValue(event.getHandRoot())))
-        .addPages(
-            CommandPage.newBuilder()
-                .setHeader(PageHeader.newBuilder().setSequence(destSeq).build())
-                .setCommand(Any.pack(dealCards, "type.googleapis.com/")))
-        .build();
+    CommandBook cmd =
+        CommandBook.newBuilder()
+            .setCover(
+                Cover.newBuilder()
+                    .setDomain("hand")
+                    .setRoot(UUID.newBuilder().setValue(event.getHandRoot())))
+            .addPages(
+                CommandPage.newBuilder()
+                    .setHeader(PageHeader.newBuilder().setSequence(destSeq).build())
+                    .setCommand(Any.pack(dealCards, TYPE_URL_PREFIX)))
+            .build();
+
+    return SagaHandlerResponse.withCommands(List.of(cmd));
   }
 }
-// docs:end:saga_oo

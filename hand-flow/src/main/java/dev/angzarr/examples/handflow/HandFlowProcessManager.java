@@ -3,11 +3,27 @@ package dev.angzarr.examples.handflow;
 import com.google.protobuf.Any;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Struct;
-import dev.angzarr.*;
-import dev.angzarr.client.ProcessManager;
+import dev.angzarr.CommandBook;
+import dev.angzarr.CommandPage;
+import dev.angzarr.Cover;
+import dev.angzarr.UUID;
+import dev.angzarr.client.Destinations;
 import dev.angzarr.client.annotations.Handles;
-import dev.angzarr.client.annotations.Prepares;
-import dev.angzarr.examples.*;
+import dev.angzarr.client.annotations.ProcessManager;
+import dev.angzarr.client.router.ProcessManagerResponse;
+import dev.angzarr.examples.ActionTaken;
+import dev.angzarr.examples.ActionType;
+import dev.angzarr.examples.AwardPot;
+import dev.angzarr.examples.BettingPhase;
+import dev.angzarr.examples.BlindPosted;
+import dev.angzarr.examples.CardsDealt;
+import dev.angzarr.examples.CommunityCardsDealt;
+import dev.angzarr.examples.DealCommunityCards;
+import dev.angzarr.examples.HandStarted;
+import dev.angzarr.examples.PostBlind;
+import dev.angzarr.examples.PotAward;
+import dev.angzarr.examples.PotAwarded;
+import dev.angzarr.examples.SeatSnapshot;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,36 +33,36 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Hand Flow Process Manager using OO-style annotations.
+ * Hand Flow Process Manager — Tier 5 annotation-driven.
  *
  * <p>Orchestrates poker hand flow by tracking state and emitting commands to drive hands forward.
- * Uses in-memory state (processes map) for demonstration.
+ * Uses an in-memory {@code processes} map for demonstration — the Router must be constructed with a
+ * singleton factory (see {@link Main}) so this state persists across dispatches.
+ *
+ * <h3>Sync mode</h3>
+ *
+ * <p><b>PMs whose next step depends on a command's success/failure must issue those commands in
+ * sync mode.</b> This PM is a textbook example: transitioning from {@code POSTING_BLINDS} to {@code
+ * BETTING} depends on the {@code PostBlind} command being accepted by the Hand aggregate. Async
+ * dispatch would let the PM advance its state before knowing whether the downstream aggregate
+ * rejected the command, and the flow would desync. Fire-and-forget commands (e.g. notifications)
+ * may stay async.
  */
-// docs:start:pm_handler_oo
-public class HandFlowProcessManager extends ProcessManager<Struct> {
+@ProcessManager(
+    name = "hand-flow",
+    pmDomain = "hand-flow",
+    sources = {"table", "hand"},
+    targets = {"hand"},
+    state = Struct.class)
+public class HandFlowProcessManager {
+
+  private static final String TYPE_URL_PREFIX = "type.googleapis.com/";
 
   private final Map<String, HandProcess> processes = new HashMap<>();
 
-  public HandFlowProcessManager() {
-    super("hand-flow");
-  }
-
-  @Override
-  protected Struct createEmptyState() {
-    return Struct.getDefaultInstance();
-  }
-
-  @Prepares(HandStarted.class)
-  public List<Cover> prepareHandStarted(HandStarted event) {
-    return List.of(
-        Cover.newBuilder()
-            .setDomain("hand")
-            .setRoot(dev.angzarr.UUID.newBuilder().setValue(event.getHandRoot()))
-            .build());
-  }
-
   @Handles(HandStarted.class)
-  public List<CommandBook> handleHandStarted(HandStarted event) {
+  public ProcessManagerResponse onHandStarted(
+      HandStarted event, Struct state, Destinations destinations) {
     byte[] handRoot = event.getHandRoot().toByteArray();
     String handId = bytesToHex(handRoot) + "_" + event.getHandNumber();
 
@@ -71,26 +87,30 @@ public class HandFlowProcessManager extends ProcessManager<Struct> {
     }
     Collections.sort(process.activePositions);
     processes.put(handId, process);
-    return List.of(); // DealCards comes from saga
+    return ProcessManagerResponse.empty(); // DealCards comes from saga
   }
 
   @Handles(CardsDealt.class)
-  public List<CommandBook> handleCardsDealt(CardsDealt event) {
+  public ProcessManagerResponse onCardsDealt(
+      CardsDealt event, Struct state, Destinations destinations) {
     String handId = bytesToHex(event.getTableRoot().toByteArray()) + "_" + event.getHandNumber();
     HandProcess process = processes.get(handId);
-    if (process == null) return List.of();
+    if (process == null) return ProcessManagerResponse.empty();
 
     process.phase = HandPhase.POSTING_BLINDS;
     process.minRaise = process.bigBlind;
 
     CommandBook cmd = buildPostBlindCommand(process);
-    return cmd != null ? List.of(cmd) : List.of();
+    return cmd != null
+        ? ProcessManagerResponse.withCommands(List.of(cmd))
+        : ProcessManagerResponse.empty();
   }
 
   @Handles(BlindPosted.class)
-  public List<CommandBook> handleBlindPosted(BlindPosted event) {
+  public ProcessManagerResponse onBlindPosted(
+      BlindPosted event, Struct state, Destinations destinations) {
     HandProcess process = findProcessByPlayer(event.getPlayerRoot().toByteArray());
-    if (process == null) return List.of();
+    if (process == null) return ProcessManagerResponse.empty();
 
     for (PlayerState player : process.players.values()) {
       if (Arrays.equals(player.playerRoot, event.getPlayerRoot().toByteArray())) {
@@ -107,20 +127,23 @@ public class HandFlowProcessManager extends ProcessManager<Struct> {
       process.smallBlindPosted = true;
       process.currentBet = event.getAmount();
       CommandBook cmd = buildPostBlindCommand(process);
-      return cmd != null ? List.of(cmd) : List.of();
+      return cmd != null
+          ? ProcessManagerResponse.withCommands(List.of(cmd))
+          : ProcessManagerResponse.empty();
     } else if ("big".equals(event.getBlindType())) {
       process.bigBlindPosted = true;
       process.currentBet = event.getAmount();
       startBetting(process);
-      return List.of();
+      return ProcessManagerResponse.empty();
     }
-    return List.of();
+    return ProcessManagerResponse.empty();
   }
 
   @Handles(ActionTaken.class)
-  public List<CommandBook> handleActionTaken(ActionTaken event) {
+  public ProcessManagerResponse onActionTaken(
+      ActionTaken event, Struct state, Destinations destinations) {
     HandProcess process = findProcessByPlayer(event.getPlayerRoot().toByteArray());
-    if (process == null) return List.of();
+    if (process == null) return ProcessManagerResponse.empty();
 
     for (PlayerState player : process.players.values()) {
       if (Arrays.equals(player.playerRoot, event.getPlayerRoot().toByteArray())) {
@@ -161,37 +184,41 @@ public class HandFlowProcessManager extends ProcessManager<Struct> {
 
     if (isBettingComplete(process)) {
       CommandBook cmd = endBettingRound(process);
-      return cmd != null ? List.of(cmd) : List.of();
+      return cmd != null
+          ? ProcessManagerResponse.withCommands(List.of(cmd))
+          : ProcessManagerResponse.empty();
     } else {
       advanceAction(process);
-      return List.of();
+      return ProcessManagerResponse.empty();
     }
   }
 
   @Handles(CommunityCardsDealt.class)
-  public List<CommandBook> handleCommunityCardsDealt(CommunityCardsDealt event) {
+  public ProcessManagerResponse onCommunityCardsDealt(
+      CommunityCardsDealt event, Struct state, Destinations destinations) {
     for (HandProcess process : processes.values()) {
       if (process.phase == HandPhase.DEALING_COMMUNITY) {
         process.communityCardCount = event.getAllCommunityCardsCount();
         process.bettingPhase = event.getPhaseValue();
         startBetting(process);
-        return List.of();
+        return ProcessManagerResponse.empty();
       }
     }
-    return List.of();
+    return ProcessManagerResponse.empty();
   }
 
   @Handles(PotAwarded.class)
-  public List<CommandBook> handlePotAwarded(PotAwarded event) {
+  public ProcessManagerResponse onPotAwarded(
+      PotAwarded event, Struct state, Destinations destinations) {
     for (HandProcess process : processes.values()) {
       if (process.phase != HandPhase.COMPLETE) {
         process.phase = HandPhase.COMPLETE;
       }
     }
-    return List.of();
+    return ProcessManagerResponse.empty();
   }
 
-  // --- Helper methods ---
+  // --- Helper methods (unchanged from the OO version) ---
 
   private CommandBook buildPostBlindCommand(HandProcess process) {
     PlayerState player;
@@ -222,9 +249,8 @@ public class HandFlowProcessManager extends ProcessManager<Struct> {
         .setCover(
             Cover.newBuilder()
                 .setDomain("hand")
-                .setRoot(
-                    dev.angzarr.UUID.newBuilder().setValue(ByteString.copyFrom(process.handRoot))))
-        .addPages(CommandPage.newBuilder().setCommand(Any.pack(cmd, "type.googleapis.com/")))
+                .setRoot(UUID.newBuilder().setValue(ByteString.copyFrom(process.handRoot))))
+        .addPages(CommandPage.newBuilder().setCommand(Any.pack(cmd, TYPE_URL_PREFIX)))
         .build();
   }
 
@@ -327,9 +353,8 @@ public class HandFlowProcessManager extends ProcessManager<Struct> {
         .setCover(
             Cover.newBuilder()
                 .setDomain("hand")
-                .setRoot(
-                    dev.angzarr.UUID.newBuilder().setValue(ByteString.copyFrom(process.handRoot))))
-        .addPages(CommandPage.newBuilder().setCommand(Any.pack(cmd, "type.googleapis.com/")))
+                .setRoot(UUID.newBuilder().setValue(ByteString.copyFrom(process.handRoot))))
+        .addPages(CommandPage.newBuilder().setCommand(Any.pack(cmd, TYPE_URL_PREFIX)))
         .build();
   }
 
@@ -347,9 +372,8 @@ public class HandFlowProcessManager extends ProcessManager<Struct> {
         .setCover(
             Cover.newBuilder()
                 .setDomain("hand")
-                .setRoot(
-                    dev.angzarr.UUID.newBuilder().setValue(ByteString.copyFrom(process.handRoot))))
-        .addPages(CommandPage.newBuilder().setCommand(Any.pack(cmd, "type.googleapis.com/")))
+                .setRoot(UUID.newBuilder().setValue(ByteString.copyFrom(process.handRoot))))
+        .addPages(CommandPage.newBuilder().setCommand(Any.pack(cmd, TYPE_URL_PREFIX)))
         .build();
   }
 
@@ -379,11 +403,9 @@ public class HandFlowProcessManager extends ProcessManager<Struct> {
         .setCover(
             Cover.newBuilder()
                 .setDomain("hand")
-                .setRoot(
-                    dev.angzarr.UUID.newBuilder().setValue(ByteString.copyFrom(process.handRoot))))
+                .setRoot(UUID.newBuilder().setValue(ByteString.copyFrom(process.handRoot))))
         .addPages(
-            CommandPage.newBuilder()
-                .setCommand(Any.pack(cmdBuilder.build(), "type.googleapis.com/")))
+            CommandPage.newBuilder().setCommand(Any.pack(cmdBuilder.build(), TYPE_URL_PREFIX)))
         .build();
   }
 
@@ -399,16 +421,15 @@ public class HandFlowProcessManager extends ProcessManager<Struct> {
   }
 
   private static String bytesToHex(byte[] bytes) {
-    StringBuilder sb = new StringBuilder();
+    StringBuilder sb = new StringBuilder(bytes.length * 2);
     for (byte b : bytes) {
       sb.append(String.format("%02x", b));
     }
     return sb.toString();
   }
 
-  // --- Inner classes for state tracking ---
+  // --- In-process state ---
 
-  // docs:start:pm_state_oo
   enum HandPhase {
     DEALING,
     POSTING_BLINDS,
@@ -451,6 +472,4 @@ public class HandFlowProcessManager extends ProcessManager<Struct> {
     boolean hasFolded;
     boolean allIn;
   }
-  // docs:end:pm_state_oo
 }
-// docs:end:pm_handler_oo

@@ -1,39 +1,37 @@
 package dev.angzarr.examples.hand.sagatable;
 
 import com.google.protobuf.Any;
-import dev.angzarr.*;
-import dev.angzarr.client.Saga;
+import dev.angzarr.CommandBook;
+import dev.angzarr.CommandPage;
+import dev.angzarr.Cover;
+import dev.angzarr.PageHeader;
+import dev.angzarr.UUID;
+import dev.angzarr.client.Destinations;
 import dev.angzarr.client.annotations.Handles;
-import dev.angzarr.client.annotations.Prepares;
-import dev.angzarr.examples.*;
+import dev.angzarr.client.annotations.Saga;
+import dev.angzarr.client.router.SagaHandlerResponse;
+import dev.angzarr.examples.EndHand;
+import dev.angzarr.examples.HandComplete;
+import dev.angzarr.examples.PotResult;
+import dev.angzarr.examples.PotWinner;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Saga: Hand -> Table (OO Pattern)
+ * Saga: Hand → Table — Tier 5 annotation-driven.
  *
- * <p>Reacts to HandComplete events from Hand domain. Sends EndHand commands to Table domain.
+ * <p>Reacts to {@link HandComplete} events from the Hand domain and issues an {@link EndHand}
+ * command to the Table domain carrying the pot results.
  */
-public class HandTableSaga extends Saga {
+@Saga(name = "saga-hand-table", source = "hand", target = "table")
+public class HandTableSaga {
 
-  public HandTableSaga() {
-    super("saga-hand-table", "hand", "table");
-  }
-
-  @Prepares(HandComplete.class)
-  public List<Cover> prepareHandComplete(HandComplete event) {
-    return List.of(
-        Cover.newBuilder()
-            .setDomain("table")
-            .setRoot(UUID.newBuilder().setValue(event.getTableRoot()))
-            .build());
-  }
+  private static final String TYPE_URL_PREFIX = "type.googleapis.com/";
 
   @Handles(HandComplete.class)
-  public CommandBook handleHandComplete(HandComplete event, List<EventBook> destinations) {
-    int destSeq = Saga.nextSequence(destinations.isEmpty() ? null : destinations.get(0));
+  public SagaHandlerResponse onHandComplete(HandComplete event, Destinations destinations) {
+    int destSeq = destinations.sequenceFor("table").orElse(0);
 
-    // Convert PotWinner to PotResult
     List<PotResult> results = new ArrayList<>();
     for (PotWinner winner : event.getWinnersList()) {
       results.add(
@@ -46,20 +44,20 @@ public class HandTableSaga extends Saga {
     }
 
     EndHand endHand =
-        EndHand.newBuilder()
-            .setHandRoot(event.getTableRoot()) // hand_root from the source event
-            .addAllResults(results)
+        EndHand.newBuilder().setHandRoot(event.getTableRoot()).addAllResults(results).build();
+
+    CommandBook cmd =
+        CommandBook.newBuilder()
+            .setCover(
+                Cover.newBuilder()
+                    .setDomain("table")
+                    .setRoot(UUID.newBuilder().setValue(event.getTableRoot())))
+            .addPages(
+                CommandPage.newBuilder()
+                    .setHeader(PageHeader.newBuilder().setSequence(destSeq))
+                    .setCommand(Any.pack(endHand, TYPE_URL_PREFIX)))
             .build();
 
-    return CommandBook.newBuilder()
-        .setCover(
-            Cover.newBuilder()
-                .setDomain("table")
-                .setRoot(UUID.newBuilder().setValue(event.getTableRoot())))
-        .addPages(
-            CommandPage.newBuilder()
-                .setHeader(PageHeader.newBuilder().setSequence(destSeq).build())
-                .setCommand(Any.pack(endHand, "type.googleapis.com/")))
-        .build();
+    return SagaHandlerResponse.withCommands(List.of(cmd));
   }
 }
