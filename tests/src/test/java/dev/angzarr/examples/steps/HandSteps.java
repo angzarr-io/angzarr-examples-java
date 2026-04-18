@@ -12,6 +12,8 @@ import dev.angzarr.PageHeader;
 import dev.angzarr.client.Errors;
 import dev.angzarr.examples.*;
 import dev.angzarr.examples.hand.Hand;
+import dev.angzarr.examples.hand.state.HandState;
+import dev.angzarr.examples.testing.AggregateTestKit;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -24,14 +26,14 @@ import java.util.Map;
 /** Cucumber step definitions for Hand aggregate tests. */
 public class HandSteps {
 
-  private Hand hand;
+  private AggregateTestKit<Hand, HandState> hand;
   private List<EventPage> eventPages;
   private Message resultEvent;
   private Errors.CommandRejectedError rejectedError;
 
   @Before
   public void setup() {
-    hand = new Hand();
+    hand = new AggregateTestKit<>(Hand.class, Hand::new);
     eventPages = new ArrayList<>();
     resultEvent = null;
     rejectedError = null;
@@ -457,7 +459,7 @@ public class HandSteps {
             .setAction(actionType)
             .setAmount(amount)
             .setPlayerStack(500 - amount)
-            .setPotTotal(hand.getPotTotal() + amount)
+            .setPotTotal(hand.state().getPotTotal() + amount)
             .build();
     addEvent(event);
     rehydrateHand();
@@ -471,7 +473,7 @@ public class HandSteps {
             .setBlindType(amount <= 5 ? "small" : "big")
             .setAmount(amount)
             .setPlayerStack(500 - amount)
-            .setPotTotal(hand.getPotTotal() + amount)
+            .setPotTotal(hand.state().getPotTotal() + amount)
             .build();
     addEvent(event);
     rehydrateHand();
@@ -709,17 +711,17 @@ public class HandSteps {
 
   @Then("the hand state has pot_total {int}")
   public void handStateHasPotTotal(int potTotal) {
-    assertThat(hand.getPotTotal()).isEqualTo(potTotal);
+    assertThat(hand.state().getPotTotal()).isEqualTo(potTotal);
   }
 
   @Then("the hand state has {int} active_players")
   public void handStateHasActivePlayers(int count) {
-    assertThat(hand.getActivePlayerCount()).isEqualTo(count);
+    assertThat(hand.state().getActivePlayerCount()).isEqualTo(count);
   }
 
   @Then("the hand state is complete")
   public void handStateIsComplete() {
-    assertThat(hand.isComplete()).isTrue();
+    assertThat(hand.state().isComplete()).isTrue();
   }
 
   // Note: "the command fails with status" and "the error message contains"
@@ -727,32 +729,32 @@ public class HandSteps {
 
   @Then("the hand state has phase {string}")
   public void handStateHasPhase(String phase) {
-    assertThat(hand.getPhase()).isEqualTo(phase);
+    assertThat(hand.state().getPhase()).isEqualTo(phase);
   }
 
   @Then("the hand state has status {string}")
   public void handStateHasStatus(String status) {
-    assertThat(hand.getStatus()).isEqualTo(status);
+    assertThat(hand.state().getStatus()).isEqualTo(status);
   }
 
   @Then("the hand state has {int} players")
   public void handStateHasPlayers(int count) {
-    assertThat(hand.getPlayerCount()).isEqualTo(count);
+    assertThat(hand.state().getPlayerCount()).isEqualTo(count);
   }
 
   @Then("the hand state has {int} community cards")
   public void handStateHasCommunityCards(int count) {
-    assertThat(hand.getCommunityCardCount()).isEqualTo(count);
+    assertThat(hand.state().getCommunityCardCount()).isEqualTo(count);
   }
 
   @Then("player {string} has_folded is true")
   public void playerHasFolded(String playerId) {
-    assertThat(hand.hasPlayerFolded(playerId)).isTrue();
+    assertThat(hand.state().hasPlayerFolded(playerId)).isTrue();
   }
 
   @Then("active player count is {int}")
   public void activePlayerCountIs(int count) {
-    assertThat(hand.getActivePlayerCount()).isEqualTo(count);
+    assertThat(hand.state().getActivePlayerCount()).isEqualTo(count);
   }
 
   @Then("each player has {int} hole cards")
@@ -852,7 +854,7 @@ public class HandSteps {
 
   @Then("all_community_cards has {int} cards")
   public void allCommunityCardsHas(int count) {
-    assertThat(hand.getCommunityCardCount()).isEqualTo(count);
+    assertThat(hand.state().getCommunityCardCount()).isEqualTo(count);
   }
 
   @Then("^the result is a(?:n)? (?:examples\\.)?DrawCompleted event$")
@@ -875,7 +877,7 @@ public class HandSteps {
 
   @Then("player {string} has {int} hole cards")
   public void playerHasHoleCards(String playerId, int count) {
-    assertThat(hand.getPlayerHoleCardCount(playerId)).isEqualTo(count);
+    assertThat(hand.state().getPlayerHoleCardCount(playerId)).isEqualTo(count);
   }
 
   @Then("^the result is a(?:n)? (?:examples\\.)?CardsRevealed event$")
@@ -921,12 +923,12 @@ public class HandSteps {
 
   @Then("a HandComplete event is emitted")
   public void handCompleteEventEmitted() {
-    assertThat(hand.isComplete()).isTrue();
+    assertThat(hand.state().isComplete()).isTrue();
   }
 
   @Then("the hand status is {string}")
   public void handStatusIs(String status) {
-    assertThat(hand.getStatus()).isEqualTo(status);
+    assertThat(hand.state().getStatus()).isEqualTo(status);
   }
 
   @Then("player {string} has ranking {string}")

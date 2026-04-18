@@ -124,29 +124,32 @@ All 13 live modules ported to Tier 5. `./gradlew build` clean.
   `ProcessManagerGrpc` / `ProjectorGrpc` adapters.
 - **Dead modules deleted**: `*-oo/` shadows, `pmg-hand-flow*/`, `prj-cloudevents/`.
 
-## Remaining work: Cucumber test step defs (deferred)
+## How the test step defs were ported
 
-The `tests/` subproject is **excluded from the composite build** (commented out in
-`settings.gradle.kts`). Its 2.4 KLOC of Cucumber step definitions are written
-against the old OO aggregate API (`player.handleCommand(cmd)`,
-`player.rehydrate(book)`, OO state accessors like `player.getBankroll()`). Porting
-them to the Tier 5 Router-based pattern is a distinct follow-on task.
+A small `AggregateTestKit<H, S>` in
+`tests/src/test/java/dev/angzarr/examples/testing/AggregateTestKit.java` wraps a
+`CommandHandlerRouter<S>` and exposes the three operations step defs expect:
 
-Recommended approach:
+- `handleCommand(Message)` — dispatch a command through the real router and
+  return the first emitted event. Appends emitted events to the kit's internal
+  history so subsequent `state()` / `handleCommand` calls reflect them. Unwraps
+  `Errors.CommandRejectedError` from the DispatchException cause chain so step
+  defs see the original business rejection.
+- `rehydrate(EventBook)` — replace the running event history.
+- `state()` — materialize the current state by replaying events via the
+  router's own `rebuildStateFor` helper.
 
-1. Write a small `AggregateTestKit<H, S>` helper in `tests/src/test/java/dev/angzarr/examples/testing/`
-   that wraps a `CommandHandlerRouter<S>` and exposes `handleCommand(Message)`,
-   `rehydrate(EventBook)`, and `state()` for ergonomic unit-style testing.
-2. Replace `private Player player = new Player()` with
-   `private AggregateTestKit<Player, PlayerState> player = new AggregateTestKit<>(Player.class, Player::new)`
-   across the four step files.
-3. Replace `player.getBankroll()` → `player.state().getBankroll()` etc.
-4. Re-enable `include("tests")` in `settings.gradle.kts`.
+Step-def diff was mechanical: `Player player = new Player()` →
+`AggregateTestKit<Player, PlayerState> player = new AggregateTestKit<>(Player.class, Player::new)`,
+and `player.getBankroll()` → `player.state().getBankroll()`. A handful of OO
+helpers that used to live on the aggregate class (`Hand.getPhase()`,
+`Hand.hasPlayerFolded(id)`, `Table.getHandNumber()`, `Table.getPlayerAtSeat(n)`)
+were moved down onto the state class where they belong.
 
 ## Doneness gate
 
 - [x] `./gradlew build` clean on the root composite build.
 - [x] `prj-cloudevents/`, `*-oo/`, `pmg-hand-flow*/` deleted.
 - [x] `settings.gradle.kts` reflects the surviving module set.
-- [ ] Cucumber step defs ported (deferred — see above).
+- [x] Cucumber step defs ported via `AggregateTestKit<H, S>`; **193 tests pass**.
 - [ ] README updated to reference `@Aggregate`/`@Saga`/etc. patterns (optional).

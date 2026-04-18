@@ -23,6 +23,8 @@ import dev.angzarr.examples.ReleaseFunds;
 import dev.angzarr.examples.ReserveFunds;
 import dev.angzarr.examples.WithdrawFunds;
 import dev.angzarr.examples.player.Player;
+import dev.angzarr.examples.player.state.PlayerState;
+import dev.angzarr.examples.testing.AggregateTestKit;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -34,14 +36,14 @@ import java.util.List;
 /** Cucumber step definitions for Player aggregate tests. */
 public class PlayerSteps {
 
-  private Player player;
+  private AggregateTestKit<Player, PlayerState> player;
   private List<EventPage> eventPages;
   private Message resultEvent;
   private Errors.CommandRejectedError rejectedError;
 
   @Before
   public void setup() {
-    player = new Player();
+    player = new AggregateTestKit<>(Player.class, Player::new);
     eventPages = new ArrayList<>();
     resultEvent = null;
     rejectedError = null;
@@ -70,7 +72,7 @@ public class PlayerSteps {
   @Given("a FundsDeposited event with amount {int}")
   public void fundsDepositedEventWithAmount(int amount) {
     // Calculate new balance based on current state
-    long currentBankroll = player.getBankroll();
+    long currentBankroll = player.state().getBankroll();
     FundsDeposited event =
         FundsDeposited.newBuilder()
             .setAmount(Currency.newBuilder().setAmount(amount).setCurrencyCode("CHIPS"))
@@ -83,9 +85,9 @@ public class PlayerSteps {
 
   @Given("a FundsReserved event with amount {int} for table {string}")
   public void fundsReservedEventWithAmountForTable(int amount, String tableId) {
-    long currentReserved = player.getReservedFunds();
+    long currentReserved = player.state().getReservedFunds();
     long newReserved = currentReserved + amount;
-    long newAvailable = player.getBankroll() - newReserved;
+    long newAvailable = player.state().getBankroll() - newReserved;
 
     FundsReserved event =
         FundsReserved.newBuilder()
@@ -236,17 +238,17 @@ public class PlayerSteps {
 
   @Then("the player state has bankroll {int}")
   public void playerStateHasBankroll(int bankroll) {
-    assertThat(player.getBankroll()).isEqualTo(bankroll);
+    assertThat(player.state().getBankroll()).isEqualTo(bankroll);
   }
 
   @Then("the player state has reserved_funds {int}")
   public void playerStateHasReservedFunds(int reserved) {
-    assertThat(player.getReservedFunds()).isEqualTo(reserved);
+    assertThat(player.state().getReservedFunds()).isEqualTo(reserved);
   }
 
   @Then("the player state has available_balance {int}")
   public void playerStateHasAvailableBalance(int available) {
-    assertThat(player.getAvailableBalance()).isEqualTo(available);
+    assertThat(player.state().getAvailableBalance()).isEqualTo(available);
   }
 
   // --- Helper methods ---

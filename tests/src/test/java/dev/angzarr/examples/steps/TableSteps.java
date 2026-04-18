@@ -14,6 +14,8 @@ import dev.angzarr.client.Errors;
 import dev.angzarr.client.util.ByteUtils;
 import dev.angzarr.examples.*;
 import dev.angzarr.examples.table.Table;
+import dev.angzarr.examples.table.state.TableState;
+import dev.angzarr.examples.testing.AggregateTestKit;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
@@ -27,14 +29,14 @@ import java.util.Map;
 /** Cucumber step definitions for Table aggregate tests. */
 public class TableSteps {
 
-  private Table table;
+  private AggregateTestKit<Table, TableState> table;
   private List<EventPage> eventPages;
   private Message resultEvent;
   private Errors.CommandRejectedError rejectedError;
 
   @Before
   public void setup() {
-    table = new Table();
+    table = new AggregateTestKit<>(Table.class, Table::new);
     eventPages = new ArrayList<>();
     resultEvent = null;
     rejectedError = null;
@@ -338,12 +340,12 @@ public class TableSteps {
 
   @Then("the table state has {int} players")
   public void tableStateHasPlayers(int count) {
-    assertThat(table.getPlayerCount()).isEqualTo(count);
+    assertThat(table.state().getPlayerCount()).isEqualTo(count);
   }
 
   @Then("the table state has seat {int} occupied by {string}")
   public void tableStateHasSeatOccupiedBy(int seat, String playerId) {
-    var seatState = table.getPlayerAtSeat(seat);
+    var seatState = table.state().getPlayerAtSeat(seat);
     assertThat(seatState).isNotNull();
     var expectedHex = bytesToHex(playerId.getBytes(java.nio.charset.StandardCharsets.UTF_8));
     var actualHex = bytesToHex(seatState.getPlayerRoot());
@@ -352,12 +354,12 @@ public class TableSteps {
 
   @Then("the table state has status {string}")
   public void tableStateHasStatus(String status) {
-    assertThat(table.getStatus()).isEqualTo(status);
+    assertThat(table.state().getStatus()).isEqualTo(status);
   }
 
   @Then("the table state has hand_count {int}")
   public void tableStateHasHandCount(int count) {
-    assertThat(table.getHandNumber()).isEqualTo(count);
+    assertThat(table.state().getHandNumber()).isEqualTo(count);
   }
 
   // Note: "the command fails with status" and "the error message contains"

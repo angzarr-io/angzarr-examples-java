@@ -158,6 +158,42 @@ public class HandState {
     return (int) players.values().stream().filter(p -> !p.hasFolded() && !p.isAllIn()).count();
   }
 
+  public int getPlayerCount() {
+    return players.size();
+  }
+
+  public int getCommunityCardCount() {
+    return communityCards.size();
+  }
+
+  /** Whether the named player has folded this hand. Accepts either an id or hex-encoded root. */
+  public boolean hasPlayerFolded(String playerId) {
+    PlayerHandState p = players.get(playerId);
+    if (p == null) {
+      p = getPlayer(playerId.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+    }
+    return p != null && p.hasFolded();
+  }
+
+  /** Hole-card count for the named player. Accepts either an id or hex-encoded root. */
+  public int getPlayerHoleCardCount(String playerId) {
+    PlayerHandState p = players.get(playerId);
+    if (p == null) {
+      p = getPlayer(playerId.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+    }
+    return p == null ? 0 : p.getHoleCards().size();
+  }
+
+  /** Current phase as a string — matches the legacy OO Hand.getPhase() helper. */
+  public String getPhase() {
+    if (currentPhase == dev.angzarr.examples.BettingPhase.PREFLOP_VALUE) return "PREFLOP";
+    if (currentPhase == dev.angzarr.examples.BettingPhase.FLOP_VALUE) return "FLOP";
+    if (currentPhase == dev.angzarr.examples.BettingPhase.TURN_VALUE) return "TURN";
+    if (currentPhase == dev.angzarr.examples.BettingPhase.RIVER_VALUE) return "RIVER";
+    if (currentPhase == dev.angzarr.examples.BettingPhase.SHOWDOWN_VALUE) return "SHOWDOWN";
+    return "UNKNOWN";
+  }
+
   private static String bytesToHex(byte[] bytes) {
     if (bytes == null) return "";
     StringBuilder sb = new StringBuilder();
