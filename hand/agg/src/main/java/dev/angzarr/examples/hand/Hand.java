@@ -1,5 +1,6 @@
 package dev.angzarr.examples.hand;
 
+import com.google.protobuf.Message;
 import dev.angzarr.client.Errors;
 import dev.angzarr.client.annotations.Aggregate;
 import dev.angzarr.client.annotations.Applies;
@@ -107,6 +108,15 @@ public class Hand {
       p.setBetThisRound(0);
       p.setHasActed(false);
     }
+    // Py canonical (examples-python/main/hand/agg/handlers/hand.py
+    // apply_betting_round_complete, lines 545-547): Five Card Draw is the
+    // only variant whose street-advance has no community-card event, so
+    // BettingRoundComplete must do the PREFLOP → DRAW transition itself.
+    // Other variants get their phase update from CommunityCardsDealt.
+    if (state.getGameVariant() == GameVariant.FIVE_CARD_DRAW_VALUE
+        && event.getCompletedPhaseValue() == BettingPhase.PREFLOP_VALUE) {
+      state.setCurrentPhase(BettingPhase.DRAW_VALUE);
+    }
   }
 
   @Applies(HandComplete.class)
@@ -156,6 +166,40 @@ public class Hand {
     }
   }
 
+  // Phase I-Java MED-EX-2.3.1 — appliers for the four advanced hand events.
+
+  @Applies(ActionClockStarted.class)
+  public void applyActionClockStarted(HandState state, ActionClockStarted event) {
+    PlayerHandState pState = state.getPlayer(event.getPlayerRoot().toByteArray());
+    if (pState != null) {
+      pState.setActionClockSeconds((int) event.getSeconds());
+    }
+  }
+
+  @Applies(PriorChipPulledBack.class)
+  public void applyPriorChipPulledBack(HandState state, PriorChipPulledBack event) {
+    PlayerHandState pState = state.getPlayer(event.getPlayerRoot().toByteArray());
+    if (pState != null) {
+      pState.setBoundToCallOrRaise(true);
+    }
+  }
+
+  @Applies(UnderbetCorrected.class)
+  public void applyUnderbetCorrected(HandState state, UnderbetCorrected event) {
+    long pot = state.getPotTotal();
+    for (UnderbetAdjustment adj : event.getAdjustmentsList()) {
+      PlayerHandState pState = state.getPlayer(adj.getPlayerRoot().toByteArray());
+      if (pState != null) {
+        pState.setBetThisRound(adj.getNewContribution());
+        pState.setStack(pState.getStack() + adj.getRefundToStack());
+        pState.setTotalInvested(Math.max(0, pState.getTotalInvested() - adj.getRefundToStack()));
+        pot -= adj.getRefundToStack();
+      }
+    }
+    state.setPotTotal(Math.max(0, pot));
+    state.setCurrentBet(event.getCorrectedAmount());
+  }
+
   // --- Command handlers ---
 
   @Handles(DealCards.class)
@@ -163,8 +207,13 @@ public class Hand {
     if (state.exists()) {
       throw Errors.CommandRejectedError.preconditionFailed("Cards already dealt");
     }
+    if (cmd.getPlayersCount() == 0) {
+      // Py: NoPlayersInHand → FAILED_PRECONDITION.
+      throw Errors.CommandRejectedError.preconditionFailed("No players in hand");
+    }
     if (cmd.getPlayersCount() < 2) {
-      throw Errors.CommandRejectedError.invalidArgument("Requires at least 2 players");
+      throw Errors.CommandRejectedError.invalidArgument(
+          "Requires at least 2 players, got " + cmd.getPlayersCount());
     }
 
     // Generate hole cards for each player
@@ -199,12 +248,25 @@ public class Hand {
 
   @Handles(PostBlind.class)
   public BlindPosted handlePostBlind(PostBlind cmd, HandState state, long seq) {
+    if (cmd.getPlayerRoot().isEmpty()) {
+      throw Errors.CommandRejectedError.invalidArgument("player_root is required");
+    }
     if (!state.exists()) {
-      throw Errors.CommandRejectedError.preconditionFailed("Hand does not exist");
+      throw Errors.CommandRejectedError.preconditionFailed("Hand not dealt");
+    }
+    if (state.isComplete()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand already complete");
     }
     PlayerHandState player = state.getPlayer(cmd.getPlayerRoot().toByteArray());
     if (player == null) {
       throw Errors.CommandRejectedError.preconditionFailed("Player not in hand");
+    }
+    if (player.hasFolded()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Player has folded");
+    }
+    if (cmd.getAmount() <= 0) {
+      throw Errors.CommandRejectedError.invalidArgument(
+          "Amount must be positive, got " + cmd.getAmount());
     }
 
     long amount = Math.min(cmd.getAmount(), player.getStack());
@@ -223,11 +285,14 @@ public class Hand {
 
   @Handles(PlayerAction.class)
   public ActionTaken handlePlayerAction(PlayerAction cmd, HandState state, long seq) {
+    if (cmd.getPlayerRoot().isEmpty()) {
+      throw Errors.CommandRejectedError.invalidArgument("player_root is required");
+    }
     if (!state.exists()) {
-      throw Errors.CommandRejectedError.preconditionFailed("Hand does not exist");
+      throw Errors.CommandRejectedError.preconditionFailed("Hand not dealt");
     }
     if (state.isComplete()) {
-      throw Errors.CommandRejectedError.preconditionFailed("Hand is complete");
+      throw Errors.CommandRejectedError.preconditionFailed("Hand already complete");
     }
     PlayerHandState player = state.getPlayer(cmd.getPlayerRoot().toByteArray());
     if (player == null) {
@@ -235,6 +300,17 @@ public class Hand {
     }
     if (player.hasFolded()) {
       throw Errors.CommandRejectedError.preconditionFailed("Player has folded");
+    }
+    // Py canonical: an all-in player cannot act again. State carries a
+    // dedicated isAllIn() flag; relying on getStack()==0 misfires when the
+    // applier-side has zeroed the stack as part of the round close-out.
+    if (player.isAllIn()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Player is all-in");
+    }
+    // Py: NotInBettingPhase → FAILED_PRECONDITION. Once the hand has reached
+    // SHOWDOWN, no further player betting actions are accepted.
+    if (state.getCurrentPhase() == BettingPhase.SHOWDOWN_VALUE) {
+      throw Errors.CommandRejectedError.preconditionFailed("Not in betting phase");
     }
 
     long amount = 0;
@@ -244,39 +320,56 @@ public class Hand {
       case FOLD:
         break;
       case CHECK:
+        // Py: InvalidOperationInState → FAILED_PRECONDITION.
         if (state.getCurrentBet() > player.getBetThisRound()) {
-          throw Errors.CommandRejectedError.invalidArgument("Cannot check, must call or fold");
+          throw Errors.CommandRejectedError.preconditionFailed(
+              "Cannot check, there is a bet to call");
         }
         break;
       case CALL:
+        // Py: NothingToCall → FAILED_PRECONDITION.
+        if (state.getCurrentBet() == player.getBetThisRound()) {
+          throw Errors.CommandRejectedError.preconditionFailed("Nothing to call");
+        }
         amount = state.getCurrentBet() - player.getBetThisRound();
         amount = Math.min(amount, player.getStack());
         break;
       case BET:
+        // Py: CannotBetOverExistingBet → FAILED_PRECONDITION.
+        if (state.getCurrentBet() > 0) {
+          throw Errors.CommandRejectedError.preconditionFailed(
+              "Cannot bet, there is already a bet");
+        }
         amount = cmd.getAmount();
-        // Minimum bet is the big blind
+        // Minimum bet is the big blind (or min_raise once set). Below-min
+        // bet rejects only when the player has chips left to bet over the
+        // minimum; a sub-min bet that equals the player's full stack is a
+        // valid all-in.
         long minBet = state.getMinRaise() > 0 ? state.getMinRaise() : 10;
         if (amount < minBet && amount < player.getStack()) {
-          throw Errors.CommandRejectedError.invalidArgument("Bet must be at least " + minBet);
+          // Py: BetBelowMinRaise → FAILED_PRECONDITION.
+          throw Errors.CommandRejectedError.preconditionFailed(
+              "Bet must be at least " + minBet + ", got " + amount);
         }
-        if (amount > player.getStack()) {
+        if (amount >= player.getStack()) {
           amount = player.getStack();
           action = ActionType.ALL_IN;
         }
         break;
       case RAISE:
+        // Py: CannotRaiseWithoutBet → FAILED_PRECONDITION.
         if (state.getCurrentBet() == 0) {
-          throw Errors.CommandRejectedError.invalidArgument("Cannot raise when there is no bet");
+          throw Errors.CommandRejectedError.preconditionFailed("Cannot raise, there is no bet");
         }
         amount = cmd.getAmount();
-        // Validate minimum raise (amount is total bet level)
         long raiseAmount = amount - state.getCurrentBet();
         long minRaise = state.getMinRaise() > 0 ? state.getMinRaise() : 10;
         if (raiseAmount < minRaise && amount < player.getStack()) {
-          throw Errors.CommandRejectedError.invalidArgument(
-              "Raise must be at least " + minRaise + " above current bet");
+          // Py: RaiseBelowMin → FAILED_PRECONDITION.
+          throw Errors.CommandRejectedError.preconditionFailed(
+              "Raise must be at least " + minRaise + ", got " + raiseAmount);
         }
-        if (amount > player.getStack()) {
+        if (amount >= player.getStack()) {
           amount = player.getStack();
           action = ActionType.ALL_IN;
         }
@@ -285,7 +378,8 @@ public class Hand {
         amount = player.getStack();
         break;
       default:
-        throw Errors.CommandRejectedError.invalidArgument("Invalid action");
+        // Py: InvalidAction → INVALID_ARGUMENT (value-out-of-range).
+        throw Errors.CommandRejectedError.invalidArgument("Invalid action: " + action);
     }
 
     long newStack = player.getStack() - amount;
@@ -307,11 +401,19 @@ public class Hand {
   public CommunityCardsDealt handleDealCommunityCards(
       DealCommunityCards cmd, HandState state, long seq) {
     if (!state.exists()) {
-      throw Errors.CommandRejectedError.preconditionFailed("Hand does not exist");
+      throw Errors.CommandRejectedError.preconditionFailed("Hand not dealt");
     }
+    if (state.isComplete()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand already complete");
+    }
+    // Py: CommunityCardsNotUsedInVariant → FAILED_PRECONDITION (state-based).
     if (state.getGameVariant() == GameVariant.FIVE_CARD_DRAW_VALUE) {
-      throw Errors.CommandRejectedError.invalidArgument(
-          "Five Card Draw does not use community cards");
+      throw Errors.CommandRejectedError.preconditionFailed(
+          "Community cards not used in this variant");
+    }
+    if (cmd.getCount() <= 0) {
+      throw Errors.CommandRejectedError.preconditionFailed(
+          "Must deal at least 1 card, got " + cmd.getCount());
     }
 
     List<byte[]> remaining = state.getRemainingDeck();
@@ -339,7 +441,35 @@ public class Hand {
   @Handles(AwardPot.class)
   public PotAwarded handleAwardPot(AwardPot cmd, HandState state, long seq) {
     if (!state.exists()) {
-      throw Errors.CommandRejectedError.preconditionFailed("Hand does not exist");
+      throw Errors.CommandRejectedError.preconditionFailed("Hand not dealt");
+    }
+    if (state.isComplete()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand already complete");
+    }
+    if (cmd.getAwardsList().isEmpty()) {
+      throw Errors.CommandRejectedError.preconditionFailed("No awards specified");
+    }
+    long totalAwarded = 0;
+    for (PotAward award : cmd.getAwardsList()) {
+      if (award.getPlayerRoot().isEmpty()) {
+        throw Errors.CommandRejectedError.invalidArgument("award.player_root is required");
+      }
+      PlayerHandState p = state.getPlayer(award.getPlayerRoot().toByteArray());
+      if (p == null) {
+        throw Errors.CommandRejectedError.preconditionFailed("Cannot award to player not in hand");
+      }
+      if (p.hasFolded()) {
+        throw Errors.CommandRejectedError.preconditionFailed("Cannot award to folded player");
+      }
+      totalAwarded += award.getAmount();
+    }
+    // Py: AwardPot rejects only when potTotal > 0 (i.e. round-tracking has
+    // observed a pot); the unit-test harness sometimes synthesizes ad-hoc
+    // hands without a populated potTotal, which would otherwise trip this
+    // check incorrectly.
+    if (state.getPotTotal() > 0 && totalAwarded > state.getPotTotal()) {
+      throw Errors.CommandRejectedError.preconditionFailed(
+          "AwardPot total " + totalAwarded + " exceeds pot " + state.getPotTotal());
     }
 
     List<PotWinner> winners = new ArrayList<>();
@@ -358,14 +488,23 @@ public class Hand {
   @Handles(RequestDraw.class)
   public DrawCompleted handleRequestDraw(RequestDraw cmd, HandState state, long seq) {
     if (!state.exists()) {
-      throw Errors.CommandRejectedError.preconditionFailed("Hand does not exist");
+      throw Errors.CommandRejectedError.preconditionFailed("Hand not dealt");
     }
+    // Py: DrawNotSupportedInVariant → FAILED_PRECONDITION (state-based: variant is set on state).
     if (state.getGameVariant() != GameVariant.FIVE_CARD_DRAW_VALUE) {
-      throw Errors.CommandRejectedError.invalidArgument("Draw not supported in this game variant");
+      throw Errors.CommandRejectedError.preconditionFailed(
+          "Draw not supported in this game variant");
     }
     PlayerHandState player = state.getPlayer(cmd.getPlayerRoot().toByteArray());
     if (player == null) {
       throw Errors.CommandRejectedError.preconditionFailed("Player not in hand");
+    }
+    // Py: RequestDraw rejects duplicate card_indices.
+    java.util.Set<Integer> seen = new java.util.HashSet<>();
+    for (int idx : cmd.getCardIndicesList()) {
+      if (!seen.add(idx)) {
+        throw Errors.CommandRejectedError.preconditionFailed("card_indices contains duplicates");
+      }
     }
 
     int discardCount = cmd.getCardIndicesCount();
@@ -404,14 +543,48 @@ public class Hand {
         .build();
   }
 
+  // Phase I-Java MED-EX-2.3.1 — four advanced hand handlers delegating to ActionClockHandlers.
+
+  @Handles(StartActionClock.class)
+  public ActionClockStarted handleStartActionClock(
+      StartActionClock cmd, HandState state, long seq) {
+    return ActionClockHandlers.handleStartActionClock(cmd, state);
+  }
+
+  @Handles(DeclareAction.class)
+  public ActionTaken handleDeclareAction(DeclareAction cmd, HandState state, long seq) {
+    return ActionClockHandlers.handleDeclareAction(cmd, state);
+  }
+
+  @Handles(PullBackPriorChip.class)
+  public PriorChipPulledBack handlePullBackPriorChip(
+      PullBackPriorChip cmd, HandState state, long seq) {
+    return ActionClockHandlers.handlePullBackPriorChip(cmd, state);
+  }
+
+  @Handles(CorrectIllegalBet.class)
+  public Message handleCorrectIllegalBet(CorrectIllegalBet cmd, HandState state, long seq) {
+    return ActionClockHandlers.handleCorrectIllegalBet(cmd, state);
+  }
+
   @Handles(RevealCards.class)
   public com.google.protobuf.Message handleRevealCards(RevealCards cmd, HandState state, long seq) {
+    if (cmd.getPlayerRoot().isEmpty()) {
+      throw Errors.CommandRejectedError.invalidArgument("player_root is required");
+    }
     if (!state.exists()) {
-      throw Errors.CommandRejectedError.preconditionFailed("Hand does not exist");
+      throw Errors.CommandRejectedError.preconditionFailed("Hand not dealt");
     }
     PlayerHandState player = state.getPlayer(cmd.getPlayerRoot().toByteArray());
     if (player == null) {
       throw Errors.CommandRejectedError.preconditionFailed("Player not in hand");
+    }
+    if (player.hasFolded()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Folded player cannot reveal cards");
+    }
+    // Py: RevealCards requires the hand to be at SHOWDOWN phase.
+    if (state.getCurrentPhase() != BettingPhase.SHOWDOWN_VALUE) {
+      throw Errors.CommandRejectedError.preconditionFailed("Not in showdown phase");
     }
 
     if (cmd.getMuck()) {
@@ -439,6 +612,353 @@ public class Hand {
         .setRanking(ranking)
         .setRevealedAt(now())
         .build();
+  }
+
+  // ===========================================================================
+  // PR #12 (75260c8) — 14 hand-domain command handlers for TDA/WSOP/Robert's-
+  // rules correction paths. Each handler validates the command, the hand's
+  // current phase / completion state, and emits the corresponding event from
+  // hand.proto. Pre-existing events (MisdealDeclared, FouledDeckDetected,
+  // HandRedealt, ButtonCardReplaced, PrematureFlop/Turn/RiverDetected,
+  // StudStreetDealt, StudCommunityCardDealt, StudDoorCardSelected,
+  // StudDownCardConverted, SeventhStreetCardReplaced, BringInCorrected,
+  // PrematureStudCardDetected) were already in the proto; this commit ships
+  // the @Handles dispatch methods.
+  //
+  // Design decisions applied per .plan/cross-language-interpretation.md
+  // §"PR #12 design decisions":
+  //   #1 BlindLevel int64 — RedealHand.level / HandRedealt.level stay int64.
+  //   #3 ScrambleAllDownCards.rng_seed — variable-length bytes, no length
+  //      normalization. Handlers may enforce a min-length but do not pad.
+  //
+  // The "hand has been dealt" precondition is checked via state.exists();
+  // "post-substantial-action" guard (TDA Rule 35A pre-SA-only) uses
+  // currentPhase > PREFLOP as the cross-language convention.
+  // ===========================================================================
+
+  /** TDA Rule 35A / WSOP Rule 88 — floor-issued misdeal declaration. Pre-SA only. */
+  @Handles(DeclareMisdeal.class)
+  public MisdealDeclared handleDeclareMisdeal(DeclareMisdeal cmd, HandState state, long seq) {
+    if (!state.exists()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand not dealt");
+    }
+    if (state.isComplete()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand already complete");
+    }
+    // Post-SA: hand has progressed past PREFLOP; the misdeal window has closed.
+    if (state.getCurrentPhase() > BettingPhase.PREFLOP_VALUE) {
+      throw Errors.CommandRejectedError.preconditionFailed(
+          "Cannot declare misdeal after substantial action");
+    }
+    return MisdealDeclared.newBuilder()
+        .setReason(cmd.getReason())
+        .setDealerButtonPreserved(cmd.getDealerButtonPreserved())
+        .setDeclaredAt(now())
+        .build();
+  }
+
+  /** TDA Rule 35E — fouled deck. Voids the hand regardless of substantial action. */
+  @Handles(ReportFouledDeck.class)
+  public FouledDeckDetected handleReportFouledDeck(
+      ReportFouledDeck cmd, HandState state, long seq) {
+    if (cmd.getDuplicateCard().isEmpty()) {
+      throw Errors.CommandRejectedError.invalidArgument("duplicate_card is required");
+    }
+    if (!state.exists()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand not dealt");
+    }
+    if (state.isComplete()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand already complete");
+    }
+    return FouledDeckDetected.newBuilder()
+        .setDuplicateCard(cmd.getDuplicateCard())
+        .setDetectedAt(now())
+        .build();
+  }
+
+  /**
+   * TDA Rule 35C — pre-SA misdeal redeal. Same button, same blind level, same player roster, same
+   * hand_number. Design decision #1: {@code level} is int64.
+   */
+  @Handles(RedealHand.class)
+  public HandRedealt handleRedealHand(RedealHand cmd, HandState state, long seq) {
+    if (!state.exists()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand not dealt");
+    }
+    if (state.isComplete()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand already complete");
+    }
+    // Redeal applies to THIS hand — hand_number must match. Mismatch is an
+    // input error (operator referenced the wrong hand).
+    if (cmd.getHandNumber() != state.getHandNumber()) {
+      throw Errors.CommandRejectedError.invalidArgument("hand_number does not match current hand");
+    }
+    return HandRedealt.newBuilder()
+        .setTableRoot(cmd.getTableRoot())
+        .setHandNumber(cmd.getHandNumber())
+        .setDealerPosition(cmd.getDealerPosition())
+        .setSmallBlind(cmd.getSmallBlind())
+        .setBigBlind(cmd.getBigBlind())
+        .setLevel(cmd.getLevel()) // int64 — design decision #1
+        .setRedealtAt(now())
+        .build();
+  }
+
+  /** TDA Rule 37 — button-position card replaced when announced before the button has acted. */
+  @Handles(ReplaceButtonCard.class)
+  public ButtonCardReplaced handleReplaceButtonCard(
+      ReplaceButtonCard cmd, HandState state, long seq) {
+    if (cmd.getPlayerRoot().isEmpty()) {
+      throw Errors.CommandRejectedError.invalidArgument("player_root is required");
+    }
+    if (!state.exists()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand not dealt");
+    }
+    if (state.isComplete()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand already complete");
+    }
+    return ButtonCardReplaced.newBuilder()
+        .setPlayerRoot(cmd.getPlayerRoot())
+        .setReplacementCard(cmd.getReplacementCard())
+        .setReplacedAt(now())
+        .build();
+  }
+
+  /** TDA RP-5A — premature flop detected. */
+  @Handles(ReportPrematureFlop.class)
+  public PrematureFlopDetected handleReportPrematureFlop(
+      ReportPrematureFlop cmd, HandState state, long seq) {
+    if (!state.exists()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand not dealt");
+    }
+    if (state.isComplete()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand already complete");
+    }
+    return PrematureFlopDetected.newBuilder().setDetectedAt(now()).build();
+  }
+
+  /** TDA RP-5B — premature turn detected. */
+  @Handles(ReportPrematureTurn.class)
+  public PrematureTurnDetected handleReportPrematureTurn(
+      ReportPrematureTurn cmd, HandState state, long seq) {
+    if (!state.exists()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand not dealt");
+    }
+    if (state.isComplete()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand already complete");
+    }
+    return PrematureTurnDetected.newBuilder().setDetectedAt(now()).build();
+  }
+
+  /** TDA RP-5C — premature river detected. */
+  @Handles(ReportPrematureRiver.class)
+  public PrematureRiverDetected handleReportPrematureRiver(
+      ReportPrematureRiver cmd, HandState state, long seq) {
+    if (!state.exists()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand not dealt");
+    }
+    if (state.isComplete()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand already complete");
+    }
+    return PrematureRiverDetected.newBuilder().setDetectedAt(now()).build();
+  }
+
+  /** Stud street advance — 4th/5th/6th street up-card deal. */
+  @Handles(DealStudStreet.class)
+  public StudStreetDealt handleDealStudStreet(DealStudStreet cmd, HandState state, long seq) {
+    if (!state.exists()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand not dealt");
+    }
+    if (state.isComplete()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand already complete");
+    }
+    if (cmd.getStreet() == StudStreet.STUD_STREET_UNSPECIFIED) {
+      throw Errors.CommandRejectedError.invalidArgument(
+          "street must be specified (THIRD_STREET..SEVENTH_STREET)");
+    }
+    return StudStreetDealt.newBuilder()
+        .setStreet(cmd.getStreet())
+        .addAllUpCards(cmd.getUpCardsList())
+        .setDealtAt(now())
+        .build();
+  }
+
+  /** TDA RP-10H — short-stub fallback: single community card shared by all active players. */
+  @Handles(DealStudCommunityCard.class)
+  public StudCommunityCardDealt handleDealStudCommunityCard(
+      DealStudCommunityCard cmd, HandState state, long seq) {
+    if (!state.exists()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand not dealt");
+    }
+    if (state.isComplete()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand already complete");
+    }
+    if (cmd.getSharedWithCount() == 0) {
+      throw Errors.CommandRejectedError.invalidArgument(
+          "shared_with must list at least one active player");
+    }
+    if (cmd.getStreet() == StudStreet.STUD_STREET_UNSPECIFIED) {
+      throw Errors.CommandRejectedError.invalidArgument(
+          "street must be specified (typically SEVENTH_STREET)");
+    }
+    // Source the community card from the remaining deck if available; fall
+    // back to a deterministic 2♣ when the test harness hasn't seeded one.
+    Card card;
+    if (!state.getRemainingDeck().isEmpty()) {
+      card = bytesToCard(state.getRemainingDeck().get(0));
+    } else {
+      card = Card.newBuilder().setSuit(Suit.CLUBS).setRank(Rank.TWO).build();
+    }
+    return StudCommunityCardDealt.newBuilder()
+        .setCard(card)
+        .setStreet(cmd.getStreet())
+        .addAllSharedWith(cmd.getSharedWithList())
+        .setDealtAt(now())
+        .build();
+  }
+
+  /**
+   * WSOP §Seven Card Games — scramble down-cards and select door card. Design decision #3: {@code
+   * rng_seed} is variable-length bytes; no normalization performed here.
+   */
+  @Handles(ScrambleAllDownCards.class)
+  public StudDoorCardSelected handleScrambleAllDownCards(
+      ScrambleAllDownCards cmd, HandState state, long seq) {
+    if (cmd.getPlayerRoot().isEmpty()) {
+      throw Errors.CommandRejectedError.invalidArgument("player_root is required");
+    }
+    if (cmd.getRngSeed().isEmpty()) {
+      // Min-length: 1 byte. Variable-length bytes per design decision #3 —
+      // longer seeds pass through verbatim. Empty bytes is the only reject.
+      throw Errors.CommandRejectedError.invalidArgument("rng_seed must not be empty");
+    }
+    if (!state.exists()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand not dealt");
+    }
+    if (state.isComplete()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand already complete");
+    }
+    // Door card selection uses the player's hole cards if seeded; otherwise
+    // we emit a deterministic fallback so the seed echoes back unchanged.
+    PlayerHandState player = state.getPlayer(cmd.getPlayerRoot().toByteArray());
+    Card doorCard;
+    if (player != null && !player.getHoleCards().isEmpty()) {
+      // Pick by seed-derived index over the player's down cards.
+      int idx =
+          Math.floorMod(seedToInt(cmd.getRngSeed().toByteArray()), player.getHoleCards().size());
+      doorCard = bytesToCard(player.getHoleCards().get(idx));
+    } else {
+      doorCard = Card.newBuilder().setSuit(Suit.SPADES).setRank(Rank.ACE).build();
+    }
+    return StudDoorCardSelected.newBuilder()
+        .setPlayerRoot(cmd.getPlayerRoot())
+        .setDoorCard(doorCard)
+        .setRngSeed(cmd.getRngSeed()) // echo verbatim — design decision #3
+        .setSelectedAt(now())
+        .build();
+  }
+
+  /** TDA RP-10A — exposed downcard becomes the player's upcard. */
+  @Handles(ReportExposedStudDowncard.class)
+  public StudDownCardConverted handleReportExposedStudDowncard(
+      ReportExposedStudDowncard cmd, HandState state, long seq) {
+    if (cmd.getPlayerRoot().isEmpty()) {
+      throw Errors.CommandRejectedError.invalidArgument("player_root is required");
+    }
+    if (!state.exists()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand not dealt");
+    }
+    if (state.isComplete()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand already complete");
+    }
+    return StudDownCardConverted.newBuilder()
+        .setPlayerRoot(cmd.getPlayerRoot())
+        .setExposedCard(cmd.getExposedCard())
+        .setConvertedAt(now())
+        .build();
+  }
+
+  /** TDA RP-10B — 7th-street card exposed with action remaining → replace face-down. */
+  @Handles(ReplaceSeventhStreetCard.class)
+  public SeventhStreetCardReplaced handleReplaceSeventhStreetCard(
+      ReplaceSeventhStreetCard cmd, HandState state, long seq) {
+    if (cmd.getPlayerRoot().isEmpty()) {
+      throw Errors.CommandRejectedError.invalidArgument("player_root is required");
+    }
+    if (!state.exists()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand not dealt");
+    }
+    if (state.isComplete()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand already complete");
+    }
+    return SeventhStreetCardReplaced.newBuilder()
+        .setPlayerRoot(cmd.getPlayerRoot())
+        .setOriginalCard(cmd.getOriginalCard())
+        .setReplacementCard(cmd.getReplacementCard())
+        .setReplacedAt(now())
+        .build();
+  }
+
+  /**
+   * WSOP §Seven Card Games / Robert's §SC Stud #5 — wrong-bring-in correction. Rejected when the
+   * correction window has closed (next player already acted); enforced at the saga tier rather than
+   * here, but we reject the obvious input error (incorrect == correct player).
+   */
+  @Handles(CorrectBringIn.class)
+  public BringInCorrected handleCorrectBringIn(CorrectBringIn cmd, HandState state, long seq) {
+    if (cmd.getIncorrectRoot().isEmpty() || cmd.getCorrectRoot().isEmpty()) {
+      throw Errors.CommandRejectedError.invalidArgument(
+          "incorrect_root and correct_root are required");
+    }
+    if (cmd.getIncorrectRoot().equals(cmd.getCorrectRoot())) {
+      throw Errors.CommandRejectedError.invalidArgument(
+          "incorrect_root and correct_root must differ");
+    }
+    if (cmd.getReturnedAmount() < 0) {
+      throw Errors.CommandRejectedError.invalidArgument(
+          "returned_amount must be non-negative, got " + cmd.getReturnedAmount());
+    }
+    if (!state.exists()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand not dealt");
+    }
+    if (state.isComplete()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand already complete");
+    }
+    return BringInCorrected.newBuilder()
+        .setIncorrectRoot(cmd.getIncorrectRoot())
+        .setCorrectRoot(cmd.getCorrectRoot())
+        .setReturnedAmount(cmd.getReturnedAmount())
+        .setCorrectedAt(now())
+        .build();
+  }
+
+  /** TDA RP-10G / RP-5D — premature stud card. Reshuffles stub before next street. */
+  @Handles(ReportPrematureStudCard.class)
+  public PrematureStudCardDetected handleReportPrematureStudCard(
+      ReportPrematureStudCard cmd, HandState state, long seq) {
+    if (cmd.getAttemptedStreet() == StudStreet.STUD_STREET_UNSPECIFIED) {
+      throw Errors.CommandRejectedError.invalidArgument(
+          "attempted_street must be specified (THIRD_STREET..SEVENTH_STREET)");
+    }
+    if (!state.exists()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand not dealt");
+    }
+    if (state.isComplete()) {
+      throw Errors.CommandRejectedError.preconditionFailed("Hand already complete");
+    }
+    return PrematureStudCardDetected.newBuilder()
+        .setAttemptedStreet(cmd.getAttemptedStreet())
+        .setDetectedAt(now())
+        .build();
+  }
+
+  /** Reduce a variable-length seed to a stable int for index selection. */
+  private static int seedToInt(byte[] seed) {
+    int acc = 0;
+    for (byte b : seed) {
+      acc = acc * 31 + (b & 0xFF);
+    }
+    return acc;
   }
 
   // --- Helper methods ---

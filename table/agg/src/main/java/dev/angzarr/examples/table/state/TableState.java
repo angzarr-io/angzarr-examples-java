@@ -17,9 +17,18 @@ public class TableState {
   private int actionTimeoutSeconds = 0;
   private final Map<Integer, SeatState> seats = new HashMap<>();
   private int dealerPosition = -1;
+  // TDA Rule 35 (dead-button) state — persisted from HandStarted so the next
+  // hand's blind advancement can detect bust-between-hands on the BB seat
+  // and freeze the button accordingly. -1 means "unset" (first hand).
+  private int lastSmallBlindPosition = -1;
+  private int lastBigBlindPosition = -1;
   private long handCount = 0;
   private byte[] currentHandRoot = new byte[0];
   private String status = "";
+  // Phase I-Java HIGH-EX-2.2.3 — tournament hand-for-hand sync state.
+  // Status transitions: NONE → WAITING → COMPLETE → NONE.
+  private String handForHandStatus = "NONE";
+  private byte[] handForHandTournamentRoot = new byte[0];
 
   // Getters and Setters
 
@@ -107,6 +116,23 @@ public class TableState {
     this.dealerPosition = dealerPosition;
   }
 
+  // TDA Rule 35 — see field declaration for semantics.
+  public int getLastSmallBlindPosition() {
+    return lastSmallBlindPosition;
+  }
+
+  public void setLastSmallBlindPosition(int position) {
+    this.lastSmallBlindPosition = position;
+  }
+
+  public int getLastBigBlindPosition() {
+    return lastBigBlindPosition;
+  }
+
+  public void setLastBigBlindPosition(int position) {
+    this.lastBigBlindPosition = position;
+  }
+
   public long getHandCount() {
     return handCount;
   }
@@ -139,6 +165,27 @@ public class TableState {
 
   public boolean isInHand() {
     return "in_hand".equals(status);
+  }
+
+  // Phase I-Java HIGH-EX-2.2.3 — hand-for-hand status accessors.
+  public String getHandForHandStatus() {
+    return handForHandStatus;
+  }
+
+  public void setHandForHandStatus(String s) {
+    this.handForHandStatus = s == null ? "NONE" : s;
+  }
+
+  public byte[] getHandForHandTournamentRoot() {
+    return handForHandTournamentRoot;
+  }
+
+  public void setHandForHandTournamentRoot(byte[] root) {
+    this.handForHandTournamentRoot = root == null ? new byte[0] : root;
+  }
+
+  public boolean isInHandForHand() {
+    return !"NONE".equals(handForHandStatus);
   }
 
   public int getPlayerCount() {

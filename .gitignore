@@ -4,6 +4,16 @@ target/
 *.jar
 *.war
 proto/**/*.java
+# Gradle module build dirs. Generated proto bindings (when the composite build
+# emits them) live under angzarr-client-java/proto/build/generated/ and are
+# regenerated on demand by `just generate-proto` — see
+# project_proto_generation_model.
+build/
+*/build/
+**/build/
+.gradle/
+*/.gradle/
+**/.gradle/
 
 # Binaries
 */*/agg-*
@@ -24,3 +34,8 @@ Thumbs.db
 
 # Kubernetes
 *.kubeconfig
+
+# Mutation testing (aligns with client-java)
+.mutants-cache/
+mutation-reports/
+mutants-reports/

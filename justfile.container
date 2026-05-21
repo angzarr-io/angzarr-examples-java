@@ -9,38 +9,43 @@ ROOT := `git rev-parse --show-toplevel`
 default:
     @just --list
 
-# Proto compilation is handled by the Gradle protobuf plugin, which reads
-# directly from angzarr-project/proto/ (configured via gradle.properties).
-# No file copying needed.  This recipe only cleans stale build artifacts.
-proto-gen:
-    rm -rf "{{ROOT}}/angzarr-client-java/proto/build"
+# Proto generation runs the gradle protobuf plugin from the included build.
+# The plugin is the EXECUTOR; the trigger (mtime guard, lefthook, recipe
+# deps) lives in the host-side justfile per project_proto_generation_model.
+generate-proto-force:
+    ./gradlew --no-daemon :angzarr-client-java:proto:generateProto
 
-build: proto-gen
+# Back-compat aliases (and legacy `proto-gen` from the old container script).
+generate-proto: generate-proto-force
+proto: generate-proto-force
+proto-gen: generate-proto-force
+
+build: generate-proto-force
     ./gradlew build -x test
 
-build-dev: proto-gen
+build-dev: generate-proto-force
     ./gradlew build -x test --info
 
-test-unit: proto-gen
+test-unit: generate-proto-force
     ./gradlew test
 
-test-acceptance: proto-gen
+test-acceptance: generate-proto-force
     PLAYER_URL="${PLAYER_URL:-localhost:1310}" \
     TABLE_URL="${TABLE_URL:-localhost:1311}" \
     HAND_URL="${HAND_URL:-localhost:1312}" \
     ./gradlew :tests:cucumberAcceptanceTest
 
-test: proto-gen
+test: generate-proto-force
     ./gradlew test
 
 fmt:
     ./gradlew spotlessApply || echo "Spotless not configured, skipping format"
 
-lint: proto-gen
+lint: generate-proto-force
     ./gradlew check -x test
 
 # Run PIT mutation testing on tournament handlers
-mutation-test: proto-gen
+mutation-test: generate-proto-force
     ./gradlew :tournament-agg:pitest
 
 deps:

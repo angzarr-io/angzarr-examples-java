@@ -279,7 +279,8 @@ public class TournamentSteps {
   // --- When steps ---
 
   @When(
-      "I handle a CreateTournament command with name {string} buy-in {int} and starting-stack {int}")
+      "I handle a CreateTournament command with name {string} buy-in {int} and starting-stack"
+          + " {int}")
   public void handleCreateTournament(String name, int buyIn, int startingStack) {
     CreateTournament cmd =
         CreateTournament.newBuilder()
@@ -294,7 +295,8 @@ public class TournamentSteps {
   }
 
   @When(
-      "I handle a CreateTournament command with name {string} buy-in {int} starting-stack {int} and max-players {int}")
+      "I handle a CreateTournament command with name {string} buy-in {int} starting-stack {int} and"
+          + " max-players {int}")
   public void handleCreateTournamentMaxPlayers(
       String name, int buyIn, int startingStack, int maxPlayers) {
     CreateTournament cmd =

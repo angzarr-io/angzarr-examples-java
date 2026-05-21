@@ -36,7 +36,6 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,6 +55,7 @@ public class PlayerSteps {
     eventPages = new ArrayList<>();
     resultEvent = null;
     rejectedError = null;
+    CommonSteps.resetSharedPlayerEvents();
   }
 
   private static CommandHandlerRouter<PlayerState> buildRouter() {
@@ -114,7 +114,7 @@ public class PlayerSteps {
     addEvent(
         FundsReserved.newBuilder()
             .setAmount(Currency.newBuilder().setAmount(amount).setCurrencyCode("CHIPS"))
-            .setTableRoot(ByteString.copyFrom(tableId.getBytes(StandardCharsets.UTF_8)))
+            .setKey(ByteString.copyFrom(uuid5OidBytes(tableId)))
             .setNewReservedBalance(
                 Currency.newBuilder().setAmount(newReserved).setCurrencyCode("CHIPS"))
             .setNewAvailableBalance(
@@ -141,6 +141,7 @@ public class PlayerSteps {
             .setDisplayName(name)
             .setEmail(email)
             .setPlayerType(PlayerType.AI)
+            .setAiModelId("model-" + name.toLowerCase())
             .build());
   }
 
@@ -165,16 +166,13 @@ public class PlayerSteps {
     dispatch(
         ReserveFunds.newBuilder()
             .setAmount(Currency.newBuilder().setAmount(amount).setCurrencyCode("CHIPS"))
-            .setTableRoot(ByteString.copyFrom(tableId.getBytes(StandardCharsets.UTF_8)))
+            .setKey(ByteString.copyFrom(uuid5OidBytes(tableId)))
             .build());
   }
 
   @When("I handle a ReleaseFunds command for table {string}")
   public void handleReleaseFundsCommand(String tableId) {
-    dispatch(
-        ReleaseFunds.newBuilder()
-            .setTableRoot(ByteString.copyFrom(tableId.getBytes(StandardCharsets.UTF_8)))
-            .build());
+    dispatch(ReleaseFunds.newBuilder().setKey(ByteString.copyFrom(uuid5OidBytes(tableId))).build());
   }
 
   @When("I rebuild the player state")
@@ -261,11 +259,13 @@ public class PlayerSteps {
 
   private void addEvent(Message event) {
     Any any = Any.pack(event, TYPE_URL_PREFIX);
-    eventPages.add(
+    EventPage page =
         EventPage.newBuilder()
             .setHeader(PageHeader.newBuilder().setSequence(eventPages.size()))
             .setEvent(any)
-            .build());
+            .build();
+    eventPages.add(page);
+    CommonSteps.publishPlayerEvent(page);
   }
 
   private void dispatch(Message command) {
@@ -285,20 +285,24 @@ public class PlayerSteps {
         resultEvent = null;
       } else {
         for (EventPage page : emitted.getPagesList()) {
-          eventPages.add(
+          EventPage normalized =
               EventPage.newBuilder()
                   .setHeader(PageHeader.newBuilder().setSequence(eventPages.size()))
                   .setEvent(page.getEvent())
-                  .build());
+                  .build();
+          eventPages.add(normalized);
+          CommonSteps.publishPlayerEvent(normalized);
         }
         resultEvent = decodeEvent(emitted.getPages(0).getEvent());
       }
       rejectedError = null;
       CommonSteps.setLastRejectedError(null);
+      CommonSteps.setLastResultEvent(resultEvent);
     } catch (DispatchException de) {
       resultEvent = null;
       rejectedError = unwrapRejection(de);
       CommonSteps.setLastRejectedError(rejectedError);
+      CommonSteps.setLastResultEvent(null);
     }
   }
 
@@ -340,6 +344,8 @@ public class PlayerSteps {
   private long getEventNewBalance() {
     if (resultEvent instanceof FundsDeposited e) return e.getNewBalance().getAmount();
     if (resultEvent instanceof FundsWithdrawn e) return e.getNewBalance().getAmount();
+    if (resultEvent instanceof dev.angzarr.examples.FundsTransferred e)
+      return e.getNewBalance().getAmount();
     throw new IllegalStateException("Event does not have new_balance: " + resultEvent.getClass());
   }
 
@@ -348,5 +354,41 @@ public class PlayerSteps {
     if (resultEvent instanceof FundsReleased e) return e.getNewAvailableBalance().getAmount();
     throw new IllegalStateException(
         "Event does not have new_available_balance: " + resultEvent.getClass());
+  }
+
+  /**
+   * Deterministic 16-byte UUIDv5 from a label using NAMESPACE_OID (matches Python's
+   * uuid5(NAMESPACE_OID, name)). Feature files cite "table-1" → eba6a19b488f5e1097a5a34a92553679,
+   * which only matches when this namespace + this label are used.
+   */
+  static byte[] uuid5OidBytes(String label) {
+    return UuidV5Helper.bytesFor(label);
+  }
+}
+
+/** UUID5 helper using NAMESPACE_OID (mirrors python uuid_for with NAMESPACE_OID). */
+final class UuidV5Helper {
+  private static final java.util.UUID NAMESPACE_OID =
+      java.util.UUID.fromString("6ba7b812-9dad-11d1-80b4-00c04fd430c8");
+
+  private UuidV5Helper() {}
+
+  static byte[] bytesFor(String label) {
+    try {
+      java.security.MessageDigest sha1 = java.security.MessageDigest.getInstance("SHA-1");
+      java.nio.ByteBuffer nsBuf = java.nio.ByteBuffer.wrap(new byte[16]);
+      nsBuf.putLong(NAMESPACE_OID.getMostSignificantBits());
+      nsBuf.putLong(NAMESPACE_OID.getLeastSignificantBits());
+      sha1.update(nsBuf.array());
+      sha1.update(label.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+      byte[] hash = sha1.digest();
+      byte[] out = new byte[16];
+      System.arraycopy(hash, 0, out, 0, 16);
+      out[6] = (byte) ((out[6] & 0x0f) | 0x50);
+      out[8] = (byte) ((out[8] & 0x3f) | 0x80);
+      return out;
+    } catch (java.security.NoSuchAlgorithmException nsae) {
+      throw new IllegalStateException("SHA-1 not available", nsae);
+    }
   }
 }

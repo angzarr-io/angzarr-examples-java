@@ -15,6 +15,9 @@ public class PlayerHandState {
   private boolean hasActed;
   private boolean hasFolded;
   private boolean isAllIn;
+  // Phase I-Java MED-EX-2.3.1 — fields used by ActionClockHandlers tier-5 appliers.
+  private int actionClockSeconds;
+  private boolean boundToCallOrRaise;
 
   public byte[] getPlayerRoot() {
     return playerRoot;
@@ -82,5 +85,21 @@ public class PlayerHandState {
 
   public void setAllIn(boolean allIn) {
     isAllIn = allIn;
+  }
+
+  public int getActionClockSeconds() {
+    return actionClockSeconds;
+  }
+
+  public void setActionClockSeconds(int actionClockSeconds) {
+    this.actionClockSeconds = actionClockSeconds;
+  }
+
+  public boolean isBoundToCallOrRaise() {
+    return boundToCallOrRaise;
+  }
+
+  public void setBoundToCallOrRaise(boolean boundToCallOrRaise) {
+    this.boundToCallOrRaise = boundToCallOrRaise;
   }
 }
