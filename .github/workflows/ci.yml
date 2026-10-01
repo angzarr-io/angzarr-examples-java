@@ -32,6 +32,8 @@ jobs:
     needs: [submodules]
     container:
       image: ghcr.io/angzarr-io/angzarr-java:latest
+      # The image's default user cannot write the runner's mounted temp dirs.
+      options: --user root
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
