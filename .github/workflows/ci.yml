@@ -40,10 +40,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          submodules: recursive
+          submodules: false  # fetched below; recursive pulls angzarr-project's vendored trees
 
       - name: Configure git safe directory
-        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+        run: git config --global --add safe.directory '*'
+
+      - name: Fetch submodules (non-recursive)
+        run: git submodule update --init
 
       - name: Build
         run: just -f justfile.container build
