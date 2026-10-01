@@ -1,4 +1,4 @@
-# Java poker examples
+# Java examples
 #
 # Container Overlay Pattern:
 # --------------------------
@@ -56,9 +56,6 @@ build-dev:
 test-unit:
     just _container test-unit
 
-test-acceptance:
-    just _container test-acceptance
-
 test:
     just _container test
 
@@ -73,14 +70,6 @@ deps:
 
 wrapper-update:
     just _container wrapper-update
-
-# Run poker in standalone mode (host - needs Rust)
-run: build
-    mkdir -p "{{ROOT}}/data"
-    cd "{{ROOT}}" && cargo run \
-        --bin angzarr-standalone \
-        --features standalone,sqlite \
-        -- --config examples/java/standalone.yaml
 
 clean:
     just _container "./gradlew clean" || true
