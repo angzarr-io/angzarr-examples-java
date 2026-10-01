@@ -1,32 +1,27 @@
-> **⚠️ Out of Date:** This repository is currently out of date. Primary development focus is on the **Rust** and **Python** implementations. The author will get back to updating this, but if you need it sooner, please [open an issue](https://github.com/angzarr-io/angzarr/issues) or contact the author directly.
-
 # angzarr-examples-java
 
-Example implementations demonstrating Angzarr event sourcing patterns in Java.
+Example implementations demonstrating Angzarr event sourcing patterns in Java. See the [Angzarr documentation](https://angzarr.io/) for more information.
 
-## Prerequisites
+> The poker example has been retired. A blackjack example is coming; its spec lives in [angzarr-project](https://github.com/angzarr-io/angzarr-project) under `proto/io/angzarr/examples/v1` and `features/example/blackjack*`.
 
-- Java build tools
-- Buf CLI for proto generation
-- Kind (for Kubernetes deployment)
+## Development
 
-## Building
-
-See individual component directories for build instructions.
-
-## Running
-
-### Standalone Mode
-
-Run with standalone runtime configuration.
-
-### Kubernetes Mode
+Install git hooks (requires [lefthook](https://github.com/evilmartians/lefthook)):
 
 ```bash
-skaffold run
+lefthook install
+```
+
+### Recipes
+
+```bash
+just -l              # List all available recipes
+just build           # Build (Gradle, in the devcontainer)
+just test            # Run tests
+just lint            # Run checks
+just fmt             # Auto-format (Spotless)
 ```
 
 ## License
 
 BSD-3-Clause
-
